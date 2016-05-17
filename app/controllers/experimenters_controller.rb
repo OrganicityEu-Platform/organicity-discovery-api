@@ -1,0 +1,2 @@
+class ExperimentersController < ApplicationController
+end
