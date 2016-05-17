@@ -1,2 +1,0 @@
-class ExperimentsController < ApplicationController
-end

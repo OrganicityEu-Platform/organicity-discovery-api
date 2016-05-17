@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ProvidersControllerTest < ActionDispatch::IntegrationTest
+class Api::V0::ServicesControllerTest < ActionDispatch::IntegrationTest
   # test "the truth" do
   #   assert true
   # end

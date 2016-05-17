@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ExperimentersControllerTest < ActionDispatch::IntegrationTest
+class Api::V0::AssetsControllerTest < ActionDispatch::IntegrationTest
   # test "the truth" do
   #   assert true
   # end
