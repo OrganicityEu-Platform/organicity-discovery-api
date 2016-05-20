@@ -2,7 +2,7 @@ class AssetSerializer < ActiveModel::Serializer
   attributes :id, :type, :context, :related
 
   def id
-    object[:id].split(':')[-1]
+    object[:id]
   end
 
   def type
@@ -30,9 +30,10 @@ class AssetSerializer < ActiveModel::Serializer
     {
       latitude: object[:position][:latitude],
       longitude: object[:position][:longitude],
-      city: object[:position][:city][:name],
-      country_code: object[:position][:city][:country_code],
-      country: object[:position][:city][:country]
+      city: object[:position][:city][:attributes][:name],
+      region: object[:position][:city][:attributes][:region],
+      country_code: object[:position][:city][:attributes][:country_code],
+      country: object[:position][:city][:attributes][:country],
     }
   end
 
@@ -47,7 +48,10 @@ class AssetSerializer < ActiveModel::Serializer
 
   def site
     {
-      name: object[:position][:city][:name]
+      name: object[:position][:city][:attributes][:name],
+      description: object[:position][:city][:attributes][:description],
+      position: position,
+      links: object[:position][:city][:links].map { |link|  [link[:relationship], { href: link[:url] } ] }.flatten
     }
   end
 
