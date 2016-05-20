@@ -46,8 +46,9 @@ class AssetSerializer < ActiveModel::Serializer
   end
 
   def site
-    object[:position][:city]
-    \
+    {
+      name: object[:position][:city][:name]
+    }
   end
 
   def service
