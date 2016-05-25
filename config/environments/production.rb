@@ -26,6 +26,11 @@ Rails.application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for Apache
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
 
+  config.action_dispatch.rack_cache = {
+    metastore: "redis://localhost:6379/1/metastore",
+    entitystore: "redis://localhost:6379/1/entitystore"
+  }
+
   # Action Cable endpoint configuration
   # config.action_cable.url = 'wss://example.com/cable'
   # config.action_cable.allowed_request_origins = [ 'http://example.com', /http:\/\/example.*/ ]

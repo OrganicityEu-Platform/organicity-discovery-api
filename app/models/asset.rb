@@ -2,9 +2,10 @@ class Asset < ApplicationRecord
   extend Restful
   extend Orion
 
-  def self.get_assets
-    @assets = Asset.request_entities
-    return @assets.doc.map {
+  def self.get_assets(params)
+
+    assets = self.request_entities(params)
+    return assets["doc"].map {
       |a| {
         id: a["id"],
         last_reading_at: a["TimeInstant"]["value"],

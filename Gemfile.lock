@@ -7,6 +7,44 @@ GIT
       activemodel (>= 4.0)
       railties (>= 4.0)
 
+GIT
+  remote: git://github.com/redis-store/redis-actionpack.git
+  revision: e07ec71762517dccf83b1f2a16432aa4536cc79c
+  branch: master
+  specs:
+    redis-actionpack (5.0.0.pre)
+      actionpack (>= 4.0.0, < 6)
+      redis-rack (~> 2.0.0.pre)
+      redis-store (~> 1.2.0.pre)
+
+GIT
+  remote: git://github.com/redis-store/redis-activesupport.git
+  revision: 03ef7af5cf3261b39c7998fff53343d3749be470
+  branch: master
+  specs:
+    redis-activesupport (5.0.0.pre)
+      activesupport (>= 3, < 6)
+      redis-store (~> 1.2.0.pre)
+
+GIT
+  remote: git://github.com/redis-store/redis-rack.git
+  revision: ba3a6b7cd5259e9678195b3df121c2a3e012b134
+  branch: master
+  specs:
+    redis-rack (2.0.0.pre)
+      rack (> 1.5, < 3)
+      redis-store (~> 1.2.0.pre)
+
+GIT
+  remote: git://github.com/redis-store/redis-rails.git
+  revision: f05ac2a5503a894bc189b569c4a5598e7d9af51d
+  branch: master
+  specs:
+    redis-rails (5.0.0.pre)
+      redis-actionpack (~> 5.0.0.pre)
+      redis-activesupport (~> 5.0.0.pre)
+      redis-store (~> 1.2.0.pre)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -55,6 +93,7 @@ GEM
     ffi (1.9.10)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
+    hiredis (0.6.1)
     i18n (0.7.0)
     json (1.8.3)
     listen (3.0.7)
@@ -70,9 +109,14 @@ GEM
     mime-types-data (3.2016.0221)
     mini_portile2 (2.0.0)
     minitest (5.9.0)
+    nido (1.0.0)
     nio4r (1.2.1)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
+    ohm (3.0.2)
+      nido
+      redic (~> 1.5.0)
+      stal
     pg (0.18.4)
     puma (3.4.0)
     rack (2.0.0.rc1)
@@ -110,6 +154,11 @@ GEM
     rb-fsevent (0.9.7)
     rb-inotify (0.9.7)
       ffi (>= 0.5.0)
+    redic (1.5.0)
+      hiredis
+    redis (3.3.0)
+    redis-store (1.2.0.pre)
+      redis (>= 2.2)
     spring (1.7.1)
     spring-watcher-listen (2.0.0)
       listen (>= 2.7, < 4.0)
@@ -121,6 +170,8 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    stal (0.1.0)
+      redic
     thor (0.19.1)
     thread_safe (0.3.5)
     tzinfo (1.2.2)
@@ -136,10 +187,16 @@ DEPENDENCIES
   active_model_serializers!
   byebug
   listen (~> 3.0.5)
+  ohm
   pg
   puma (~> 3.0)
   rack-cors
   rails (>= 5.0.0.rc1, < 5.1)
+  redis
+  redis-actionpack!
+  redis-activesupport!
+  redis-rack!
+  redis-rails!
   spring
   spring-watcher-listen (~> 2.0.0)
   tzinfo-data

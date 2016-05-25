@@ -7,6 +7,15 @@ gem 'rails', '>= 5.0.0.rc1', '< 5.1'
 gem 'pg'
 # Use Puma as the app server
 gem 'puma', '~> 3.0'
+# Use Redis
+gem 'redis'
+gem 'redis-rack', github: 'redis-store/redis-rack', branch: 'master'
+gem 'redis-activesupport', github: 'redis-store/redis-activesupport', branch: 'master'
+gem 'redis-actionpack', github: 'redis-store/redis-actionpack', branch: 'master'
+gem 'redis-rails', github: 'redis-store/redis-rails', branch: 'master'
+# Caching external API requests w/ semi-persistent objects
+gem 'ohm'
+
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.0'
 # Use Redis adapter to run Action Cable in production

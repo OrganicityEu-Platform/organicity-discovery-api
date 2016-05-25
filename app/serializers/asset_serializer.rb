@@ -48,11 +48,16 @@ class AssetSerializer < ActiveModel::Serializer
 
   def site
     {
+      id: "#{object[:position][:city][:attributes][:name]}",
       name: object[:position][:city][:attributes][:name],
       description: object[:position][:city][:attributes][:description],
       position: position,
-      links: object[:position][:city][:links].map { |link|  [link[:relationship], { href: link[:url] } ] }.flatten
+      links: links_object
     }
+  end
+
+  def links_object
+    Hash[*object[:position][:city][:links].map { |link|  [link[:relationship], { href: link[:url] } ] }.flatten]
   end
 
   def service
