@@ -11,12 +11,18 @@ module Orion
 
   def map_params(params)
     query_params = ""
-    query_params.concat(limit(params)) if params[:per]
+
+    query_params.concat(limit(params))
+    query_params.concat(offset(params))
 
     query_params
   end
 
   def limit(params)
-    return "limit=#{params[:page].to_i * params[:per].to_i}"
+    return "limit=#{params[:per].to_i}"
+  end
+
+  def offset(params)
+    return "&offset=#{(params[:page].to_i - 1) * params[:per].to_i}"
   end
 end

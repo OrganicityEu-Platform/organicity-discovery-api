@@ -28,7 +28,8 @@ module MapParameters
     ]
     parameters = {}
 
-    params[:page] = 1 unless params[:page] 
+    params[:page] = 1 unless params[:page]
+    params[:per] = 30 unless params[:per]
 
     allowed_parameters.each do |param|
       parameters[param] = params[param] if params[param]
