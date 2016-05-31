@@ -13,9 +13,11 @@ gem 'redis-rack', github: 'redis-store/redis-rack', branch: 'master'
 gem 'redis-activesupport', github: 'redis-store/redis-activesupport', branch: 'master'
 gem 'redis-actionpack', github: 'redis-store/redis-actionpack', branch: 'master'
 gem 'redis-rails', github: 'redis-store/redis-rails', branch: 'master'
+
 # Caching external API requests w/ semi-persistent objects
 gem 'ohm'
 
+gem 'rack-cache'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.0'
 # Use Redis adapter to run Action Cable in production
