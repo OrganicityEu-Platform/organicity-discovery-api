@@ -27,8 +27,8 @@ Rails.application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
 
   config.action_dispatch.rack_cache = {
-    metastore: "#{Rails.application.secrets.redis_url}/metastore",
-    entitystore: "#{Rails.application.secrets.redis_url}/entitystore"
+    metastore: "#{Rails.application.secrets.redis_url}/1/metastore",
+    entitystore: "#{Rails.application.secrets.redis_url}/1/entitystore"
   }
 
   # Action Cable endpoint configuration

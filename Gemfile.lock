@@ -28,6 +28,15 @@ GIT
       redis-store (~> 1.2.0.pre)
 
 GIT
+  remote: git://github.com/redis-store/redis-rack-cache.git
+  revision: fabaef6dbcbc2ffd9cc9c61e214df8cbb2acce23
+  branch: master
+  specs:
+    redis-rack-cache (2.0.0.pre)
+      rack-cache (~> 1.6.0)
+      redis-store (~> 1.2.0.pre)
+
+GIT
   remote: git://github.com/redis-store/redis-rack.git
   revision: ba3a6b7cd5259e9678195b3df121c2a3e012b134
   branch: master
@@ -202,6 +211,7 @@ DEPENDENCIES
   redis-actionpack!
   redis-activesupport!
   redis-rack!
+  redis-rack-cache!
   redis-rails!
   spring
   spring-watcher-listen (~> 2.0.0)

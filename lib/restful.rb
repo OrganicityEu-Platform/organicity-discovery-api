@@ -17,7 +17,6 @@ module Restful
   end
 
   def cache_call(url)
-    log url
     call = RestCall.find(url: url).sort(by: :created_at)
     log "call: #{call.last.created_at}" unless call.empty?
     if call.empty? or ( Time.now > Time.parse(call.last.created_at) + 10.minutes )

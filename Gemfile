@@ -10,6 +10,7 @@ gem 'puma', '~> 3.0'
 # Use Redis
 gem 'redis'
 gem 'redis-rack', github: 'redis-store/redis-rack', branch: 'master'
+gem 'redis-rack-cache', github: 'redis-store/redis-rack-cache', branch: 'master'
 gem 'redis-activesupport', github: 'redis-store/redis-activesupport', branch: 'master'
 gem 'redis-actionpack', github: 'redis-store/redis-actionpack', branch: 'master'
 gem 'redis-rails', github: 'redis-store/redis-rails', branch: 'master'

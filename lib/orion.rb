@@ -5,8 +5,8 @@ module Orion
   ORION_URL = "http://ec2-52-40-19-99.us-west-2.compute.amazonaws.com:1026/v2/entities"
 
   def request_entities(params)
-    print "orion: #{params}\n"
-    send_request "#{ORION_URL}?#{map_params(params)}"
+    url = "#{ORION_URL}?#{map_params(params)}"
+    send_request url
   end
 
   def map_params(params)
