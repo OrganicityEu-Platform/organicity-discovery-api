@@ -25,6 +25,9 @@ module MapParameters
       :per,
       :sample,
       :query,
+      :lat,
+      :long,
+      :radius,
       :site
     ]
     parameters = {}

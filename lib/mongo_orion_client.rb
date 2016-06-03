@@ -19,7 +19,7 @@ module MongoOrionClient
     orion[:entities].find(
       {
         'location.coords.coordinates' => {
-          '$geoWithin': { '$center': [ [ params[:lat].to_f, params[:long].to_f ] , params[:radius].to_i ] }
+          '$geoWithin': { '$center': [ [  params[:long].to_f, params[:lat].to_f ], params[:radius].to_i ] }
         }
       },
       {
