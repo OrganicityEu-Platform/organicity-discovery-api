@@ -14,7 +14,7 @@ module MapParameters
   # per          - Return N assets per page.
   # sample       - Return a random sample of N assets.
   # query        - Return a list of assets based on metadatadatatata search
-  def map_paramenters(params)
+  def map_query_parameters(params)
     allowed_parameters = [
       :type,
       :sort,
@@ -24,7 +24,8 @@ module MapParameters
       :page,
       :per,
       :sample,
-      :query
+      :query,
+      :site
     ]
     parameters = {}
 

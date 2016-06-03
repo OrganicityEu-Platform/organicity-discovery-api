@@ -96,6 +96,9 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     arel (7.0.0)
+    bson (1.12.5)
+    bson_ext (1.12.5)
+      bson (~> 1.12.5)
     builder (3.2.2)
     byebug (9.0.5)
     concurrent-ruby (1.0.2)
@@ -121,6 +124,8 @@ GEM
     mime-types-data (3.2016.0521)
     mini_portile2 (2.0.0)
     minitest (5.9.0)
+    mongo (1.12.5)
+      bson (= 1.12.5)
     nido (1.0.0)
     nio4r (1.2.1)
     nokogiri (1.6.7.2)
@@ -199,8 +204,10 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers!
+  bson_ext
   byebug
   listen (~> 3.0.5)
+  mongo
   ohm
   pg
   puma (~> 3.0)

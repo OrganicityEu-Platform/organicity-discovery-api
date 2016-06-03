@@ -27,14 +27,16 @@ class AssetSerializer < ActiveModel::Serializer
   end
 
   def position
-    {
-      latitude: object[:position][:latitude],
-      longitude: object[:position][:longitude],
-      city: object[:position][:city][:attributes][:name],
-      region: object[:position][:city][:attributes][:region],
-      country_code: object[:position][:city][:attributes][:country_code],
-      country: object[:position][:city][:attributes][:country],
-    }
+    if object[:position][:city]
+      {
+        latitude: object[:position][:latitude],
+        longitude: object[:position][:longitude],
+        city: object[:position][:city][:attributes][:name],
+        region: object[:position][:city][:attributes][:region],
+        country_code: object[:position][:city][:attributes][:country_code],
+        country: object[:position][:city][:attributes][:country],
+      }
+    end
   end
 
   def related
@@ -47,13 +49,15 @@ class AssetSerializer < ActiveModel::Serializer
   end
 
   def site
-    {
-      id: "#{object[:position][:city][:attributes][:name]}",
-      name: object[:position][:city][:attributes][:name],
-      description: object[:position][:city][:attributes][:description],
-      position: position,
-      links: links_object
-    }
+    if object[:position][:city]
+      {
+        id: object[:position][:city][:attributes][:name],
+        name: object[:position][:city][:attributes][:name],
+        description: object[:position][:city][:attributes][:description],
+        position: position,
+        links: links_object
+      }
+    end
   end
 
   def links_object
