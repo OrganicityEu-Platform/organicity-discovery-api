@@ -9,6 +9,7 @@ module Restful
   end
 
   def make_request(request_url)
+    logger.info "url before request in make_request in restful.rb #{request_url}"
     res = Net::HTTP.get_response(request_url)
     unless res.kind_of? Net::HTTPSuccess
       raise Restful::RequestError, "HTTP Response: #{res.code} #{res.message}"

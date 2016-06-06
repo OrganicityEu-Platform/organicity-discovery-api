@@ -5,8 +5,8 @@ require 'base64'
 include Mongo
 
 module MongoOrionClient
-  MONGO_URL = "localhost"
-  MONGO_PORT = "4433"
+  MONGO_URL = Rails.application.secrets.mongo_url
+  MONGO_PORT = Rails.application.secrets.mongo_port
 
   def setup_client
     mongo_client = MongoClient.new(MONGO_URL, MONGO_PORT)

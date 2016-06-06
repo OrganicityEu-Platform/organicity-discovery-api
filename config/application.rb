@@ -28,6 +28,6 @@ module OrganicityApi
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
-    config.cache_store = :redis_store, "#{Rails.application.secrets.redis_url}/cache", { expires_in: 30.minutes }
+    config.cache_store = :redis_store, "#{Rails.application.secrets.redis_url || ENV['REDIS_URL']}/cache", { expires_in: 30.minutes }
   end
 end

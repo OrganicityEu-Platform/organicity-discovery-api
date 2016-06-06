@@ -4,7 +4,7 @@ class Asset < ApplicationRecord
   extend MongoOrionClient
 
   def self.get_assets(params)
-
+    logger.info "in asset.rb get_assets params are: #{params.to_json}"
     assets = self.request_entities(params)
     return assets["doc"].map {
       |a| {

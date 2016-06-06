@@ -4,11 +4,14 @@ default: &default
   pool         : 5
   timeout      : 5000
   min_messages : WARNING
+  host         : db
+  port         : 5432
+  username     : postgres
+  password     : <%= ENV['POSTGRES_PASSWORD'] %>
 
 development:
   <<: *default
   database     : organicity-api_develop
-  host         : 127.0.0.1
   min_messages : WARNING
 
 # Warning: The database defined as "test" will be erased and

@@ -6,6 +6,7 @@ class Api::V0::AssetsController < ApplicationController
   #
   def index
     query_params = map_query_parameters(params)
+    logger.info params
     @assets = Asset.get_assets(query_params)
     render json: @assets, each_serializer: AssetSerializer, root: false
   end

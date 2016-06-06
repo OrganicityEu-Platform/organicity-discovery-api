@@ -6,7 +6,7 @@ gem 'rails', '>= 5.0.0.rc1', '< 5.1'
 # Use sqlite3 as the database for Active Record
 gem 'pg'
 # Use Puma as the app server
-gem 'puma', '~> 3.0'
+gem 'puma'
 # Use Redis
 gem 'redis'
 gem 'redis-rack', github: 'redis-store/redis-rack', branch: 'master'
