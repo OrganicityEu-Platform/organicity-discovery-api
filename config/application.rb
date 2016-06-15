@@ -30,11 +30,5 @@ module OrganicityApi
 
     config.cache_store = :redis_store, "#{Rails.application.secrets.redis_url || ENV['REDIS_URL']}/cache", { expires_in: 30.minutes }
 
-    config.middleware.insert_before 0, Rack::Cors do
-      allow do
-        origins '*'
-        resource '*', :headers => :any, :methods => [:get, :post, :options]
-      end
-    end
   end
 end
