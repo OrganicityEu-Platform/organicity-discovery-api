@@ -30,7 +30,7 @@ gem 'bson_ext'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
-# gem 'newrelic_rpm'
+gem 'skylight'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

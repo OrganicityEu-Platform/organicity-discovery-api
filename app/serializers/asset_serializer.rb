@@ -51,7 +51,7 @@ class AssetSerializer < ActiveModel::Serializer
   def site
     if object[:position][:city]
       {
-        id: object[:position][:city][:attributes][:name],
+        id: object[:position][:city][:attributes][:name].downcase,
         name: object[:position][:city][:attributes][:name],
         description: object[:position][:city][:attributes][:description],
         position: position,
