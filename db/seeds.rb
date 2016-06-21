@@ -14,3 +14,23 @@ City.create!(
   country: 'Spain',
   region: 'Cantabria'
 )
+
+City.create!(
+  name: 'London',
+  description: 'London is the capital and most populous city of England and the United Kingdom.',
+  latitude: 51.507222,
+  longitude: -0.1275,
+  country_code: 'UK',
+  country: 'United Kingdom',
+  region: 'England'
+)
+
+City.create!(
+  name: 'Aarhus',
+  description: 'Aarhus is the second-largest city in Denmark and the seat of Aarhus Municipality.',
+  latitude: 56.1572,
+  longitude: 10.2107,
+  country_code: 'DK',
+  country: 'Denmark',
+  region: 'East Jutland'
+)
