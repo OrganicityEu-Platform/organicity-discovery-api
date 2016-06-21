@@ -34,3 +34,13 @@ City.create!(
   country: 'Denmark',
   region: 'East Jutland'
 )
+
+City.create!(
+  name: 'Patras',
+  description: 'Patras is Greece\'s third largest city and the regional capital of Western Greece, in northern Peloponnese, 215 km (134 mi) west of Athens. The city is built at the foothills of Mount Panachaikon, overlooking the Gulf of Patras.',
+  latitude: 38.25,
+  longitude: 21.733333,
+  country_code: 'GR',
+  country: 'Greece',
+  region: 'Western Greece'
+)
