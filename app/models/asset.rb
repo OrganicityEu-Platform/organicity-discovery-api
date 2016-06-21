@@ -77,13 +77,31 @@ class Asset < ApplicationRecord
     return assets.map {
       |a| {
         id: a["_id"]["id"],
-        last_reading_at: a["attrs"]["TimeInstant"]["value"],
-        position: {
-          latitude: a["attrs"]["position"]["value"].split(',')[0],
-          longitude: a["attrs"]["position"]["value"].split(',')[1],
-          city: City.where(name: "#{a["_id"]["id"].split(':')[3].capitalize}").includes(:links).map { |c| {attributes: c, links: c.links} }.first
-        }
+        last_reading_at: self.map_time_instant(a),
+        position: self.map_position(a)
       }
     }
+  end
+
+  def self.map_position(a)
+    if a["attrs"]["position"]
+      {
+        latitude: a["attrs"]["position"]["value"].split(',')[0],
+        longitude: a["attrs"]["position"]["value"].split(',')[1],
+        city: City.where(name: "#{a["_id"]["id"].split(':')[3].capitalize}").includes(:links).map { |c| {attributes: c, links: c.links} }.first
+      }
+    else
+      nil
+    end
+  end
+
+  def self.map_time_instant(a)
+    if a["attrs"]["TimeInstant"]
+      return a["attrs"]["TimeInstant"]["value"]
+    elsif a["attrs"]["modDate"]
+      return a["attrs"]["modDate"]
+    else
+      return nil
+    end
   end
 end

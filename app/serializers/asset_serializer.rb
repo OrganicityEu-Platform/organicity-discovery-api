@@ -27,7 +27,7 @@ class AssetSerializer < ActiveModel::Serializer
   end
 
   def position
-    if object[:position][:city]
+    if object[:position] and object[:position][:city]
       {
         latitude: object[:position][:latitude],
         longitude: object[:position][:longitude],
@@ -49,7 +49,7 @@ class AssetSerializer < ActiveModel::Serializer
   end
 
   def site
-    if object[:position][:city]
+    if object[:position] and object[:position][:city]
       {
         id: object[:position][:city][:attributes][:name].downcase,
         name: object[:position][:city][:attributes][:name],
