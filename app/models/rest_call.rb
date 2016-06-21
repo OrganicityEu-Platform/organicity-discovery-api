@@ -1,11 +1,11 @@
 class RestCall < Ohm::Model
   attribute :url
   attribute :params
-  attribute :endpoints
+  attribute :endpoint
   attribute :created_at
   attribute :response
 
   index :url
   index :params
-  index :endpoints
+  index :endpoint
 end
