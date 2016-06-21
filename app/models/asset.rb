@@ -40,11 +40,12 @@ class Asset < ApplicationRecord
     if call
       assets = JSON.parse(call.response)
     else
-      assets = self.query_mongo_geo_search(params)
+      raw_assets = self.query_mongo_geo_search(params)
+      assets = self.mongo_map_assets(raw_assets)
       log assets
       @cached_call = RestCall.create(params: params, endpoint: "geo_search_assets", created_at: Time.now, response: assets.to_json)
     end
-    return self.mongo_map_assets(assets)
+    return assets
   end
 
   def self.get_mongo_site_assets(params)
@@ -53,11 +54,12 @@ class Asset < ApplicationRecord
     if call
       assets = JSON.parse(call.response)
     else
-      assets = self.query_mongo_site_entities(params)
+      raw_assets = self.query_mongo_site_entities(params)
+      assets = self.mongo_map_assets(raw_assets)
       log assets
       @cached_call = RestCall.create(params: params, endpoint: "site_assets", created_at: Time.now, response: assets.to_json)
     end
-    return self.mongo_map_assets(assets)
+    return assets
   end
 
   def self.get_mongo_assets(params)
@@ -66,11 +68,12 @@ class Asset < ApplicationRecord
     if call
       assets = JSON.parse(call.response)
     else
-      assets = self.query_mongo_entities(params)
+      raw_assets = self.query_mongo_entities(params)
+      assets = self.mongo_map_assets(raw_assets)
       log assets
       @cached_call = RestCall.create(params: params, endpoint: "mongo_assets", created_at: Time.now, response: assets.to_json)
     end
-    return self.mongo_map_assets(assets)
+    return assets
   end
 
   def self.mongo_map_assets(assets)
