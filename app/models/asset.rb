@@ -51,7 +51,7 @@ class Asset < ApplicationRecord
     assets = []
     call = self.cache_mongo(params, "site_assets")
     if call
-      assets = call.last.response
+      assets = call.response
     else
       assets = self.query_mongo_site_entities(params)
       log assets
