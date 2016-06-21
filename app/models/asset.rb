@@ -19,21 +19,57 @@ class Asset < ApplicationRecord
     }
   end
 
+  def cache_mongo(params, endpoint)
+    call = RestCall.find(params: params, endpoint: endpoint).sort(by: :created_at)
+    log "call: #{call.last.created_at}" unless call.empty?
+    if call.empty? or ( Time.now > Time.parse(call.last.created_at) + 10.minutes )
+      # We should extend cache if there is an error to preserve good results
+      log "new request"
+      return false
+    else
+      log "cached response"
+      return call.last
+    end
+
+    return JSON.parse(@cached_call.response)
+  end
+
   def self.get_mongo_geo_search_assets(params)
-    assets = self.query_mongo_geo_search(params)
-    log assets
+    assets = []
+    call = cache_mongo(params, "geo_search_assets")
+    if call
+      assets = call.last.response
+    else
+      assets = self.query_mongo_geo_search(params)
+      log assets
+      @cached_call = RestCall.create(params: params, endpoint: "geo_search_assets", created_at: Time.now, response: assets.to_json)
+    end
     return self.mongo_map_assets(assets)
   end
 
   def self.get_mongo_site_assets(params)
-    assets = self.query_mongo_site_entities(params)
-    log assets
+    assets = []
+    call = cache_mongo(params, "site_assets")
+    if call
+      assets = call.last.response
+    else
+      assets = self.query_mongo_site_entities(params)
+      log assets
+      @cached_call = RestCall.create(params: params, endpoint: "site_assets", created_at: Time.now, response: assets.to_json)
+    end
     return self.mongo_map_assets(assets)
   end
 
   def self.get_mongo_assets(params)
-    assets = self.query_mongo_entities(params)
-    log assets
+    assets = []
+    call = cache_mongo(params, "mongo_assets")
+    if call
+      assets = call.last.response
+    else
+      assets = self.query_mongo_entities(params)
+      log assets
+      @cached_call = RestCall.create(params: params, endpoint: "mongo_assets", created_at: Time.now, response: assets.to_json)
+    end
     return self.mongo_map_assets(assets)
   end
 
