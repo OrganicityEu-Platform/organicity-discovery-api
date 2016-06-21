@@ -38,7 +38,7 @@ class Asset < ApplicationRecord
     assets = []
     call = self.cache_mongo(params, "geo_search_assets")
     if call
-      assets = call.last.response
+      assets = call.response
     else
       assets = self.query_mongo_geo_search(params)
       log assets
@@ -64,7 +64,7 @@ class Asset < ApplicationRecord
     assets = []
     call = self.cache_mongo(params, "mongo_assets")
     if call
-      assets = call.last.response
+      assets = call.response
     else
       assets = self.query_mongo_entities(params)
       log assets
