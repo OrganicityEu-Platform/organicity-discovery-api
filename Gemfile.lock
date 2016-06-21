@@ -178,6 +178,8 @@ GEM
     redis (3.3.0)
     redis-store (1.2.0.pre)
       redis (>= 2.2)
+    skylight (0.10.4)
+      activesupport (>= 3.0.0)
     spring (1.7.1)
     spring-watcher-listen (2.0.0)
       listen (>= 2.7, < 4.0)
@@ -220,6 +222,7 @@ DEPENDENCIES
   redis-rack!
   redis-rack-cache!
   redis-rails!
+  skylight
   spring
   spring-watcher-listen (~> 2.0.0)
   tzinfo-data

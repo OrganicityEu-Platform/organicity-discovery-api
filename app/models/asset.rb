@@ -19,7 +19,7 @@ class Asset < ApplicationRecord
     }
   end
 
-  def cache_mongo(params, endpoint)
+  def self.cache_mongo(params, endpoint)
     call = RestCall.find(params: params, endpoint: endpoint).sort(by: :created_at)
     log "call: #{call.last.created_at}" unless call.empty?
     if call.empty? or ( Time.now > Time.parse(call.last.created_at) + 10.minutes )
@@ -36,7 +36,7 @@ class Asset < ApplicationRecord
 
   def self.get_mongo_geo_search_assets(params)
     assets = []
-    call = cache_mongo(params, "geo_search_assets")
+    call = self.cache_mongo(params, "geo_search_assets")
     if call
       assets = call.last.response
     else
@@ -49,7 +49,7 @@ class Asset < ApplicationRecord
 
   def self.get_mongo_site_assets(params)
     assets = []
-    call = cache_mongo(params, "site_assets")
+    call = self.cache_mongo(params, "site_assets")
     if call
       assets = call.last.response
     else
@@ -62,7 +62,7 @@ class Asset < ApplicationRecord
 
   def self.get_mongo_assets(params)
     assets = []
-    call = cache_mongo(params, "mongo_assets")
+    call = self.cache_mongo(params, "mongo_assets")
     if call
       assets = call.last.response
     else
