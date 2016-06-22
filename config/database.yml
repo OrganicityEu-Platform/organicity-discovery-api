@@ -11,7 +11,7 @@ default: &default
 
 development:
   <<: *default
-  host         : localhost
+  #  host         : localhost
   database     : organicity-api_develop
   min_messages : WARNING
 
