@@ -16,6 +16,7 @@ module MapParameters
   # query        - Return a list of assets based on metadatadatatata search
   def map_query_parameters(params)
     allowed_parameters = [
+      :id,
       :type,
       :sort,
       :filter,
@@ -28,7 +29,8 @@ module MapParameters
       :lat,
       :long,
       :radius,
-      :site
+      :site,
+      :service
     ]
     parameters = {}
 

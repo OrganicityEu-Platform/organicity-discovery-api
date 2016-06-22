@@ -76,7 +76,6 @@ module MongoOrionClient
   end
 
   def query_mongo_entity(params)
-    log params
     orion = setup_client
     orion[:entities].find(
       {
@@ -86,6 +85,7 @@ module MongoOrionClient
         :limit => 1
       }
     ).to_a
+
   end
 
   def limit(params)
