@@ -51,7 +51,7 @@ module MongoOrionClient
     orion = setup_client
     orion[:entities].find(
       {
-        '_id.id' => /.*#{params[:service]}.*/,
+        '_id.type' => /.*#{params[:service]}.*/,
       },
       {
         :skip => offset(params),
