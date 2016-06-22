@@ -107,7 +107,7 @@ class Asset < ApplicationRecord
       log raw_asset
       asset = self.mongo_map_assets(raw_asset).to_json
       log asset
-      @cached_call = RestCall.create(params: params, endpoint: "mongo_assets", created_at: Time.now, response: asset)
+      @cached_call = RestCall.create(params: params, endpoint: "mongo_asset", created_at: Time.now, response: asset)
     end
     return asset
   end
