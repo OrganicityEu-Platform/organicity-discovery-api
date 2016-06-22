@@ -95,4 +95,19 @@ class Asset < ApplicationRecord
     end
     return assets
   end
+
+  def self.get_mongo_asset(params)
+    asset = []
+    call = self.cache_mongo(params, "mongo_asset")
+    if call
+      asset = call.response
+      log asset
+    else
+      raw_asset = self.query_mongo_entity(params)
+      asset = self.mongo_map_assets(raw_asset).to_json
+      log asset
+      @cached_call = RestCall.create(params: params, endpoint: "mongo_assets", created_at: Time.now, response: asset)
+    end
+    return asset
+  end
 end

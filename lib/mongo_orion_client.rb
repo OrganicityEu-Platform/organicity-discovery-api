@@ -75,6 +75,19 @@ module MongoOrionClient
     ).to_a
   end
 
+  def query_mongo_entity(params)
+    log params
+    orion = setup_client
+    orion[:entities].find(
+      {
+        '_id.id' => /#{params[:id]}/,
+      },
+      {
+        :limit => 1
+      }
+    ).to_a
+  end
+
   def limit(params)
     return params[:per].to_i
   end

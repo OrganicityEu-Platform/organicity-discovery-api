@@ -11,6 +11,11 @@ class Api::V0::AssetsController < ApplicationController
     render json: @assets, each_serializer: AssetSerializer, root: false
   end
 
+  def show
+    @asset = Asset.get_mongo_asset(params[:id])
+    render json: @asset, serializer: AssetSerializer, root: false
+  end
+
   def site
     query_params = map_query_parameters(params)
     @assets = Asset.get_mongo_site_assets(query_params)
