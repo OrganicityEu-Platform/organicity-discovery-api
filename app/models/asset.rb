@@ -51,6 +51,21 @@ class Asset < ApplicationRecord
     return assets
   end
 
+  def self.get_mongo_service_assets(params)
+    assets = []
+    call = self.cache_mongo(params, "service_assets")
+    if call
+      assets = call.response
+      log assets
+    else
+      raw_assets = self.query_mongo_service_entities(params)
+      assets = self.mongo_map_assets(raw_assets).to_json
+      log assets
+      @cached_call = RestCall.create(params: params, endpoint: "service_assets", created_at: Time.now, response: assets)
+    end
+    return assets
+  end
+
   def self.get_mongo_site_assets(params)
     assets = []
     call = self.cache_mongo(params, "site_assets")

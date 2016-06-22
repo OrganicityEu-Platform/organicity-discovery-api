@@ -46,6 +46,22 @@ module MongoOrionClient
 
   end
 
+  def query_mongo_service_entities(params)
+    log params
+    orion = setup_client
+    orion[:entities].find(
+      {
+        '_id.id' => /.*#{params[:service]}.*/,
+      },
+      {
+        :skip => offset(params),
+        :limit => limit(params),
+        :sort => 'attrs.TimeInstant.value'
+      }
+    ).to_a
+
+  end
+
   def query_mongo_entities(params)
     log params
     orion = setup_client

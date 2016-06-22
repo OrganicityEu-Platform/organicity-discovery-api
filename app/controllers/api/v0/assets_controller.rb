@@ -22,4 +22,10 @@ class Api::V0::AssetsController < ApplicationController
     @assets = Asset.get_mongo_geo_search_assets(query_params)
     render json: @assets, each_serializer: AssetSerializer, root: false
   end
+
+  def service
+    query_params = map_query_parameters(params)
+    @assets = Asset.get_mongo_service_assets(query_params)
+    render json: @assets, each_serializer: AssetSerializer, root: false
+  end
 end

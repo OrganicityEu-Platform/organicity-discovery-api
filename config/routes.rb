@@ -8,6 +8,9 @@ Rails.application.routes.draw do
       scope '/assets/geo/search' do
         get '/' => 'assets#geo'
       end
+      scope '/assets/services' do
+        get ':service' => 'assets#service'
+      end
       resources :assets
     end
   end
