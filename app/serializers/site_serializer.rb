@@ -4,15 +4,12 @@ class SiteSerializer < ActiveModel::Serializer
   def position
     {
       latitude: object[:latitude],
-      longitude: object[[:longitude],
+      longitude: object[:longitude],
       city: object[:name],
       region: object[:region],
       country_code: object[:country_code],
-      country: object[:country],
+      country: object[:country]
     }
   end
 
-  def links
-    Hash[*object[:links].map { |link|  [link[:relationship], { href: link[:url] } ] }.flatten]
-  end
 end
