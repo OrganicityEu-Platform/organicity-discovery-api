@@ -1,4 +1,4 @@
-class Api::V0::AssetsController < ApplicationController
+class Discovery::V0::AssetsController < ApplicationController
   include MapParameters
 
   #
@@ -26,6 +26,12 @@ class Api::V0::AssetsController < ApplicationController
   def service
     query_params = map_query_parameters(params)
     @assets = Asset.get_mongo_service_assets(query_params)
+    render json: @assets, each_serializer: AssetSerializer, root: false
+  end
+
+  def provider
+    query_params = map_query_parameters(params)
+    @assets = Asset.get_mongo_provider_assets(query_params)
     render json: @assets, each_serializer: AssetSerializer, root: false
   end
 

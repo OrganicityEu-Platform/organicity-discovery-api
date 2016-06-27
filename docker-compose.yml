@@ -1,81 +1,68 @@
-# service configuration for our database
+# Add elastic search, logstash and kibana
+
+# service configuration for Redis
 redis:
   image: redis:latest
   hostname: redis1
   ports:
     - "6379:6379"
 
+# service configuration for Postgres
 db:
-
   # use the preferred version of the official Postgres image
   # see https://hub.docker.com/_/postgres/
   image: postgres:latest
-
   # persist the database between containers by storing it in a volume
   volumes:
     - oraganicityapi-postgres:/var/lib/postgresql/data
 
 mongo:
-
   build: .
   # build with a different Dockerfile
   dockerfile: config/containers/Dockerfile-mongo
-
   volumes:
     - .:/organicity-discovery-api
     - ./tmp:/tmp
-
+  # Expose port only within docker
   ports:
     - "3344:3344"
-
   command: bash -c "./scripts/tunnel.sh"
 
 # service configuration for our dockerized Rails app
 app:
-
   # use the Dockerfile next to this file
   build: .
-
   # sources environment variable configuration for our app
   env_file: .env
-
   # rely on the RAILS_ENV value of the host machine
   environment:
     RAILS_ENV: $RAILS_ENV
     MONGO_URL: mongo
     MONGO_PORT: 3344
-
   volumes:
     - .:/organicity-discovery-api
     - ./tmp:/tmp
-
   # makes the app container aware of the DB container
   links:
     - db
     - redis
     - mongo
-
-  # expose the port we configured Unicorn to bind to
+  # expose the port we configured Puma to bind to (should expose only internally)
   ports:
     - "3000:3000"
-
   command: bash -c "./scripts/startup.sh"
 
 # service configuration for our web server
 web:
-
   # set the build context to the root of the Rails app
   build: .
-
   # build with a different Dockerfile
   dockerfile: config/containers/Dockerfile-nginx
-
   # makes the web container aware of the app container
   links:
     - app
-
   volumes_from:
     - app
-  # expose the port we configured Nginx to bind to
+  # expose the port we configured Nginx to bind to (it is ok to expose externally)
   ports:
     - '80:80'

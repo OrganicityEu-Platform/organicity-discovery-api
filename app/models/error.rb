@@ -15,7 +15,7 @@ class Error
   end
 
   def entry
-    href = URI::encode("/api/v1")
+    href = URI::encode("/discovery/v0")
     {:href => href, :method => "GET", :rel => "entry point", :params => params}
   end
 

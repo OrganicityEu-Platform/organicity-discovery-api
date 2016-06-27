@@ -19,13 +19,16 @@ module MongoOrionClient
     orion[:entities].find(
       {
         'location.coords.coordinates' => {
-          '$geoWithin': { '$center': [ [  params[:long].to_f, params[:lat].to_f ], params[:radius].to_i ] }
+          '$geoWithin': { '$center': [
+            [  params[:long].to_f, params[:lat].to_f ],
+            params[:radius].to_i
+          ] }
         }
       },
       {
         :skip => offset(params),
         :limit => limit(params),
-        :sort => 'attrs.TimeInstant.value'
+        :sort => sort_query(params)
       }
     ).to_a
   end
@@ -40,7 +43,22 @@ module MongoOrionClient
       {
         :skip => offset(params),
         :limit => limit(params),
-        :sort => 'attrs.TimeInstant.value'
+        :sort => sort_query(params)
+      }
+    ).to_a
+  end
+
+  def query_mongo_provider_entities(params)
+    log params
+    orion = setup_client
+    orion[:entities].find(
+      {
+        '_id.id' => /.*#{params[:provider]}.*/,
+      },
+      {
+        :skip => offset(params),
+        :limit => limit(params),
+        :sort => sort_query(params)
       }
     ).to_a
 
@@ -56,7 +74,7 @@ module MongoOrionClient
       {
         :skip => offset(params),
         :limit => limit(params),
-        :sort => 'attrs.TimeInstant.value'
+        :sort => sort_query(params)
       }
     ).to_a
 
@@ -66,11 +84,18 @@ module MongoOrionClient
     log params
     orion = setup_client
     orion[:entities].find(
+      # '_id.id' => /.*#{params[:site]}.*/ || /.*#{params[:provider]}.*/
+      # '_id.type' => /.*#{params[:service]}.*/,
+      # 'location.coords.coordinates' => {
+      #   '$geoWithin': { '$center': [ [  params[:long].to_f, params[:lat].to_f ], params[:radius].to_i ] }
+      # }
+      # Search metadata and attributes:
+      # 'attr.#{attr_name}' => /.*#{value}.*/
       {},
       {
         :skip => offset(params),
         :limit => limit(params),
-        :sort => 'attrs.TimeInstant.value'
+        :sort => sort_query(params)
       }
     ).to_a
   end
@@ -86,6 +111,21 @@ module MongoOrionClient
       }
     ).to_a
 
+  end
+
+  def send_logs(logs)
+    orion = setup_client
+    # send logs to mongo
+  end
+
+  def sort_query(params)
+    if params[:order]
+      return params[:order]
+    elsif params[:sort]
+      return params[:sort]
+    else
+      return 'attrs.TimeInstant.value'
+    end
   end
 
   def limit(params)

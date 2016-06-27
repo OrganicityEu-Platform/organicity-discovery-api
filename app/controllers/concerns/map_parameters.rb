@@ -21,6 +21,7 @@ module MapParameters
       :sort,
       :filter,
       :order,
+      :provider,
       :offset,
       :page,
       :per,
