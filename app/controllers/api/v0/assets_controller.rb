@@ -11,13 +11,6 @@ class Api::V0::AssetsController < ApplicationController
     render json: @assets, each_serializer: AssetSerializer, root: false
   end
 
-  def show
-    query_params = map_query_parameters(params)
-    logger.info params
-    @asset = Asset.get_mongo_asset(query_params)
-    render json: @asset
-  end
-
   def site
     query_params = map_query_parameters(params)
     @assets = Asset.get_mongo_site_assets(query_params)
@@ -34,5 +27,12 @@ class Api::V0::AssetsController < ApplicationController
     query_params = map_query_parameters(params)
     @assets = Asset.get_mongo_service_assets(query_params)
     render json: @assets, each_serializer: AssetSerializer, root: false
+  end
+
+  def show
+    query_params = map_query_parameters(params)
+    logger.info params
+    @asset = Asset.get_mongo_asset(query_params)
+    render json: @asset
   end
 end
