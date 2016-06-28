@@ -21,8 +21,13 @@ module Orion
     query_params = ""
     query_params.concat(to_limit(params))
     query_params.concat(to_offset(params))
+    query_params.concat(to_type(params))
 
     return query_params
+  end
+
+  def to_type(params)
+    return params[:type] ? "&type=#{params[:type]}" : ""
   end
 
   def to_limit(params)
