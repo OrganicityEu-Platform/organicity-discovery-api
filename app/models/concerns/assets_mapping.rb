@@ -99,6 +99,35 @@ module AssetsMapping
       end
     end
 
+    def map_orion_position(a)
+      @city = City.where(name: "#{a["id"].split(':')[3].capitalize}").includes(:links)
+      if a["position"] and a["position"]["value"]
+        {
+          latitude: a["position"]["value"].split(',')[0],
+          longitude: a["position"]["value"].split(',')[1],
+          city: @city.map { |c| {attributes: c, links: c.links} }.first
+        }
+      else
+        if @city
+          {
+            latitude: @city[0].latitude,
+            longitude: @city[0].longitude,
+            city: @city.map { |c| {attributes: c, links: c.links} }.first
+          }
+        else
+          "null"
+        end
+      end
+    end
+
+    def map_orion_time_instant(a)
+      if a["TimeInstant"]
+        return a["TimeInstant"]["value"]
+      else
+        return "null"
+      end
+    end
+
     def map_time_instant(a)
       if a["attrs"]["TimeInstant"]
         return a["attrs"]["TimeInstant"]["value"]

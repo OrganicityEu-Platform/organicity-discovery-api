@@ -13,12 +13,8 @@ class Asset < ApplicationRecord
     return assets["doc"].map {
       |a| {
         id: a["id"],
-        last_reading_at: a["TimeInstant"]["value"],
-        position: {
-          latitude: a["position"]["value"].split(',')[0],
-          longitude: a["position"]["value"].split(',')[1],
-          city: City.where(name: "#{a["id"].split(':')[-4].capitalize}").includes(:links).map { |c| {attributes: c, links: c.links} }.first
-        }
+        last_reading_at: map_orion_time_instant(a),
+        position: map_orion_position(a)
       }
     }
   end
