@@ -12,4 +12,8 @@ class SiteSerializer < ActiveModel::Serializer
     }
   end
 
+  def links
+    Hash[*object.links.map { |link|  [link[:relationship], { href: link[:url] } ] }.flatten]
+  end
+
 end
