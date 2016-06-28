@@ -14,6 +14,9 @@ Rails.application.routes.draw do
       scope '/assets/providers' do
         get ':service' => 'assets#provider'
       end
+      scope '/assets/ligthweight' do
+        get '/' => 'assets#ligthweight'
+      end
       resources :assets
     end
   end

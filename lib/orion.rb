@@ -31,10 +31,18 @@ module Orion
   end
 
   def to_limit(params)
-    return "?limit=#{params[:per].to_i}"
+    if params[:per] == 'none'
+      return ""
+    else
+      return "?limit=#{params[:per].to_i}"
+    end
   end
 
   def to_offset(params)
-    return "&offset=#{(params[:page].to_i - 1) * params[:per].to_i}"
+    if params[:page] == 'none'
+      return ""
+    else
+      return "&offset=#{(params[:page].to_i - 1) * params[:per].to_i}"
+    end
   end
 end

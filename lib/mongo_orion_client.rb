@@ -36,16 +36,30 @@ module MongoOrionClient
   def query_mongo_site_entities(params)
     log params
     orion = setup_client
-    orion[:entities].find(
-      {
-        '_id.id' => /.*#{params[:site]}.*/,
-      },
-      {
-        :skip => offset(params),
-        :limit => limit(params),
-        :sort => sort_query(params)
-      }
-    ).to_a
+    if params[:type]
+      orion[:entities].find(
+        {
+          '_id.id' => /.*#{params[:site]}.*/,
+          '_id.type' => /.*#{params[:type]}.*/,
+        },
+        {
+          :skip => offset(params),
+          :limit => limit(params),
+          :sort => sort_query(params)
+        }
+      ).to_a
+    else
+      orion[:entities].find(
+        {
+          '_id.id' => /.*#{params[:site]}.*/,
+        },
+        {
+          :skip => offset(params),
+          :limit => limit(params),
+          :sort => sort_query(params)
+        }
+      ).to_a
+    end
   end
 
   def query_mongo_provider_entities(params)
@@ -118,10 +132,16 @@ module MongoOrionClient
     # send logs to mongo
   end
 
-  def sort_query(params)
+  def order_query(params)
     if params[:order]
       return params[:order]
-    elsif params[:sort]
+    else
+      return 'ASC'
+    end
+  end
+
+  def sort_query(params)
+    if params[:sort]
       return params[:sort]
     else
       return 'attrs.TimeInstant.value'
