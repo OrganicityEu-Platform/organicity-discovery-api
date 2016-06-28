@@ -13,15 +13,25 @@ module AssetsMapping
           provider: a["_id"]["id"].split(':')[-2],
         }
       }
-
-      return @assets.map {
-        |a| {
-          id: a[:id],
-          type: a[:type],
-          context: map_context(a),
-          related: map_related(a)
+      if @assets.length == 1
+        return @assets.map {
+          |a| {
+            id: a[:id],
+            type: a[:type],
+            context: map_context(a),
+            related: map_related(a)
+          }
+        }.first
+      else
+        return @assets.map {
+          |a| {
+            id: a[:id],
+            type: a[:type],
+            context: map_context(a),
+            related: map_related(a)
+          }
         }
-      }
+      end
     end
 
     def map_type(a)
