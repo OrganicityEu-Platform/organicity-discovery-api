@@ -42,7 +42,7 @@ module AssetsMapping
       {
         service: a[:type],
         provider: a[:provider],
-        group: nil,
+        group: "null",
         name: a[:id],
         last_reading_at: a[:last_reading_at],
         position: expand_position(a)
@@ -53,7 +53,7 @@ module AssetsMapping
       {
         service: a[:type],
         provider: a[:provider],
-        group: nil,
+        group: "null",
         site: map_site(a),
       }
     end

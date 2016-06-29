@@ -13,7 +13,8 @@ module MongoOrionClient
     mongo_client.db('orion')
   end
 
-  def query_mongo_geo_search(params)
+  def mongo_geo_search_assets(params)
+    logger.warn "Hello from GEO search"
     log params
     orion = setup_client
     orion[:entities].find(
@@ -33,37 +34,21 @@ module MongoOrionClient
     ).to_a
   end
 
-  def query_mongo_site_entities(params)
-    log params
+  def mongo_site_assets(params)
     orion = setup_client
-    if params[:type]
-      orion[:entities].find(
-        {
-          '_id.id' => /.*#{params[:site]}.*/,
-          '_id.type' => /.*#{params[:type]}.*/,
-        },
-        {
-          :skip => offset(params),
-          :limit => limit(params),
-          :sort => sort_query(params)
-        }
-      ).to_a
-    else
-      orion[:entities].find(
-        {
-          '_id.id' => /.*#{params[:site]}.*/,
-        },
-        {
-          :skip => offset(params),
-          :limit => limit(params),
-          :sort => sort_query(params)
-        }
-      ).to_a
-    end
+    orion[:entities].find(
+      {
+        '_id.id' => /.*#{params[:site]}.*/,
+      },
+      {
+        :skip => offset(params),
+        :limit => limit(params),
+        :sort => sort_query(params)
+      }
+    ).to_a
   end
 
-  def query_mongo_provider_entities(params)
-    log params
+  def mongo_provider_assets(params)
     orion = setup_client
     orion[:entities].find(
       {
@@ -78,12 +63,11 @@ module MongoOrionClient
 
   end
 
-  def query_mongo_service_entities(params)
-    log params
+  def mongo_service_assets(params)
     orion = setup_client
     orion[:entities].find(
       {
-        '_id.type' => /.*#{params[:service]}.*/,
+        '_id.id' => /.*#{params[:service]}.*/,
       },
       {
         :skip => offset(params),
@@ -94,7 +78,7 @@ module MongoOrionClient
 
   end
 
-  def query_mongo_entities(params)
+  def mongo_assets(params)
     log params
     orion = setup_client
     orion[:entities].find(
@@ -114,7 +98,7 @@ module MongoOrionClient
     ).to_a
   end
 
-  def query_mongo_entity(params)
+  def mongo_asset(params)
     orion = setup_client
     orion[:entities].find(
       {
