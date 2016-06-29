@@ -29,9 +29,5 @@ module OrganicityApi
     config.api_only = true
 
     config.cache_store = :redis_store, "#{Rails.application.secrets.redis_url || ENV['REDIS_URL']}/cache", { expires_in: 30.minutes }
-
-    # Config log level. The available log levels are: :debug, :info, :warn, :error, 
-    # :fatal, and :unknown, corresponding to the log level numbers from 0 up to 5 respectively.
-    config.log_level = :warn
   end
 end
