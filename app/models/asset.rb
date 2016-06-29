@@ -14,7 +14,7 @@ class Asset < ApplicationRecord
     return assets["doc"].map {
       |a| {
         id: a["id"],
-        last_reading_at: map_orion_time_instant(a),
+        last_updated_at: map_orion_time_instant(a),
         position: map_orion_position(a)
       }
     }
@@ -40,7 +40,11 @@ class Asset < ApplicationRecord
       assets = call.response
     else
       raw_assets = self.send("#{endpoint}", params)
-      assets = self.mongo_map_assets(raw_assets).to_json
+      if endpoint == "mongo_geo_assets"
+        assets = self.mongo_map_geo_assets(raw_assets).to_json
+      else
+        assets = self.mongo_map_assets(raw_assets).to_json
+      end
       @cached_call = RestCall.create(params: params, endpoint: endpoint, created_at: Time.now, response: assets)
     end
     return assets

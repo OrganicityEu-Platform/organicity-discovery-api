@@ -16,7 +16,7 @@ class V0::AssetsController < ApplicationController
     render json: @assets, each_serializer: AssetSerializer, root: false
   end
 
-  def geo
+  def geo_search
     query_params = map_query_parameters(params)
     @assets = Asset.get_mongo_assets(query_params, "mongo_geo_search_assets")
     render json: @assets, each_serializer: AssetSerializer, root: false
@@ -34,15 +34,19 @@ class V0::AssetsController < ApplicationController
     render json: @assets, each_serializer: AssetSerializer, root: false
   end
 
-  def lightweight
+  def geo
     query_params = map_query_parameters(params)
-    @assets = Asset.get_assets(query_params)
-    render json: @assets, each_serializer: AssetLightWeightSerializer, root: false
+    @assets = JSON.parse(Asset.get_mongo_assets(query_params, "mongo_geo_assets"))
+    render json: @assets, each_serializer: AssetGeoSerializer, root: false
   end
 
   def show
     query_params = map_query_parameters(params)
     @asset = Asset.get_mongo_assets(query_params, "mongo_asset")
     render json: @asset
+  end
+
+  def data
+    # Get single asset data
   end
 end

@@ -76,6 +76,12 @@ module MongoOrionClient
 
   end
 
+  def mongo_geo_assets(params)
+    log params
+    orion = setup_client
+    orion[:entities].find({}).to_a
+  end
+
   def mongo_assets(params)
     log params
     orion = setup_client
@@ -98,12 +104,9 @@ module MongoOrionClient
 
   def mongo_asset(params)
     orion = setup_client
-    orion[:entities].find(
+    orion[:entities].find_one(
       {
         '_id.id' => /#{params[:id]}/,
-      },
-      {
-        :limit => 1
       }
     ).to_a
 

@@ -21,7 +21,7 @@ class AssetSerializer < ActiveModel::Serializer
       provider: object[:id].split(':')[-2],
       group: nil,
       name: id,
-      last_reading_at: object[:last_reading_at],
+      last_updated_at: object[:last_updated_at],
       position: position
     }
   end
@@ -29,8 +29,8 @@ class AssetSerializer < ActiveModel::Serializer
   def position
     if object[:position] and not object[:position][:city].nil?
       {
-        latitude: object[:position][:latitude],
-        longitude: object[:position][:longitude],
+        latitude: object[:position][:latitude].to_f,
+        longitude: object[:position][:longitude].to_f,
         city: object[:position][:city][:attributes][:name],
         region: object[:position][:city][:attributes][:region],
         country_code: object[:position][:city][:attributes][:country_code],
@@ -38,8 +38,8 @@ class AssetSerializer < ActiveModel::Serializer
       }
     elsif object[:position]
       {
-        latitude: object[:position][:latitude],
-        longitude: object[:position][:longitude]
+        latitude: object[:position][:latitude].to_f,
+        longitude: object[:position][:longitude].to_f
       }
     else
       nil
@@ -61,7 +61,7 @@ class AssetSerializer < ActiveModel::Serializer
         id: object[:position][:city][:attributes][:name].downcase,
         name: object[:position][:city][:attributes][:name],
         description: object[:position][:city][:attributes][:description],
-        position: position,
+        position: [ object[:position][:city][:attributes][:longitude].to_f, object[:position][:city][:attributes][:latitude].to_f ],
         links: links_object
       }
     end

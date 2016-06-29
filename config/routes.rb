@@ -4,8 +4,9 @@ Rails.application.routes.draw do
       get '/' => 'sites#index'
       get ':site' => 'assets#site'
     end
-    scope '/assets/geo/search' do
+    scope '/assets/geo' do
       get '/' => 'assets#geo'
+      get '/search' => 'assets#geo_search'
     end
     scope '/assets/services' do
       get ':service' => 'assets#service'
@@ -13,9 +14,9 @@ Rails.application.routes.draw do
     scope '/assets/providers' do
       get ':service' => 'assets#provider'
     end
-    scope '/assets/lightweight' do
-      get '/' => 'assets#lightweight'
-    end
     resources :assets
+    scope '/assets/:id/data' do
+      get '/' => 'assets#data'
+    end
   end
 end

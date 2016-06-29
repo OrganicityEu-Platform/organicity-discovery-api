@@ -3,8 +3,8 @@ class SiteSerializer < ActiveModel::Serializer
 
   def position
     {
-      latitude: object[:latitude],
-      longitude: object[:longitude],
+      latitude: object[:latitude].to_f,
+      longitude: object[:longitude].to_f,
       city: object[:name],
       region: object[:region],
       country_code: object[:country_code],

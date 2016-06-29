@@ -2,14 +2,29 @@ module AssetsMapping
   extend ActiveSupport::Concern
 
   module ClassMethods
+
+    def mongo_map_geo_assets(assets)
+      @assets = assets.map {
+        |a| {
+          id: a["_id"]["id"],
+          type: map_type(a),
+          last_updated_at: map_time_instant(a),
+          position: map_position(a),
+          geo: map_geo_attrs(a),
+        }
+      }
+      @assets.group_by { |a| a[:type].downcase }.values
+    end
+
     def mongo_map_assets(assets)
 
       @assets = assets.map {
         |a| {
           id: a["_id"]["id"],
           type: map_type(a),
-          last_reading_at: map_time_instant(a),
+          last_updated_at: map_time_instant(a),
           position: map_position(a),
+          geo: map_geo_attrs(a),
           provider: a["_id"]["id"].split(':')[-2],
         }
       }
@@ -35,17 +50,28 @@ module AssetsMapping
     end
 
     def map_type(a)
-      a["_id"]["id"].split(':')[-3]
+      a["_id"]["type"]
     end
 
+    def map_geo_attrs(a)
+      if a["attrs"]["location"]
+        if a["attrs"]["location"]["type"] == "geo:polygon"
+          {
+            type: "Polygon",
+            coordinates: a["attrs"]["location"]["value"].split(',').each_slice(2).to_a
+          }
+        end
+      end
+    end
     def map_context(a)
       {
         service: a[:type],
         provider: a[:provider],
         group: "null",
         name: a[:id],
-        last_reading_at: a[:last_reading_at],
-        position: expand_position(a)
+        last_updated_at: a[:last_updated_at],
+        position: expand_position(a),
+        geo: a[:geo]
       }
     end
 
@@ -64,7 +90,7 @@ module AssetsMapping
           id: a[:position][:city][:attributes][:name].downcase,
           name: a[:position][:city][:attributes][:name],
           description: a[:position][:city][:attributes][:description],
-          position: expand_position(a),
+          position: [ a[:position][:city][:attributes][:longitude].to_f, a[:position][:city][:attributes][:latitude].to_f ],
           links: links_object(a).to_json
         }
       end
@@ -75,7 +101,6 @@ module AssetsMapping
     end
 
     def expand_position(a)
-      logger.info a
       if a[:position] and a[:position] != "null"
         if a[:position][:city]
           {
@@ -98,12 +123,32 @@ module AssetsMapping
     end
 
     def map_position(a)
-      if a["attrs"]["position"]
+      city = City.where(name: "#{a["_id"]["id"].split(':')[3].capitalize}").includes(:links).map { |c| {attributes: c, links: c.links} }.first
+
+      if a["location"] and a["location"]["coords"]
+        {
+          longitude: a["location"]["coords"]["coordinates"][0],
+          latitude: a["location"]["coords"]["coordinates"][1],
+          city: city
+        }
+      elsif a["attrs"]["position"]
         {
           latitude: a["attrs"]["position"]["value"].split(',')[0],
           longitude: a["attrs"]["position"]["value"].split(',')[1],
-          city: City.where(name: "#{a["_id"]["id"].split(':')[3].capitalize}").includes(:links).map { |c| {attributes: c, links: c.links} }.first
+          city: city
         }
+      else
+        {
+          latitude: city_position(city)[0],
+          longitude: city_position(city)[1],
+          city: city
+        }
+      end
+    end
+
+    def city_position(city)
+      if city
+        [ city[:attributes][:latitude].to_f, city[:attributes][:longitude].to_f ]
       else
         "null"
       end
@@ -118,7 +163,7 @@ module AssetsMapping
           city: @city.map { |c| {attributes: c, links: c.links} }.first
         }
       else
-        if @city
+        if @city[0]
           {
             latitude: @city[0].latitude,
             longitude: @city[0].longitude,

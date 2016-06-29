@@ -178,6 +178,9 @@ GEM
     redis (3.3.0)
     redis-store (1.2.0.pre)
       redis (>= 2.2)
+    rgeo (0.5.3)
+    rgeo-geojson (0.4.3)
+      rgeo (~> 0.5)
     skylight (0.10.4)
       activesupport (>= 3.0.0)
     spring (1.7.1)
@@ -222,6 +225,7 @@ DEPENDENCIES
   redis-rack!
   redis-rack-cache!
   redis-rails!
+  rgeo-geojson
   skylight
   spring
   spring-watcher-listen (~> 2.0.0)
