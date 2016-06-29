@@ -9,6 +9,7 @@ class Asset < ApplicationRecord
 
   def self.get_assets(params)
     # Use Orion APIs
+    # Cache should be moved to model level.
     assets = self.request_entities(params)
     return assets["doc"].map {
       |a| {
