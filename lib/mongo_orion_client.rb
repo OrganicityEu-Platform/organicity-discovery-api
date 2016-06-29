@@ -14,8 +14,6 @@ module MongoOrionClient
   end
 
   def mongo_geo_search_assets(params)
-    logger.warn "Hello from GEO search"
-    log params
     orion = setup_client
     orion[:entities].find(
       {

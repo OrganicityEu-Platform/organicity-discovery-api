@@ -16,13 +16,13 @@ class AssetLightWeightSerializer < ActiveModel::Serializer
   def map_position
     if object[:position]["latitude"] and object[:position]["longitude"]
       {
-        latitude: object[:position]["latitude"],
-        longitude: object[:position]["longitude"]
+        latitude: object[:position]["latitude"].to_f,
+        longitude: object[:position]["longitude"].to_f
       }
     elsif object[:position][:latitude] and object[:position][:longitude]
       {
-        latitude: object[:position][:latitude],
-        longitude: object[:position][:longitude]
+        latitude: object[:position][:latitude].to_f,
+        longitude: object[:position][:longitude].to_f
       }
     else
       "null"
