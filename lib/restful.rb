@@ -9,7 +9,6 @@ module Restful
   end
 
   def make_request(request_url)
-    logger.info "url before request in make_request in restful.rb #{request_url}"
     res = Net::HTTP.get_response(request_url)
     unless res.kind_of? Net::HTTPSuccess
       raise Restful::RequestError, "HTTP Response: #{res.code} #{res.message}"
@@ -19,14 +18,14 @@ module Restful
 
   def cache_call(url)
     call = RestCall.find(url: url).sort(by: :created_at)
-    log "call: #{call.last.created_at}" unless call.empty?
+    logger.warn "call: #{call.last.created_at}" unless call.empty?
     if call.empty? or ( Time.now > Time.parse(call.last.created_at) + 10.minutes )
       # We should extend cache if there is an error to preserve good results
       response = make_request(url)
       @cached_call = RestCall.create(url: url, created_at: Time.now, response: response.to_json)
-      log "new request"
+      logger.warn "new request"
     else
-      log "cached response"
+      logger.warn "cached response"
       call = call.last
       @cached_call = call
     end
