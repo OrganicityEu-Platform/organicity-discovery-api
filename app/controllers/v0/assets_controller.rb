@@ -35,7 +35,7 @@ class V0::AssetsController < ApplicationController
     render json: @assets, each_serializer: AssetSerializer, root: false
   end
 
-  def ligthweight
+  def lightweight
     query_params = map_query_parameters(params)
     logger.info params
     @assets = Asset.get_assets(query_params)
