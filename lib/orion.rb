@@ -9,11 +9,7 @@ module Orion
     if raw_params
       params = map_params(raw_params)
       url.concat(params)
-      logger.info "got #{params} therefore url is #{url}"
     end
-    logger.info "in orion.rb params are #{raw_params}"
-    logger.info "in orion.rb url is #{url}"
-
     send_request url
   end
 
