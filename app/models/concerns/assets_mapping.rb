@@ -26,6 +26,7 @@ module AssetsMapping
           position: map_position(a),
           geo: map_geo_attrs(a),
           provider: a["_id"]["id"].split(':')[-2],
+          data: map_data(a)
         }
       }
       if @assets.length == 1
@@ -34,7 +35,8 @@ module AssetsMapping
             id: a[:id],
             type: a[:type],
             context: map_context(a),
-            related: map_related(a)
+            related: map_related(a),
+            data: a[:data]
           }
         }.first
       else
@@ -51,6 +53,10 @@ module AssetsMapping
 
     def map_type(a)
       a["_id"]["type"]
+    end
+
+    def map_data(a)
+        a
     end
 
     def map_geo_attrs(a)
