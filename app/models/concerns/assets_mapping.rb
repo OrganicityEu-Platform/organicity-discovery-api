@@ -16,6 +16,17 @@ module AssetsMapping
       @assets.group_by { |a| a[:type].downcase }.values
     end
 
+    def mongo_map_data_assets(assets)
+      @assets = assets.map {
+        |a| {
+          id: a["_id"]["id"],
+          type: map_type(a),
+          last_updated_at: map_time_instant(a),
+          data: map_data(a)
+        }
+      }
+    end
+
     def mongo_map_assets(assets)
 
       @assets = assets.map {

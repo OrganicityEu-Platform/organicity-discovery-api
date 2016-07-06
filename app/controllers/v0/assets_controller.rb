@@ -48,8 +48,7 @@ class V0::AssetsController < ApplicationController
 
   def data
     query_params = map_query_parameters(params)
-    @asset = JSON.parse(Asset.get_mongo_assets(query_params, "mongo_asset"))
-    logger.warn @asset
+    @asset = JSON.parse(Asset.get_mongo_assets(query_params, "mongo_data_asset"))
     render json: @asset, each_serializer: AssetDataSerializer, root: false
   end
 end
