@@ -7,7 +7,7 @@ WORKDIR /$APPROOT
 ENV APPROOT organicity-discovery-api
 
 # Install essential Linux packages
-RUN apt-get update -qq && apt-get install -y build-essential libpq-dev postgresql-client
+RUN apt-get update -qq && apt-get install -y build-essential libpq-dev postgresql-client && apt-get install -y nodejs
 
 # Update Gems
 RUN gem update --system
@@ -22,6 +22,7 @@ RUN cp /root/.ssh/gcocd /root/.ssh/id_rsa &&\
     chmod 600 /root/.ssh/* &&\
     chmod 644 ~/.ssh/ssh_config &&\
     ssh-keyscan -t rsa ec2-52-40-19-99.us-west-2.compute.amazonaws.com >> /root/.ssh/known_hosts
+
 
 # Clone our private GitHub Repository
 RUN git clone -b master https://github.com/OrganicityEu/organicity-discovery-api.git /$APPROOT
@@ -39,6 +40,8 @@ WORKDIR $RAILS_ROOT
 RUN gem install bundler
 
 # Finish establishing our Ruby environment
+RUN gem install nokogiri
+COPY Gemfile Gemfile
 RUN bundle install
 
 # Copy the Rails application into place

@@ -26,6 +26,11 @@ gem 'bson_ext'
 # GeoJSON
 gem 'rgeo-geojson'
 
+# Sidekiq for async jobs
+gem 'sinatra', github: 'sinatra', :require => false
+gem 'sidekiq'
+gem 'sidetiq'
+
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.0'
 # Use Redis adapter to run Action Cable in production

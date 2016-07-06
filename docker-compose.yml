@@ -35,10 +35,6 @@ app:
   # sources environment variable configuration for our app
   env_file: .env
   # rely on the RAILS_ENV value of the host machine
-  environment:
-    RAILS_ENV: $RAILS_ENV
-    MONGO_URL: mongo
-    MONGO_PORT: 3344
   volumes:
     - .:/organicity-discovery-api
     - ./tmp:/tmp
@@ -51,6 +47,31 @@ app:
   ports:
     - "3000:3000"
   command: bash -c "./scripts/startup.sh"
+
+worker:
+  build: .
+  volumes:
+    - .:/organicity-discovery-api
+    - ./tmp:/tmp
+  env_file: .env
+  command: bash -c "./scripts/sidekiq.sh"
+  links:
+    - db
+    - redis
+
+# spring:
+#   build: .
+#   volumes:
+#     - .:/organicity-discovery-api
+#   links:
+#     - app
+#   command: spring server
+#
+#   # This ensures that the pid namespace is shared between the host
+#   # and the container. It's not necessary to be able to run spring
+#   # commands, but it is necessary for "spring status" and "spring stop"
+#   # to work properly.
+#   pid: host
 
 # service configuration for our web server
 web:
