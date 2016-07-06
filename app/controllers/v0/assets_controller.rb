@@ -47,6 +47,9 @@ class V0::AssetsController < ApplicationController
   end
 
   def data
-    # Get single asset data
+    query_params = map_query_parameters(params)
+    @asset = JSON.parse(Asset.get_mongo_assets(query_params, "mongo_asset"))
+    logger.warn @asset
+    render json: @asset, each_serializer: AssetDataSerializer, root: false
   end
 end

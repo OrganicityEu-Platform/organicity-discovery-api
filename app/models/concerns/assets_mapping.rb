@@ -56,7 +56,19 @@ module AssetsMapping
     end
 
     def map_data(a)
-        a
+        {
+          context:
+            {
+              time_instant: a["TimeInstant"],
+              created_at: a["creDate"],
+              updated_at: a["modDate"]
+            },
+          attributes:
+            {
+              types: a["attrNames"],
+              data: a["attrs"]
+            }
+        }
     end
 
     def map_geo_attrs(a)

@@ -104,9 +104,12 @@ module MongoOrionClient
 
   def mongo_asset(params)
     orion = setup_client
-    orion[:entities].find_one(
+    orion[:entities].find(
       {
         '_id.id' => /#{params[:id]}/,
+      },
+      {
+        :limit => 1
       }
     ).to_a
 
