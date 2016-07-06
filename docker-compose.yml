@@ -50,12 +50,12 @@ app:
 
 worker:
   build: .
-  volumes:
-    - .:/organicity-discovery-api
-    - ./tmp:/tmp
-  env_file: .env
+  volumes_from:
+    - app
   command: bash -c "./scripts/sidekiq.sh"
+  env_file: .env
   links:
+    - mongo
     - db
     - redis
 

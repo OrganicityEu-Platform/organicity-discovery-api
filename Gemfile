@@ -28,6 +28,8 @@ gem 'rgeo-geojson'
 
 # Sidekiq for async jobs
 gem 'sinatra', github: 'sinatra', :require => false
+gem 'mustermann'
+gem 'mustermann-rails'
 gem 'sidekiq'
 gem 'sidetiq'
 
