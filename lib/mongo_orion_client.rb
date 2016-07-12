@@ -13,6 +13,42 @@ module MongoOrionClient
     mongo_client.db('orion')
   end
 
+  def create_query
+    qbuilder = {}
+    if params[:site] and params[:service] and params[:provider] and params[:group]
+      qbuilder = { '_id.id' => /.*#{params[:site]}.#{params[:service]}.#{params[:provider]}.#{params[:group]}.*/ }
+    elsif params[:site] and params[:service] and params[:provider]
+      qbuilder = { '_id.id' => /.*#{params[:site]}.#{params[:service]}.#{params[:provider]}.*/ }
+    elsif params[:site] and params[:service]
+      qbuilder = { '_id.id' => /.*#{params[:site]}.#{params[:service]}.*/ }
+    elsif params[:site]
+      qbuilder = { '_id.id' => /.*#{params[:site]}.*/ }
+    elsif params[:service]
+      qbuilder = { '_id.id' => /.*#{params[:service]}.*/ }
+    elsif params[:provider]
+      qbuilder = { '_id.id' => /.*#{params[:provider]}.*/ }
+    elsif params[:group]
+      qbuilder = { '_id.id' => /.*#{params[:group]}.*/ }
+    end
+
+    if params[:long] and params[:lat] and params[:radius]
+      qbuilder.merge!("location.coords.coordinates" => {
+        '$geoWithin': { '$center': [ [  params[:long].to_f, params[:lat].to_f ], params[:radius].to_i ] }
+      })
+    elsif params[:long] and params[:lat]
+      qbuilder.merge!("location.coords.coordinates" => {
+        '$geoWithin': { '$center': [ [  params[:long].to_f, params[:lat].to_f ], 1 ] }
+      })
+    end
+
+    if params[:type]
+      qbuilder.merge!("_id.type" => /.*#{params[:type]}.*/)
+    end
+
+    # Missing Search metadata and attributes:
+    # 'attr.#{attr_name}' => /.*#{value}.*/
+  end
+
   def mongo_geo_search_assets(params)
     orion = setup_client
     orion[:entities].find(
@@ -85,15 +121,9 @@ module MongoOrionClient
   def mongo_assets(params)
     log params
     orion = setup_client
+    q = create_query
     orion[:entities].find(
-      # '_id.id' => /.*#{params[:site]}.*/ || /.*#{params[:provider]}.*/
-      # '_id.type' => /.*#{params[:service]}.*/,
-      # 'location.coords.coordinates' => {
-      #   '$geoWithin': { '$center': [ [  params[:long].to_f, params[:lat].to_f ], params[:radius].to_i ] }
-      # }
-      # Search metadata and attributes:
-      # 'attr.#{attr_name}' => /.*#{value}.*/
-      {},
+      q,
       {
         :skip => offset(params),
         :limit => limit(params),
@@ -116,14 +146,17 @@ module MongoOrionClient
   end
 
   def mongo_asset(params)
+    logger.warn "HELLO!"
+    a = {
+          '_id.id' => /#{params[:id]}/,
+        }
+    b = {
+          :limit => 1
+        }
+
     orion = setup_client
     orion[:entities].find(
-      {
-        '_id.id' => /#{params[:id]}/,
-      },
-      {
-        :limit => 1
-      }
+      a, b
     ).to_a
 
   end
