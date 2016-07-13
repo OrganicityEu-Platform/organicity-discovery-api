@@ -39,7 +39,12 @@ class Asset < ApplicationRecord
     if call
       assets = call.response
     else
-      raw_assets = self.send("#{endpoint}", params)
+      if (endpoint == "mongo_asset" or endpoint == "mongo_geo_assets" or endpoint == "mongo_data_assets")
+        raw_assets = self.send("#{endpoint}", params)
+      else
+        raw_assets = self.mongo_assets(params)
+      end
+
       if endpoint == "mongo_geo_assets"
         assets = self.mongo_map_geo_assets(raw_assets).to_json
       elsif endpoint == "mongo_data_asset"
