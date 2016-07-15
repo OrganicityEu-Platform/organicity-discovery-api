@@ -6,7 +6,7 @@ class AssetSerializer < ActiveModel::Serializer
   end
 
   def type
-    object[:id].split(':')[-3]
+    object[:type]
   end
 
   def provider
