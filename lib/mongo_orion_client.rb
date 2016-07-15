@@ -29,7 +29,7 @@ module MongoOrionClient
   end
 
   def create_query(params)
-    qbuilder = { '_id.id' => /.*#{params[:site] ? params[:site] : '*'}.#{params[:service] ? params[:service] : '*'}.#{params[:provider] ? params[:provider] : '*'}.#{params[:group] ? params[:group] : '*'}.*/ }
+    qbuilder = { '_id.id' => /.*#{params[:site] ? params[:site] : ''}.#{params[:service] ? params[:service] : '*'}.#{params[:provider] ? params[:provider] : '*'}.#{params[:group] ? params[:group] : '*'}.*/ }
 
     if params[:long] and params[:lat] and params[:radius]
       qbuilder.merge!("location.coords.coordinates" => {
