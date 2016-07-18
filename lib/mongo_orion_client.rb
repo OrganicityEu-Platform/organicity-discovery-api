@@ -41,8 +41,10 @@ module MongoOrionClient
       qbuilder.merge!("_id.type" => /.*#{params[:type]}.*/)
     end
 
-    # Missing Search metadata and attributes:
-    # 'attr.#{attr_name}' => /.*#{value}.*/
+    if paramas[:q]
+      qbuilder.merge!({ "attrNames": params[:q] })
+    end
+
     return qbuilder
   end
 

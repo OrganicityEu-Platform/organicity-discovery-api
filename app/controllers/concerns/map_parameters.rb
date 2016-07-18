@@ -31,7 +31,8 @@ module MapParameters
       :long,
       :radius,
       :site,
-      :service
+      :service,
+      :q
     ]
     parameters = {}
 
