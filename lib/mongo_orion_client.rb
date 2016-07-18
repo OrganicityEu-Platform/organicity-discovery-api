@@ -41,7 +41,7 @@ module MongoOrionClient
       qbuilder.merge!("_id.type" => /.*#{params[:type]}.*/)
     end
 
-    if paramas[:q]
+    if params[:q]
       qbuilder.merge!({ "attrNames": params[:q] })
     end
 
