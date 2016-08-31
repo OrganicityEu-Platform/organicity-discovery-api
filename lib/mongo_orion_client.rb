@@ -51,7 +51,9 @@ module MongoOrionClient
   def mongo_geo_assets(params)
     log params
     orion = setup_client
-    orion[:entities].find({}).to_a
+    q = create_query(params)
+    m = create_options(params)
+    orion[:entities].find(q,m).to_a
   end
 
   def mongo_assets(params)
