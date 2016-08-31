@@ -62,15 +62,15 @@ module MongoOrionClient
     q = {}
     if params[:zoom] == 0
       q.merge!("location.coords.coordinates" => {
-        '$geoWithin': { '$center': [ [  params[:long].to_f, params[:lat].to_f ], 1 ] }
+        '$geoWithin': { '$center': [ [  params[:long].to_f, params[:lat].to_f ], 0.5 ] }
       })
     elsif params[:zoom] == 1
       q.merge!("location.coords.coordinates" => {
-        '$geoWithin': { '$center': [ [  params[:long].to_f, params[:lat].to_f ], 10 ] }
+        '$geoWithin': { '$center': [ [  params[:long].to_f, params[:lat].to_f ], 1 ] }
       })
     else
       q.merge!("location.coords.coordinates" => {
-        '$geoWithin': { '$center': [ [  params[:long].to_f, params[:lat].to_f ], 100 ] }
+        '$geoWithin': { '$center': [ [  params[:long].to_f, params[:lat].to_f ], 10 ] }
       })
     end
 
