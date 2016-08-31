@@ -60,11 +60,11 @@ module MongoOrionClient
     log params
     orion = setup_client
     q = {}
-    if params[:zoom] == 0
+    if params[:zoom].to_i == 0
       q.merge!("location.coords.coordinates" => {
         '$geoWithin': { '$center': [ [  params[:long].to_f, params[:lat].to_f ], 1] }
       })
-    elsif params[:zoom] == 1
+    elsif params[:zoom].to_i == 1
       q.merge!("location.coords.coordinates" => {
         '$geoWithin': { '$center': [ [  params[:long].to_f, params[:lat].to_f ], 10 ] }
       })
