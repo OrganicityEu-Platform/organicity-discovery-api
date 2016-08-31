@@ -40,7 +40,7 @@ class Asset < ApplicationRecord
       assets = call.response
     else
       # How to retrieve assets
-      if (endpoint in mongo_endpoints)
+      if (mongo_endpoints.include? endpoint)
         raw_assets = self.send("#{endpoint}", params)
       else
         raw_assets = self.mongo_assets(params)
