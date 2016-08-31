@@ -38,6 +38,7 @@ class Asset < ApplicationRecord
     call = self.cache_mongo(params, endpoint)
     if call
       assets = call.response
+      logger.warn "Cached assets: #{assets}"
     else
       # How to retrieve assets
       if (self.mongo_endpoints.include? endpoint)
