@@ -36,6 +36,7 @@ class Asset < ApplicationRecord
 
   def self.get_mongo_assets(params, endpoint)
     assets = []
+    logger.warn "Params: #{params}"
     call = self.cache_mongo(params, endpoint)
     if call
       assets = call.response
