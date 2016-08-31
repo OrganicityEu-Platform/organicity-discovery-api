@@ -68,6 +68,22 @@ module MongoOrionClient
       q.merge!("location.coords.coordinates" => {
         '$geoWithin': { '$center': [ [  params[:long].to_f, params[:lat].to_f ], 10 ] }
       })
+    elsif params[:zoom].to_i == 2
+      q.merge!("location.coords.coordinates" => {
+        '$geoWithin': { '$center': [ [  params[:long].to_f, params[:lat].to_f ], 20 ] }
+      })
+    elsif params[:zoom].to_i == 3
+      q.merge!("location.coords.coordinates" => {
+        '$geoWithin': { '$center': [ [  params[:long].to_f, params[:lat].to_f ], 30 ] }
+      })
+    elsif params[:zoom].to_i == 4
+      q.merge!("location.coords.coordinates" => {
+        '$geoWithin': { '$center': [ [  params[:long].to_f, params[:lat].to_f ], 40 ] }
+      })
+    elsif params[:zoom].to_i == 5
+      q.merge!("location.coords.coordinates" => {
+        '$geoWithin': { '$center': [ [  params[:long].to_f, params[:lat].to_f ], 50 ] }
+      })
     else
       q.merge!("location.coords.coordinates" => {
         '$geoWithin': { '$center': [ [  params[:long].to_f, params[:lat].to_f ], 100 ] }
