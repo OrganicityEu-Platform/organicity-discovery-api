@@ -73,8 +73,9 @@ module MongoOrionClient
         '$geoWithin': { '$center': [ [  params[:long].to_f, params[:lat].to_f ], 100 ] }
       })
     end
-
     m = create_options(params)
+    logger.warn q
+    logger.warn m
     orion[:entities].find(q,m).count
   end
 
