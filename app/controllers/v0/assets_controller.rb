@@ -40,6 +40,12 @@ class V0::AssetsController < ApplicationController
     render json: @assets, each_serializer: AssetGeoSerializer, root: false
   end
 
+  def geo_count
+    query_params = map_query_parameters(params)
+    @assets = JSON.parse(Asset.get_mongo_assets(query_params, "mongo_geo_count_assets"))
+    render json: @assets
+  end
+
   def show
     query_params = map_query_parameters(params)
     @asset = Asset.get_mongo_assets(query_params, "mongo_asset")

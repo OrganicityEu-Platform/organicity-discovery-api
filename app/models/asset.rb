@@ -40,7 +40,7 @@ class Asset < ApplicationRecord
       assets = call.response
     else
       # How to retrieve assets
-      if (endpoint == "mongo_asset" or endpoint == "mongo_geo_assets" or endpoint == "mongo_data_assets")
+      if (endpoint in mongo_endpoints)
         raw_assets = self.send("#{endpoint}", params)
       else
         raw_assets = self.mongo_assets(params)
@@ -50,6 +50,8 @@ class Asset < ApplicationRecord
         assets = self.mongo_map_geo_assets(raw_assets).to_json
       elsif endpoint == "mongo_data_asset"
         assets = self.mongo_map_data_assets(raw_assets).to_json
+      elsif endpoint == "mongo_geo_count_assets"
+        assets = self.mongo_map_count_assets(raw_assets, params).to_json
       else
         assets = self.mongo_map_assets(raw_assets).to_json
       end
@@ -57,4 +59,14 @@ class Asset < ApplicationRecord
     end
     return assets
   end
+
+  private
+    def mongo_endpoints
+      [
+        "mongo_asset",
+        "mongo_geo_count_assets",
+        "mongo_geo_assets",
+        "mongo_data_assets"
+      ]
+    end
 end

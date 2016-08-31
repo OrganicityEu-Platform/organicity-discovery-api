@@ -27,6 +27,22 @@ module AssetsMapping
       }
     end
 
+    def mongo_map_count_assets(raw_assets, params)
+      {
+        type: "Feature",
+        geometry: {
+          type: "Point",
+          coordinates: [
+            params[:lat].to_f,
+            params[:long].to_f
+          ]
+        },
+        properties: {
+          count: raw_assets
+        }
+      }
+    end
+
     def mongo_map_assets(assets)
 
       @assets = assets.map {

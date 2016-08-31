@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     scope '/assets/geo' do
       get '/' => 'assets#geo'
       get '/search' => 'assets#geo_search'
+      get '/zoom/:zoom' => 'assets#geo_count'
     end
     scope '/assets/services' do
       get ':service' => 'assets#service'
