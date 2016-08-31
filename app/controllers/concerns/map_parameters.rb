@@ -32,6 +32,7 @@ module MapParameters
       :radius,
       :site,
       :service,
+      :zoom,
       :q
     ]
     parameters = {}
