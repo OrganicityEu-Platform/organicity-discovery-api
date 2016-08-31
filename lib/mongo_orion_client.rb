@@ -61,17 +61,17 @@ module MongoOrionClient
     orion = setup_client
     q = {}
     if params[:zoom] == 0
-      q = "location.coords.coordinates" => {
+      q.merge!("location.coords.coordinates" => {
         '$geoWithin': { '$center': [ [  params[:long].to_f, params[:lat].to_f ], 1 ] }
-      }
+      })
     elsif params[:zoom] == 1
-      q = "location.coords.coordinates" => {
+      q.merge!("location.coords.coordinates" => {
         '$geoWithin': { '$center': [ [  params[:long].to_f, params[:lat].to_f ], 10 ] }
-      }
+      })
     else
-      q = "location.coords.coordinates" => {
+      q.merge!("location.coords.coordinates" => {
         '$geoWithin': { '$center': [ [  params[:long].to_f, params[:lat].to_f ], 100 ] }
-      }
+      })
     end
 
     m = create_options(params)
