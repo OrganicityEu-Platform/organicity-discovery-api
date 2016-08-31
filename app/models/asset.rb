@@ -40,7 +40,7 @@ class Asset < ApplicationRecord
       assets = call.response
     else
       # How to retrieve assets
-      if (mongo_endpoints.include? endpoint)
+      if (self.mongo_endpoints.include? endpoint)
         raw_assets = self.send("#{endpoint}", params)
       else
         raw_assets = self.mongo_assets(params)
@@ -61,7 +61,7 @@ class Asset < ApplicationRecord
   end
 
   private
-    def mongo_endpoints
+    def self.mongo_endpoints
       [
         "mongo_asset",
         "mongo_geo_count_assets",
