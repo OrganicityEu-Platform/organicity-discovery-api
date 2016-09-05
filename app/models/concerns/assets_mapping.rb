@@ -38,7 +38,8 @@ module AssetsMapping
           ]
         },
         properties: {
-          count: raw_assets
+          count: raw_assets,
+          last_updated_at: Time.now
         }
       }
     end
