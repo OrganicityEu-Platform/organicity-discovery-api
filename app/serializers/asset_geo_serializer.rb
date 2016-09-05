@@ -44,8 +44,8 @@ class AssetGeoSerializer < ActiveModel::Serializer
       [ o["geo"]["coordinates"].map {|c| [c[0].to_f, c[1].to_f] } ]
     elsif o["position"]["latitude"] and o["position"]["longitude"]
       [
-        o["position"]["latitude"].to_f,
-        o["position"]["longitude"].to_f
+        o["position"]["longitude"].to_f,
+        o["position"]["latitude"].to_f
       ]
     else
       [ 0.0, 0.0 ]

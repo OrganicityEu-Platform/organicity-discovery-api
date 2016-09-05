@@ -33,8 +33,8 @@ module AssetsMapping
         geometry: {
           type: "Point",
           coordinates: [
-            params[:lat].to_f,
-            params[:long].to_f
+            params[:long].to_f,
+            params[:lat].to_f
           ]
         },
         properties: {
