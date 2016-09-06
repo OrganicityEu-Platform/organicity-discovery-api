@@ -40,7 +40,6 @@ module AssetsMapping
         properties: {
           count: raw_assets,
           name: "Cluster",
-          city: map_city_from_coords(params[:long].to_f, params[:lat].to_f),
           last_updated_at: Time.now
         }
       }
