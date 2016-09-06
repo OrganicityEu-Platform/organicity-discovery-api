@@ -47,7 +47,7 @@ module AssetsMapping
     end
 
     def map_city_from_coords(long, lat)
-      city = City.where(:lonlat => factory.point(long, lat)).first
+      city = City.where(:lonlat => "POINT(#{long} #{lat})").first
       if city
         return city.name
       else
