@@ -10,6 +10,7 @@ class CreateCities < ActiveRecord::Migration[5.0]
       t.text              :description
       t.float             :latitude
       t.float             :longitude
+      t.st_point          :lonlat, geographic: true
       t.timestamps
     end
   end

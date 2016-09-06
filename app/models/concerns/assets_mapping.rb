@@ -39,9 +39,20 @@ module AssetsMapping
         },
         properties: {
           count: raw_assets,
+          name: "Cluster",
+          city: map_city_from_coords(params[:long].to_f, params[:lat].to_f),
           last_updated_at: Time.now
         }
       }
+    end
+
+    def map_city_from_coords(long, lat)
+      city = City.where(:lonlat => factory.point(long, lat)).first
+      if city
+        return city.name
+      else
+        return " "
+      end
     end
 
     def mongo_map_assets(assets)
