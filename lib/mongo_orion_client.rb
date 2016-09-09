@@ -19,7 +19,7 @@ module MongoOrionClient
     doc = {
       timestamp: Time.now.to_time.iso8601,
       ip: request.remote_ip,
-      session: session.id,
+      session: session,
       service: "AssetsDiscovery",
       method: "assets",
       url: request.env["REQUEST_URI"]
