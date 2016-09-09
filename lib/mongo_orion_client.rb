@@ -14,7 +14,7 @@ module MongoOrionClient
   end
 
   def mongo_orion_logger(request)
-    log request
+    log "THIS IS THE HTTP REQUEST: #{request}"
   end
 
   def create_options(params)
