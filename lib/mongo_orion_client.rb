@@ -13,7 +13,7 @@ module MongoOrionClient
     mongo_client.db('orion')
   end
 
-  def mongo_orion_logger(request, session.id)
+  def mongo_orion_logger(request, session)
     logger.warn "THIS IS THE HTTP REQUEST: #{request.env}"
     apilog = mongo_client.db('apilog')
     doc = {
