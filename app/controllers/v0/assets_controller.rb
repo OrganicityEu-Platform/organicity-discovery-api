@@ -1,6 +1,6 @@
 class V0::AssetsController < ApplicationController
   include MapParameters
-
+  include JwtOperations
   #
   # Return assets collection
   #
