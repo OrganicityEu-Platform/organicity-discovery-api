@@ -13,8 +13,19 @@ module MongoOrionClient
     mongo_client.db('orion')
   end
 
-  def mongo_orion_logger(request)
+  def mongo_orion_logger(request, session.id)
     logger.warn "THIS IS THE HTTP REQUEST: #{request.env}"
+    apilog = mongo_client.db('apilog')
+    doc = {
+      timestamp: Time.now.to_time.iso8601,
+      ip: request.remote_ip,
+      session: session.id,
+      service: "AssetsDiscovery",
+      method: "assets",
+      url: request.env["REQUEST_URI"]
+    }
+    logger.warn doc
+    # apilog[:apiLogEntry].insert_one(doc)
   end
 
   def create_options(params)

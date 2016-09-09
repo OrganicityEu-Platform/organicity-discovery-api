@@ -7,10 +7,9 @@ class Asset < ApplicationRecord
   extend Orion
   extend MongoOrionClient
 
-  def self.get_assets(params, request)
+  def self.get_assets(params, request, session)
     # Logs to mongo
-    logger.warn "REQUEST BEFORE ENTERING THE LOGGER #{request}"
-    self.mongo_orion_logger(request)
+    self.mongo_orion_logger(request, session)
     # Use Orion APIs
     assets = self.request_entities(params)
     return assets["doc"].map {
@@ -36,7 +35,7 @@ class Asset < ApplicationRecord
     end
   end
 
-  def self.get_mongo_assets(params, endpoint, request)
+  def self.get_mongo_assets(params, endpoint, request, session)
     # Logs to mongo
     self.mongo_orion_logger(request)
 
