@@ -34,4 +34,8 @@ Rails.application.routes.draw do
       get '/' => 'assets#data'
     end
   end
+
+  namespace :v2 do
+    resources :assets
+  end
 end

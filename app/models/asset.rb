@@ -21,6 +21,12 @@ class Asset < ApplicationRecord
     }
   end
 
+  def self.get_v2_assets(query_params, request, session)
+    self.mongo_orion_logger(request, session)
+    # Use Orion APIs
+    return self.request_entities(params)
+  end
+
   def self.cache_mongo(params, endpoint)
     call = RestCall.find(params: params, endpoint: endpoint).sort(by: :created_at)
     logger.warn "call: #{call.last.created_at}" unless call.empty?
