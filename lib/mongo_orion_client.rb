@@ -14,7 +14,7 @@ module MongoOrionClient
   end
 
   def mongo_orion_logger(request, session)
-    logger.warn "THIS IS THE HTTP REQUEST: #{request.env}"
+    mongo_client = MongoClient.new(MONGO_URL, MONGO_PORT)
     apilog = mongo_client.db('apilog')
     doc = {
       timestamp: Time.now.to_time.iso8601,
