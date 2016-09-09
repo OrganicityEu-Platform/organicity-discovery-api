@@ -6,67 +6,67 @@ class V0::AssetsController < ApplicationController
   #
   def index
     query_params = map_query_parameters(params)
-    @assets = Asset.get_assets(query_params, request, session(params[:token]))
+    @assets = Asset.get_assets(query_params, request, token_session(params[:token]))
     render json: @assets, each_serializer: AssetSerializer, root: false
   end
 
   def site
     query_params = map_query_parameters(params)
-    @assets = Asset.get_mongo_assets(query_params, "mongo_site_assets", request, session(params[:token]))
+    @assets = Asset.get_mongo_assets(query_params, "mongo_site_assets", request, token_session(params[:token]))
     render json: @assets, each_serializer: AssetSerializer, root: false
   end
 
   def experiment
     query_params = map_query_parameters(params)
-    @assets = Asset.get_mongo_assets(query_params, "mongo_experiment_assets", request, session(params[:token]))
+    @assets = Asset.get_mongo_assets(query_params, "mongo_experiment_assets", request, token_session(params[:token]))
     render json: @assets, each_serializer: AssetSerializer, root: false
   end
 
   def experimenter
     query_params = map_query_parameters(params)
-    @assets = Asset.get_mongo_assets(query_params, "mongo_experimenter_assets", request, session(params[:token]))
+    @assets = Asset.get_mongo_assets(query_params, "mongo_experimenter_assets", request, token_session(params[:token]))
     render json: @assets, each_serializer: AssetSerializer, root: false
   end
 
   def geo_search
     query_params = map_query_parameters(params)
-    @assets = JSON.parse(Asset.get_mongo_assets(query_params, "mongo_geo_search_assets", request, session(params[:token])))
+    @assets = JSON.parse(Asset.get_mongo_assets(query_params, "mongo_geo_search_assets", request, token_session(params[:token])))
     render json: @assets, each_serializer: AssetGeoSerializer, root: false
   end
 
   def service
     query_params = map_query_parameters(params)
-    @assets = Asset.get_mongo_assets(query_params, "mongo_service_assets", request, session(params[:token]))
+    @assets = Asset.get_mongo_assets(query_params, "mongo_service_assets", request, token_session(params[:token]))
     render json: @assets, each_serializer: AssetSerializer, root: false
   end
 
   def provider
     query_params = map_query_parameters(params)
-    @assets = Asset.get_mongo_assets(query_params, "mongo_provider_assets", request, session(params[:token]))
+    @assets = Asset.get_mongo_assets(query_params, "mongo_provider_assets", request, token_session(params[:token]))
     render json: @assets, each_serializer: AssetSerializer, root: false
   end
 
   def geo
     query_params = map_query_parameters(params)
-    @assets = JSON.parse(Asset.get_mongo_assets(query_params, "mongo_geo_assets", request, session(params[:token])))
+    @assets = JSON.parse(Asset.get_mongo_assets(query_params, "mongo_geo_assets", request, token_session(params[:token])))
     render json: @assets, each_serializer: AssetGeoSerializer, root: false
   end
 
   def geo_count
     query_params = map_query_parameters(params)
-    @assets = JSON.parse(Asset.get_mongo_assets(query_params, "mongo_geo_count_assets", request, session(params[:token])))
+    @assets = JSON.parse(Asset.get_mongo_assets(query_params, "mongo_geo_count_assets", request, token_session(params[:token])))
     render json: @assets
   end
 
   def show
     query_params = map_query_parameters(params)
-    @asset = Asset.get_mongo_assets(query_params, "mongo_asset", request, session(params[:token]))
+    @asset = Asset.get_mongo_assets(query_params, "mongo_asset", request, token_session(params[:token]))
     render json: @asset
   end
 
   def data
     query_params = map_query_parameters(params)
-    @asset = JSON.parse(Asset.get_mongo_assets(query_params, "mongo_data_asset", request, session(params[:token])))
+    @asset = JSON.parse(Asset.get_mongo_assets(query_params, "mongo_data_asset", request, token_session(params[:token])))
     render json: @asset, each_serializer: AssetDataSerializer, root: false
   end
 end

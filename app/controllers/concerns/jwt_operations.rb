@@ -6,11 +6,11 @@ module JwtOperations
     return decoded_token = JWT.decode token, nil, false
   end
 
-  def token(params[:token])
-    params[:token] ? decoded_token(params[:token]) : " "
+  def token(token)
+    token ? decoded_token(token) : " "
   end
 
-  def session(params[:token])
-    params[:token] ? decoded_token(params[:token]).client_session : SecureRandom.hex(16).encode!(Encoding::UTF_8)
+  def token_session(token)
+    token ? decoded_token(token).client_session : SecureRandom.hex(16).encode!(Encoding::UTF_8)
   end
 end
