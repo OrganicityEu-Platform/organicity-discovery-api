@@ -3,7 +3,7 @@ require 'jwt'
 module JwtOperations
   extend ActiveSupport::Concern
   def decode_token(token)
-    return decoded_token = JWT.decode token, nil, false
+    return JWT.decode token, nil, false
   end
 
   def token(token)
