@@ -7,7 +7,7 @@ class Asset < ApplicationRecord
   extend Orion
   extend MongoOrionClient
 
-  def self.get_assets(params)
+  def self.get_assets(params, request)
     # Logs to mongo
     self.mongo_orion_logger(request)
     # Use Orion APIs
@@ -35,7 +35,7 @@ class Asset < ApplicationRecord
     end
   end
 
-  def self.get_mongo_assets(params, endpoint)
+  def self.get_mongo_assets(params, endpoint, request)
     # Logs to mongo
     self.mongo_orion_logger(request)
 

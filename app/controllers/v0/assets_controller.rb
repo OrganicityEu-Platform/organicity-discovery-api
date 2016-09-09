@@ -6,67 +6,67 @@ class V0::AssetsController < ApplicationController
   #
   def index
     query_params = map_query_parameters(params)
-    @assets = Asset.get_assets(query_params)  
+    @assets = Asset.get_assets(query_params, request)
     render json: @assets, each_serializer: AssetSerializer, root: false
   end
 
   def site
     query_params = map_query_parameters(params)
-    @assets = Asset.get_mongo_assets(query_params, "mongo_site_assets")
+    @assets = Asset.get_mongo_assets(query_params, "mongo_site_assets", request)
     render json: @assets, each_serializer: AssetSerializer, root: false
   end
 
   def experiment
     query_params = map_query_parameters(params)
-    @assets = Asset.get_mongo_assets(query_params, "mongo_experiment_assets")
+    @assets = Asset.get_mongo_assets(query_params, "mongo_experiment_assets", request)
     render json: @assets, each_serializer: AssetSerializer, root: false
   end
 
   def experimenter
     query_params = map_query_parameters(params)
-    @assets = Asset.get_mongo_assets(query_params, "mongo_experimenter_assets")
+    @assets = Asset.get_mongo_assets(query_params, "mongo_experimenter_assets", request)
     render json: @assets, each_serializer: AssetSerializer, root: false
   end
 
   def geo_search
     query_params = map_query_parameters(params)
-    @assets = JSON.parse(Asset.get_mongo_assets(query_params, "mongo_geo_search_assets"))
+    @assets = JSON.parse(Asset.get_mongo_assets(query_params, "mongo_geo_search_assets", request))
     render json: @assets, each_serializer: AssetGeoSerializer, root: false
   end
 
   def service
     query_params = map_query_parameters(params)
-    @assets = Asset.get_mongo_assets(query_params, "mongo_service_assets")
+    @assets = Asset.get_mongo_assets(query_params, "mongo_service_assets", request)
     render json: @assets, each_serializer: AssetSerializer, root: false
   end
 
   def provider
     query_params = map_query_parameters(params)
-    @assets = Asset.get_mongo_assets(query_params, "mongo_provider_assets")
+    @assets = Asset.get_mongo_assets(query_params, "mongo_provider_assets", request)
     render json: @assets, each_serializer: AssetSerializer, root: false
   end
 
   def geo
     query_params = map_query_parameters(params)
-    @assets = JSON.parse(Asset.get_mongo_assets(query_params, "mongo_geo_assets"))
+    @assets = JSON.parse(Asset.get_mongo_assets(query_params, "mongo_geo_assets", request))
     render json: @assets, each_serializer: AssetGeoSerializer, root: false
   end
 
   def geo_count
     query_params = map_query_parameters(params)
-    @assets = JSON.parse(Asset.get_mongo_assets(query_params, "mongo_geo_count_assets"))
+    @assets = JSON.parse(Asset.get_mongo_assets(query_params, "mongo_geo_count_assets", request))
     render json: @assets
   end
 
   def show
     query_params = map_query_parameters(params)
-    @asset = Asset.get_mongo_assets(query_params, "mongo_asset")
+    @asset = Asset.get_mongo_assets(query_params, "mongo_asset", request)
     render json: @asset
   end
 
   def data
     query_params = map_query_parameters(params)
-    @asset = JSON.parse(Asset.get_mongo_assets(query_params, "mongo_data_asset"))
+    @asset = JSON.parse(Asset.get_mongo_assets(query_params, "mongo_data_asset", request))
     render json: @asset, each_serializer: AssetDataSerializer, root: false
   end
 end
