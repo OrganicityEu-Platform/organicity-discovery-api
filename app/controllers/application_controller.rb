@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::API
 
-  before_filter :cors_preflight_check
+  before_action :cors_preflight_check
 
   def cors_preflight_check
     if request.method == 'OPTIONS'

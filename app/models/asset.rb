@@ -9,6 +9,7 @@ class Asset < ApplicationRecord
 
   def self.get_assets(params, request)
     # Logs to mongo
+    logger.warn "REQUEST BEFORE ENTERING THE LOGGER #{request}"
     self.mongo_orion_logger(request)
     # Use Orion APIs
     assets = self.request_entities(params)
