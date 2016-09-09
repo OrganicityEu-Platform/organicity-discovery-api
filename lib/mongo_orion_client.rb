@@ -24,8 +24,7 @@ module MongoOrionClient
       method: "assets",
       url: request.env["REQUEST_URI"]
     }
-    logger.warn doc
-    # apilog[:apiLogEntry].insert_one(doc)
+    apilog[:apiLogEntry].insert_one(doc)
   end
 
   def create_options(params)
