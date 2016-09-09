@@ -6,13 +6,25 @@ class V0::AssetsController < ApplicationController
   #
   def index
     query_params = map_query_parameters(params)
-    @assets = Asset.get_assets(query_params)
+    @assets = Asset.get_assets(query_params)  
     render json: @assets, each_serializer: AssetSerializer, root: false
   end
 
   def site
     query_params = map_query_parameters(params)
     @assets = Asset.get_mongo_assets(query_params, "mongo_site_assets")
+    render json: @assets, each_serializer: AssetSerializer, root: false
+  end
+
+  def experiment
+    query_params = map_query_parameters(params)
+    @assets = Asset.get_mongo_assets(query_params, "mongo_experiment_assets")
+    render json: @assets, each_serializer: AssetSerializer, root: false
+  end
+
+  def experimenter
+    query_params = map_query_parameters(params)
+    @assets = Asset.get_mongo_assets(query_params, "mongo_experimenter_assets")
     render json: @assets, each_serializer: AssetSerializer, root: false
   end
 

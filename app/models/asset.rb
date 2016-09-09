@@ -8,8 +8,9 @@ class Asset < ApplicationRecord
   extend MongoOrionClient
 
   def self.get_assets(params)
+    # Logs to mongo
+    self.mongo_orion_logger(request)
     # Use Orion APIs
-    # Cache should be moved to model level.
     assets = self.request_entities(params)
     return assets["doc"].map {
       |a| {
@@ -35,6 +36,9 @@ class Asset < ApplicationRecord
   end
 
   def self.get_mongo_assets(params, endpoint)
+    # Logs to mongo
+    self.mongo_orion_logger(request)
+
     assets = []
     logger.warn "Params: #{params}"
     call = self.cache_mongo(params, endpoint)

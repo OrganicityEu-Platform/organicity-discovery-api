@@ -12,6 +12,12 @@ Rails.application.routes.draw do
       get '/' => 'sites#index'
       get ':site' => 'assets#site'
     end
+    scope '/assets/experiments' do
+      get ':experiment' => 'assets#experiment'
+    end
+    scope '/assets/experimenters' do
+      get ':experimenter' => 'assets#experimenter'
+    end
     scope '/assets/geo' do
       get '/' => 'assets#geo'
       get '/search' => 'assets#geo_search'

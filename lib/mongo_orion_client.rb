@@ -13,6 +13,10 @@ module MongoOrionClient
     mongo_client.db('orion')
   end
 
+  def mongo_orion_logger(request)
+    log request
+  end
+
   def create_options(params)
     mbuilder = {}
     o = offset(params)
@@ -28,8 +32,16 @@ module MongoOrionClient
     return mbuilder
   end
 
+  def search_q(params)
+    if params[:experiment] or params[:experimenter]
+      return /.*#{params[:experiment] ? params[:experiment] : ''}.#{params[:experimenter] ? params[:experimenter] : '*'}.#{params[:provider] ? params[:provider] : '*'}.#{params[:group] ? params[:group] : '*'}.*/
+    else
+      return /.*#{params[:site] ? params[:site] : ''}.#{params[:service] ? params[:service] : '*'}.#{params[:provider] ? params[:provider] : '*'}.#{params[:group] ? params[:group] : '*'}.*/
+    end
+  end
+
   def create_query(params)
-    qbuilder = { '_id.id' => /.*#{params[:site] ? params[:site] : ''}.#{params[:service] ? params[:service] : '*'}.#{params[:provider] ? params[:provider] : '*'}.#{params[:group] ? params[:group] : '*'}.*/ }
+    qbuilder = { '_id.id' => search_q(params) }
 
     if params[:long] and params[:lat] and params[:radius]
       qbuilder.merge!("location.coords.coordinates" => {
