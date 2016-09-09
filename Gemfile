@@ -31,6 +31,9 @@ gem 'bson_ext'
 # GeoJSON
 gem 'rgeo-geojson'
 
+# Use JWT for parsing tokens
+gem 'jwt'
+
 # Sidekiq for async jobs
 gem 'sinatra', github: 'sinatra', :require => false
 gem 'mustermann'
