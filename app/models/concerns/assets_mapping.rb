@@ -129,7 +129,7 @@ module AssetsMapping
         name: a[:id],
         last_updated_at: a[:last_updated_at],
         position: expand_position(a),
-        reputation: a["attrs"]["reputation"],
+        reputation: a[:attrs][:reputation],
         geo: a[:geo]
       }
     end
