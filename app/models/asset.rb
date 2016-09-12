@@ -51,7 +51,7 @@ class Asset < ApplicationRecord
 
   def self.get_mongo_assets(params, endpoint, request, session)
     # Logs to mongo
-    self.mongo_orion_logger(request)
+    self.mongo_orion_logger(request, session)
 
     assets = []
     logger.warn "Params: #{params}"
