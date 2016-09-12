@@ -29,7 +29,7 @@ class Asset < ApplicationRecord
     return asset
   end
 
-  def self.get_v2_assets(query_params, request, session)
+  def self.get_v2_assets(params, request, session)
     self.mongo_orion_logger(request, session)
     # Use Orion APIs
     return self.request_entities(params)
