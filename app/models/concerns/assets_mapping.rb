@@ -10,6 +10,7 @@ module AssetsMapping
           type: map_type(a),
           last_updated_at: map_time_instant(a),
           position: map_position(a),
+          reputation: a[:reputation],
           geo: map_geo_attrs(a),
         }
       }
@@ -22,6 +23,7 @@ module AssetsMapping
           id: a["_id"]["id"],
           type: map_type(a),
           last_updated_at: map_time_instant(a),
+          reputation: a[:reputation],
           data: map_data(a)
         }
       }

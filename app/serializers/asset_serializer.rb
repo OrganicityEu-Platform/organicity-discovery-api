@@ -22,6 +22,7 @@ class AssetSerializer < ActiveModel::Serializer
       group: nil,
       name: id,
       last_updated_at: object[:last_updated_at],
+      reputation: object[:reputation],
       position: position
     }
   end
