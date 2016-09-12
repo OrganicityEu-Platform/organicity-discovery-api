@@ -13,6 +13,11 @@ module Orion
     send_request url
   end
 
+  def request_entity(raw_params)
+    url = "#{ORION_URL}/#{params[:id]}"
+    send_request url
+  end
+
   def map_params(params)
     query_params = ""
     query_params.concat(to_limit(params))

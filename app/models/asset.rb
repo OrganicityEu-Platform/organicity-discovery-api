@@ -21,6 +21,14 @@ class Asset < ApplicationRecord
     }
   end
 
+  def self.get_asset(params, request, session)
+    # Logs to mongo
+    self.mongo_orion_logger(request, session)
+    # Use Orion APIs
+    assets = self.request_entity(params)
+    return asset
+  end
+
   def self.get_v2_assets(query_params, request, session)
     self.mongo_orion_logger(request, session)
     # Use Orion APIs

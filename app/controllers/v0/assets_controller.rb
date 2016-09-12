@@ -69,4 +69,10 @@ class V0::AssetsController < ApplicationController
     @asset = JSON.parse(Asset.get_mongo_assets(query_params, "mongo_data_asset", request, token_session(params[:token])))
     render json: @asset, each_serializer: AssetDataSerializer, root: false
   end
+
+  def v2
+    query_params = map_query_parameters(params)
+    @asset = Asset.get_asset(query_params, request, token_session(params[:token]))
+    render json: @asset
+  end
 end
