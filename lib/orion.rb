@@ -14,7 +14,7 @@ module Orion
   end
 
   def request_entity(raw_params)
-    url = "#{ORION_URL}/#{params[:id]}"
+    url = "#{ORION_URL}/#{raw_params[:id]}"
     send_request url
   end
 
