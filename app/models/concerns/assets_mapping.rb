@@ -30,6 +30,8 @@ module AssetsMapping
     end
 
     def mongo_map_count_assets(raw_assets, params)
+      city = City.nearby(params[:long], params[:lat])
+      city_name = city.name if city
       {
         type: "Feature",
         geometry: {
@@ -41,7 +43,8 @@ module AssetsMapping
         },
         properties: {
           count: raw_assets,
-          name: "Cluster",
+          name: "Cluster #{city_name}",
+          city: city_name,
           last_updated_at: Time.now
         }
       }
