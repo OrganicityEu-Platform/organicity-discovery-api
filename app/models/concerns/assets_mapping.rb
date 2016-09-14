@@ -30,8 +30,7 @@ module AssetsMapping
     end
 
     def mongo_map_count_assets(raw_assets, params)
-      city = City.nearby(params[:long], params[:lat])
-      city_name = city.name if city
+      city_name = map_city_from_coords(params[:long], params[:lat])
       {
         type: "Feature",
         geometry: {
@@ -51,7 +50,7 @@ module AssetsMapping
     end
 
     def map_city_from_coords(long, lat)
-      city = City.where(:lonlat => "POINT(#{long} #{lat})").first
+      city = City.nearby(long, lat).first
       if city
         return city.name
       else
@@ -193,14 +192,14 @@ module AssetsMapping
         }
       elsif a["attrs"]["position"]
         {
-          latitude: a["attrs"]["position"]["value"].split(',')[0],
-          longitude: a["attrs"]["position"]["value"].split(',')[1],
+          longitude: a["attrs"]["position"]["value"].split(',')[0],
+          latitude: a["attrs"]["position"]["value"].split(',')[1],
           city: city
         }
       else
         {
-          latitude: city_position(city)[0],
-          longitude: city_position(city)[1],
+          longitude: city_position(city)[0],
+          latitude: city_position(city)[1],
           city: city
         }
       end
@@ -208,7 +207,7 @@ module AssetsMapping
 
     def city_position(city)
       if city
-        [ city[:attributes][:latitude].to_f, city[:attributes][:longitude].to_f ]
+        [ city[:attributes][:longitude].to_f, city[:attributes][:latitude].to_f ]
       else
         "null"
       end
@@ -218,15 +217,15 @@ module AssetsMapping
       @city = City.where(name: "#{a["id"].split(':')[3].capitalize}").includes(:links)
       if a["position"] and a["position"]["value"]
         {
-          latitude: a["position"]["value"].split(',')[0],
-          longitude: a["position"]["value"].split(',')[1],
+          longitude: a["position"]["value"].split(',')[0],
+          latitude: a["position"]["value"].split(',')[1],
           city: @city.map { |c| {attributes: c, links: c.links} }.first
         }
       else
         if @city[0]
           {
-            latitude: @city[0].latitude,
             longitude: @city[0].longitude,
+            latitude: @city[0].latitude,
             city: @city.map { |c| {attributes: c, links: c.links} }.first
           }
         else

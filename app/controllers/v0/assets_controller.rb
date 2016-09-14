@@ -61,8 +61,6 @@ class V0::AssetsController < ApplicationController
   def show
     query_params = map_query_parameters(params)
     @asset = Asset.get_mongo_assets(query_params, "mongo_asset", request, token_session(params[:token]))
-    logger.warn @asset
-    render json: @asset
   end
 
   def data
@@ -73,9 +71,8 @@ class V0::AssetsController < ApplicationController
 
   def nearby
     query_params = map_query_parameters(params)
-    @asset = Asset.get_mongo_assets(query_params, "mongo_asset", request, token_session(params[:token]))
-    logger.warn @asset
-    render json: @asset
+    @assets = Asset.get_mongo_assets(query_params, "mongo_asset_nearby", request, token_session(params[:token]))
+    render json: @assets, each_serializer: AssetGeoSerializer, root: false
   end
 
   def v2

@@ -68,7 +68,7 @@ class Asset < ApplicationRecord
         raw_assets = self.mongo_assets(params)
       end
       # How to map assets
-      if ["mongo_geo_assets", "mongo_geo_search_assets"].include? endpoint
+      if ["mongo_geo_assets", "mongo_geo_search_assets", "mongo_asset_nearby"].include? endpoint
         assets = self.mongo_map_geo_assets(raw_assets).to_json
       elsif endpoint == "mongo_data_asset"
         assets = self.mongo_map_data_assets(raw_assets).to_json
@@ -88,6 +88,7 @@ class Asset < ApplicationRecord
         "mongo_asset",
         "mongo_geo_count_assets",
         "mongo_geo_assets",
+        "mongo_asset_nearby",
         "mongo_data_assets"
       ]
     end

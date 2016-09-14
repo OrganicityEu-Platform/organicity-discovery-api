@@ -71,7 +71,7 @@ module MongoOrionClient
   end
 
   def mongo_geo_assets(params)
-    log params
+    logger.warn params
     orion = setup_client
     q = create_query(params)
     m = create_options(params)
@@ -153,12 +153,23 @@ module MongoOrionClient
         :limit => 1
       }
     ).to_a
-
   end
 
-  def send_logs(logs)
-    orion = setup_client
-    # send logs to mongo
+  def mongo_asset_nearby(params)
+    asset = mongo_asset(params).first
+    if asset and asset["location"]["coords"]
+      params[:long] = asset["location"]["coords"]["coordinates"][0]
+      params[:lat] = asset["location"]["coords"]["coordinates"][0]
+      logger.warn params
+      return mongo_geo_assets(params)
+    elsif asset and asset["attrs"]["position"]
+      params[:long] = asset["attrs"]["position"]["value"][0]
+      params[:lat] = asset["attrs"]["position"]["value"][0]
+      logger.warn params
+      return mongo_geo_assets(params)
+    else
+      return []
+    end
   end
 
   def order_query(params)
