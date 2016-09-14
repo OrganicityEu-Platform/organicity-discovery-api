@@ -160,12 +160,12 @@ module MongoOrionClient
     params[:radius] = 10
     if asset and asset["location"]
       params[:long] = asset["location"]["coords"]["coordinates"][0]
-      params[:lat] = asset["location"]["coords"]["coordinates"][0]
+      params[:lat] = asset["location"]["coords"]["coordinates"][1]
       logger.warn params
       return mongo_geo_assets(params)
     elsif asset and asset["attrs"]["position"]
       params[:long] = asset["attrs"]["position"]["value"][0]
-      params[:lat] = asset["attrs"]["position"]["value"][0]
+      params[:lat] = asset["attrs"]["position"]["value"][1]
       logger.warn params
       return mongo_geo_assets(params)
     else
