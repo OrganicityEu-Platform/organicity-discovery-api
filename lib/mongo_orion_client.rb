@@ -157,7 +157,7 @@ module MongoOrionClient
 
   def mongo_asset_nearby(params)
     asset = mongo_asset(params).first
-    if asset and asset["location"]["coords"]
+    if asset and asset["location"] 
       params[:long] = asset["location"]["coords"]["coordinates"][0]
       params[:lat] = asset["location"]["coords"]["coordinates"][0]
       logger.warn params
