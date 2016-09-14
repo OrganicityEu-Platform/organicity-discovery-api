@@ -71,10 +71,11 @@ class V0::AssetsController < ApplicationController
     render json: @asset, each_serializer: AssetDataSerializer, root: false
   end
 
-  def neaby
+  def nearby
     query_params = map_query_parameters(params)
-    asset = Asset.get_mongo_assets(query_params, "mongo_asset", request, token_session(params[:token])
-
+    @asset = Asset.get_mongo_assets(query_params, "mongo_asset", request, token_session(params[:token])
+    logger.warn @asset
+    render json: @asset
   end
 
   def v2
