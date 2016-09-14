@@ -60,9 +60,8 @@ class V0::AssetsController < ApplicationController
 
   def show
     query_params = map_query_parameters(params)
-    asset = Asset.get_mongo_assets(query_params, "mongo_asset", request, token_session(params[:token]))
-    if asset
-      logger.warn @asset
+    @asset = Asset.get_mongo_assets(query_params, "mongo_asset", request, token_session(params[:token]))
+    logger.warn @asset
     render json: @asset
   end
 
@@ -74,8 +73,8 @@ class V0::AssetsController < ApplicationController
 
   def neaby
     query_params = map_query_parameters(params)
-    @asset = Asset.get_mongo_assets(query_params, "mongo_asset", request, token_session(params[:token])
-    @assets = JSON.parse
+    asset = Asset.get_mongo_assets(query_params, "mongo_asset", request, token_session(params[:token])
+
   end
 
   def v2
