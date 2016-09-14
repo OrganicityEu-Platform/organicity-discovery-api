@@ -71,7 +71,7 @@ class V0::AssetsController < ApplicationController
 
   def nearby
     query_params = map_query_parameters(params)
-    @assets = Asset.get_mongo_assets(query_params, "mongo_asset_nearby", request, token_session(params[:token]))
+    @assets = JSON.parse(Asset.get_mongo_assets(query_params, "mongo_asset_nearby", request, token_session(params[:token])))
     render json: @assets, each_serializer: AssetGeoSerializer, root: false
   end
 
