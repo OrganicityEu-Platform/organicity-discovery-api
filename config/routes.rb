@@ -33,6 +33,9 @@ Rails.application.routes.draw do
     scope '/assets/:id/data' do
       get '/' => 'assets#data'
     end
+    scope '/assets/:id/nearby' do
+      get '/' => 'assets#nearby'
+    end
     scope '/assets/:id/v2' do
       get '/' => 'assets#v2'
     end
