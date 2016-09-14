@@ -3,6 +3,6 @@ class City < ApplicationRecord
 
   scope :nearby, -> (latitude, longitude, distance_in_meters = 2000) {
     lonlat = "POINT(#{longitude} #{latitude})"
-    order("ST_Distance(lonlat, ST_GeomFromText('#{lonlat}',4326))").limit(10)
+    order("ST_Distance(lonlat, ST_GeomFromText('#{lonlat}',4326))").limit(1)
   }
 end
