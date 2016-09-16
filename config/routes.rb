@@ -30,6 +30,9 @@ Rails.application.routes.draw do
       get ':service' => 'assets#provider'
     end
     resources :assets
+    scope '/assets/:id' do
+      get '/' => 'assets#show'
+    end
     scope '/assets/:id/data' do
       get '/' => 'assets#data'
     end

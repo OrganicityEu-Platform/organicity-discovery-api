@@ -118,7 +118,7 @@ module AssetsMapping
         if a["attrs"]["location"]["type"] == "geo:polygon"
           {
             type: "Polygon",
-            coordinates: a["attrs"]["location"]["value"].split(',').each_slice(2).to_a
+            coordinates: a["attrs"]["location"]["value"].split(',')
           }
         end
       end
