@@ -9,12 +9,12 @@ module MongoOrionClient
   MONGO_PORT = Rails.application.secrets.mongo_port
 
   def setup_client
-    mongo_client = MongoClient.new(MONGO_URL, MONGO_PORT)
-    mongo_client.db('orion')
+    @mongo_client = MongoClient.new(MONGO_URL, MONGO_PORT)
+    @mongo_client.db('orion')
   end
 
   def mongo_orion_logger(request, session)
-    mongo_client = MongoClient.new(MONGO_URL, MONGO_PORT)
+    @mongo_client = MongoClient.new(MONGO_URL, MONGO_PORT)
     apilog = mongo_client.db('apilog')
     doc = {
       timestamp: Time.now.to_time.iso8601,
