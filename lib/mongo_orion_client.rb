@@ -15,7 +15,7 @@ module MongoOrionClient
 
   def mongo_orion_logger(request, session)
     @mongo_client = MongoClient.new(MONGO_URL, MONGO_PORT)
-    apilog = mongo_client.db('apilog')
+    apilog = @mongo_client.db('apilog')
     doc = {
       timestamp: Time.now.to_time.iso8601,
       ip: request.remote_ip,
