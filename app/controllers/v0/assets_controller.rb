@@ -61,6 +61,7 @@ class V0::AssetsController < ApplicationController
   def show
     query_params = map_query_parameters(params)
     @asset = Asset.get_mongo_assets(query_params, "mongo_asset", request, token_session(params[:token]))
+    render json: @asset
   end
 
   def data
