@@ -33,6 +33,8 @@ module MapParameters
       :site,
       :service,
       :zoom,
+      :experimenter,
+      :experiment,
       :q
     ]
     parameters = {}
