@@ -35,7 +35,6 @@ module MapParameters
       :zoom,
       :experimenter,
       :experiment,
-      :data,
       :q
     ]
     parameters = {}
