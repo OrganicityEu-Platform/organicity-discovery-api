@@ -34,6 +34,9 @@ gem 'rgeo-geojson'
 # Use JWT for parsing tokens
 gem 'jwt'
 
+# Use http gem for http requests (some libs still use net/http)
+gem 'http'
+
 # Sidekiq for async jobs
 gem 'sinatra', github: 'sinatra', :require => false
 gem 'mustermann'
