@@ -6,6 +6,8 @@ class Asset < ApplicationRecord
   extend Restful
   extend Orion
   extend MongoOrionClient
+  extend Accounts
+  extend Dictionary
 
   def self.get_assets(params, request, session)
     # Logs to mongo
