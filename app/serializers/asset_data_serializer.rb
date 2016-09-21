@@ -1,5 +1,5 @@
 class AssetDataSerializer < ActiveModel::Serializer
-  attribute :data_object, key: :data
+  attribute :data_object
 
   def data_object
     {
