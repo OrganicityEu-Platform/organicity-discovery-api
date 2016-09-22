@@ -11,7 +11,7 @@ module Dictionary
     token = JSON.parse(token_request[0])["access_token"]
 
     client =  HTTP[:authorization => "Authorization: #{token}", :accept => "application/json"]
-    return client.get("#{ACCOUNTS_URL}/#{endpoint}").as_json
+    return client.get("#{DICTIONARY_URL}/#{endpoint}").as_json
 
   end
 
