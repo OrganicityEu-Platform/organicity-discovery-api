@@ -6,11 +6,12 @@ module Dictionary
   DICTIONARY_URL = 'http://dev.server.organicity.eu:8080/v1/dictionary'
 
   def unregistered_asset_types
-    endpoint = '/unregisteredassettype'
-    return get_token
+    endpoint = 'unregisteredassettype'
+    token_request = get_token["body"]
+    token = JSON.parse(token_request["body"][0])["access_token"]
 
-    # client =  HTTP[:authorization => "Basic #{encode_secrets}", :content_type => "application/x-www-form-urlencoded"]
-    # return client.post(ACCOUNTS_URL, :form => {grant_type: "client_credentials"}).as_json
+    client =  HTTP[:authorization => "Authorization: #{token}", :accept => "application/json"]
+    return client.get("#{ACCOUNTS_URL}/#{endpoint}").as_json
 
   end
 
