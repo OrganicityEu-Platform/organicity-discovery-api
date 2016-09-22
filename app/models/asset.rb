@@ -9,6 +9,10 @@ class Asset < ApplicationRecord
   extend Accounts
   extend Dictionary
 
+  def self.get_types
+    return self.unregistered_asset_types
+  end
+
   def self.get_assets(params, request, session)
     # Logs to mongo
     self.mongo_orion_logger(request, session)

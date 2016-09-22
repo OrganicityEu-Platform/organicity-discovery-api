@@ -6,7 +6,7 @@ module Dictionary
   DICTIONARY_URL = 'http://dev.server.organicity.eu:8080/v1/dictionary'
 
 
-  def unregistered_asset_type
+  def unregistered_asset_types
     endpoint = '/unregisteredassettype'
     return get_token
 
