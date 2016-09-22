@@ -94,7 +94,8 @@ module AssetsMapping
     end
 
     def map_type(a)
-      a["_id"]["type"]
+      type = a["_id"]["type"]
+      return Asset.query_dictionary("assettypes/#{type}")
     end
 
     def map_data(a)
