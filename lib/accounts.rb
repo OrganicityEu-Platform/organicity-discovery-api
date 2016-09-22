@@ -7,11 +7,12 @@ module Accounts
 
   # This method should probably be private or something
   def get_token
-    return HTTP.auth("Basic #{encode_secrets}").post(ACCOUNTS_URL)
+    client =  HTTP[:authorization => "Basic #{encode_secrets}", :content_type => "application/x-www-form-urlencoded"]
+    return client.post(ACCOUNTS_URL, :form => {grant_type: "client_credentials"}).as_json
   end
 
   private
     def encode_secrets
-      return Base64.encode64("#{ENV['ORGANICITY_ACCOUNTS_ID']}:#{ENV['ORGANICITY_ACCOUNTS_SECRET']}")
+      return Base64.strict_encode64("#{ENV['ORGANICITY_ACCOUNTS_ID']}:#{ENV['ORGANICITY_ACCOUNTS_SECRET']}").chomp
     end
 end
