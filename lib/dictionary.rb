@@ -8,7 +8,7 @@ module Dictionary
   def unregistered_asset_types
     endpoint = 'unregisteredassettype'
     token_request = get_token["body"]
-    token = JSON.parse(token_request["body"][0])["access_token"]
+    token = JSON.parse(token_request[0])["access_token"]
 
     client =  HTTP[:authorization => "Authorization: #{token}", :accept => "application/json"]
     return client.get("#{ACCOUNTS_URL}/#{endpoint}").as_json
