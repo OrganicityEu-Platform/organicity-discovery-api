@@ -23,6 +23,9 @@ Rails.application.routes.draw do
       get '/search' => 'assets#geo_search'
       get '/zoom/:zoom' => 'assets#geo_count'
     end
+    scope '/assets/metadata' do
+      get '/search' => 'assets#metadata_search'
+    end
     scope '/assets/services' do
       get ':service' => 'assets#service'
     end

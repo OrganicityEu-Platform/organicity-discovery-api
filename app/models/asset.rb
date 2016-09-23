@@ -90,6 +90,8 @@ class Asset < ApplicationRecord
         "mongo_asset",
         "mongo_geo_count_assets",
         "mongo_geo_assets",
+        "mongo_geo_search_assets",
+        "mongo_metadata_assets",
         "mongo_asset_nearby",
         "mongo_data_asset"
       ]

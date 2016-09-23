@@ -70,6 +70,15 @@ module MongoOrionClient
     return qbuilder
   end
 
+  # These methods should be merged
+  def mongo_geo_search_assets(params)
+    logger.warn params
+    orion = setup_client
+    q = create_query(params)
+    m = create_options(params)
+    orion[:entities].find(q,m).to_a
+  end
+
   def mongo_geo_assets(params)
     logger.warn params
     orion = setup_client
@@ -115,6 +124,22 @@ module MongoOrionClient
     logger.warn q
     logger.warn m
     orion[:entities].find(q,m).count
+  end
+
+  def mongo_metadata_search_assets(params)
+    q = {}
+    if params[:q]
+      q.merge!('$or' => [{"_id.id" => /.*#{params[:q]}.*/i}, {"_id.type" => /.*#{params[:q]}.*/i}])
+    end
+    logger.warn params
+    orion = setup_client
+    m = create_options(params)
+    logger.warn q
+    logger.warn m
+    orion[:entities].find(
+      q,
+      m
+    ).to_a
   end
 
   def mongo_assets(params)

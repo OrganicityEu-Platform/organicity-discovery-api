@@ -34,6 +34,12 @@ class V0::AssetsController < ApplicationController
     render json: @assets, each_serializer: AssetGeoSerializer, root: false
   end
 
+  def metadata_search
+    query_params = map_query_parameters(params)
+    @assets = JSON.parse(Asset.get_mongo_assets(query_params, "mongo_metadata_search_assets", request, token_session(params[:token])))
+    render json: @assets, each_serializer: AssetSerializer, root: false
+  end
+
   def service
     query_params = map_query_parameters(params)
     @assets = Asset.get_mongo_assets(query_params, "mongo_service_assets", request, token_session(params[:token]))
