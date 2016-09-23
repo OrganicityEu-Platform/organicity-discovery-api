@@ -94,8 +94,8 @@ module AssetsMapping
     end
 
     def map_type(a)
-      type = a["_id"]["type"]
-      return Asset.query_dictionary("assettypes/#{type}")
+      a["_id"]["type"]
+      # return Asset.query_dictionary("assettypes/#{type}") This is for when we will actually have types :D
     end
 
     def map_data(a)
@@ -112,6 +112,14 @@ module AssetsMapping
               data: a["attrs"]
             }
         }
+    end
+
+    def map_attributes(attrs)
+      types = []
+      attrs.each do |attr|
+        resp = Asset.query_dictionary("attributetypes/#{attr}")
+        types.push(resp)
+      end
     end
 
     def map_geo_attrs(a)
