@@ -265,6 +265,10 @@ module AssetsMapping
     def map_orion_time_instant(a)
       if a["TimeInstant"]
         return a["TimeInstant"]["value"]
+      elsif a["modDate"]
+        return a["modDate"]
+      elsif a["creDate"]
+        return a["creDate"]
       else
         return "null"
       end
