@@ -81,7 +81,6 @@ class Asset < ApplicationRecord
       end
       @cached_call = RestCall.create(params: params, endpoint: endpoint, created_at: Time.now, response: assets)
     end
-    logger.warn assets
     return assets
   end
 
