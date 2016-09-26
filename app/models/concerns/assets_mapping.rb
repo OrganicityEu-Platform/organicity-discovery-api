@@ -282,7 +282,7 @@ module AssetsMapping
       elsif a["modDate"]
         return a["modDate"]
       elsif a["creDate"]
-        return a["creDate"
+        return a["creDate"]
       else
         return "null"
       end
