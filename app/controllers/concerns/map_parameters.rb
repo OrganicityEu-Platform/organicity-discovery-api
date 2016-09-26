@@ -34,8 +34,7 @@ module MapParameters
       :service,
       :zoom,
       :experimenter,
-      :experiment,
-      :q
+      :experiment
     ]
     parameters = {}
 

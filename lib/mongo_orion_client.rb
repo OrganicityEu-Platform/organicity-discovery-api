@@ -128,8 +128,8 @@ module MongoOrionClient
 
   def mongo_metadata_search_assets(params)
     q = {}
-    if params[:q]
-      q.merge!('$or' => [{"_id.id" => /.*#{params[:q]}.*/i}, {"_id.type" => /.*#{params[:q]}.*/i}])
+    if params[:query]
+      q.merge!('$or' => [{"_id.id" => /.*#{params[:query]}.*/i}, {"_id.type" => /.*#{params[:query]}.*/i}])
     end
     logger.warn params
     orion = setup_client
