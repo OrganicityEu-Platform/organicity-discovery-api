@@ -2,7 +2,6 @@ class AssetSerializer < ActiveModel::Serializer
   attributes :id, :type, :context, :related
 
   def id
-    logger.warn object
     object[:id]
   end
 
