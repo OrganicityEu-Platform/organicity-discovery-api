@@ -18,7 +18,7 @@ class AssetSerializer < ActiveModel::Serializer
   def context
     {
       service: type,
-      provider: object[:id].split(':')[-2],
+      provider: object[:id],
       group: nil,
       name: id,
       last_updated_at: object[:last_updated_at],
