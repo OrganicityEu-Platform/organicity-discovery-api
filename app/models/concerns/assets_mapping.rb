@@ -279,6 +279,10 @@ module AssetsMapping
         return a["attrs"]["TimeInstant"]["value"]
       elsif a["attrs"]["modDate"]
         return a["attrs"]["modDate"]
+      elsif a["modDate"]
+        return a["modDate"]
+      elsif a["creDate"]
+        return a["creDate"
       else
         return "null"
       end
