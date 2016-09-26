@@ -59,6 +59,7 @@ module AssetsMapping
     end
 
     def mongo_map_metadata_assets(assets)
+      logger.warn assets
       @assets = assets.map {
         |a| {
           id: a["_id"]["id"],
@@ -70,10 +71,10 @@ module AssetsMapping
           data: map_data(a)
         }
       }
+      logger.warn @assets
     end
 
     def mongo_map_assets(assets)
-      logger.warn assets
       @assets = assets.map {
         |a| {
           id: a["_id"]["id"],
