@@ -76,6 +76,8 @@ class Asset < ApplicationRecord
         assets = self.mongo_map_data_assets(raw_assets).to_json
       elsif endpoint == "mongo_geo_count_assets"
         assets = self.mongo_map_count_assets(raw_assets, params).to_json
+      elsif endpoint == "mongo_metadata_search_assets"
+        assets = self.mongo_map_metadata_assets(raw_assets).to_json
       else
         assets = self.mongo_map_assets(raw_assets).to_json
       end

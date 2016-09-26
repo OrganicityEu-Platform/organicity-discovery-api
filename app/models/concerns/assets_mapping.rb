@@ -58,6 +58,20 @@ module AssetsMapping
       end
     end
 
+    def mongo_map_metadata_assets(assets)
+      @assets = assets.map {
+        |a| {
+          id: a["_id"]["id"],
+          type: map_type(a),
+          last_updated_at: map_time_instant(a),
+          position: map_position(a),
+          geo: map_geo_attrs(a),
+          provider: a["_id"]["id"].split(':')[-2],
+          data: map_data(a)
+        }
+      }
+    end
+
     def mongo_map_assets(assets)
       logger.warn assets
       @assets = assets.map {
