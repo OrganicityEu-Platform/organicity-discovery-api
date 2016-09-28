@@ -220,8 +220,8 @@ module AssetsMapping
         }
       elsif a["location"] and a["location"]["coords"]
         {
-          longitude: a["location"]["coords"]["coordinates"][0],
-          latitude: a["location"]["coords"]["coordinates"][1],
+          longitude: a["location"]["coords"]["coordinates"][1],
+          latitude: a["location"]["coords"]["coordinates"][0],
           city: city
         }
       else
@@ -243,7 +243,13 @@ module AssetsMapping
 
     def map_orion_position(a)
       @city = City.where(name: "#{a["id"].split(':')[3].capitalize}").includes(:links)
-      if a["position"] and a["position"]["value"]
+      if a["position"] and a["position"]["value"] and a["position"]["type"] == "coords"
+        {
+          longitude: a["position"]["value"].split(',')[1],
+          latitude: a["position"]["value"].split(',')[0],
+          city: @city.map { |c| {attributes: c, links: c.links} }.first
+        }
+      elsif a["position"] and a["position"]["value"] and a["position"]["type"] == "geo:json"
         {
           longitude: a["position"]["value"].split(',')[0],
           latitude: a["position"]["value"].split(',')[1],
