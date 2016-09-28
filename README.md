@@ -27,7 +27,7 @@ It comprises the following functionalities:
 
 By using the [Asset Discovery Geographical](https://organicityeu.github.io/api/AssetDiscovery.html#operation--assets-geo-search-get) method we can quickly get assets data on [GeoJSON](http://geojson.org/geojson-spec.html) format. This allows to quickly develop map vizualizations by using libraries as [Leaflet](http://leafletjs.com/)
 
-```
+```javascript
 var myMap = L.map('map');
 var assetsLayer = new L.geoJson();
 assetsLayer.addTo(myMap);
