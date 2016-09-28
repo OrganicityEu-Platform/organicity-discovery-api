@@ -206,10 +206,10 @@ module AssetsMapping
     def map_position(a)
       city = City.where(name: "#{a["_id"]["id"].split(':')[3].capitalize}").includes(:links).map { |c| {attributes: c, links: c.links} }.first
 
-      if a["attrs"]["position"]
+      if a["attrs"]["position"] and a["attrs"]["position"]["type"] == "coords"
         {
-          longitude: a["attrs"]["position"]["value"].split(',')[0],
-          latitude: a["attrs"]["position"]["value"].split(',')[1],
+          longitude: a["attrs"]["position"]["value"].split(',')[1],
+          latitude: a["attrs"]["position"]["value"].split(',')[0],
           city: city
         }
       elsif a["attrs"]["location"]
