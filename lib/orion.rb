@@ -2,7 +2,7 @@ require 'net/http'
 require 'json'
 
 module Orion
-  ORION_URL = "http://ec2-52-40-19-99.us-west-2.compute.amazonaws.com:1026/v2/entities"
+  ORION_URL = "http://dev.orion.organicity.eu:1026/v2/entities"
 
   def request_entities(raw_params)
     url = "#{ORION_URL}"
@@ -36,6 +36,6 @@ module Orion
   end
 
   def to_offset(params)
-    return "&offset=#{(params[:page].to_i - 1) * params[:per].to_i}" 
+    return "&offset=#{(params[:page].to_i - 1) * params[:per].to_i}"
   end
 end

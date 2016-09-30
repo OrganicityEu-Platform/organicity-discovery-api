@@ -10,7 +10,7 @@ module MongoOrionClient
 
   def setup_client
     @mongo_client = MongoClient.new(MONGO_URL, MONGO_PORT)
-    @mongo_client.db('orion')
+    @mongo_client.db('orion-organicity')
   end
 
   def mongo_orion_logger(request, session)
