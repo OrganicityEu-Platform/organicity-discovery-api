@@ -42,7 +42,7 @@ Rails.application.routes.draw do
     scope '/assets/:id/v2' do
       get '/' => 'assets#v2'
     end
-    resources :units
+    resources :types
   end
 
   namespace :v2 do
