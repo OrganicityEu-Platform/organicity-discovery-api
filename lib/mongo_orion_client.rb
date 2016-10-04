@@ -129,7 +129,7 @@ module MongoOrionClient
   def mongo_metadata_search_assets(params)
     q = {}
     if params[:query]
-      queries = params[:query].split('+')
+      queries = params[:query].split(' ')
       search_list = []
       if queries.length > 1
         search_list.push({ "_id.id": /^#{queries.map {|q| "(?=.*#{q})"}.join()}.*$/ })
