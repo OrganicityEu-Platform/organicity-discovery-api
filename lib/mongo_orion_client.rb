@@ -131,8 +131,14 @@ module MongoOrionClient
     if params[:query]
       queries = params[:query].split(',')
       search_list = []
-      queries.each do |query|
-         search_list.push({"_id.id" => /.*#{query}.*/}, {"_id.type" => /.*#{query}.*/}, { "attrNames": query })
+      if queries.length > 1
+        search_list.push({ "_id.id": /^#{queries.map {|q| "(?=.*#{q})"}.join()}.*$/ })
+        search_list.push({ "_id.type": /^#{queries.map {|q| "(?=.*#{q})"}.join()}.*$/ })
+        queries.each do |query|
+          search_list.push({ "attrNames": query })
+        end
+      else
+        search_list.push({"_id.id" => /.*#{queries[0]}.*/}, {"_id.type" => /.*#{queries[0]}.*/}, { "attrNames": queries[0] })
       end
       q.merge!('$or' => search_list)
     end
