@@ -12,7 +12,7 @@ module Dictionary
   end
 
   def query_dictionary(endpoint)
-    return setup_dictionary_client.get("#{DICTIONARY_URL}/#{endpoint}").as_json
+    return setup_dictionary_client.get("#{DICTIONARY_URL}/#{endpoint}").body.as_json
   end
 
 end
