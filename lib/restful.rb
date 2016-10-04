@@ -8,12 +8,16 @@ module Restful
     cache_call(request_url)
   end
 
-  def make_request(request_url)
-    res = Net::HTTP.get_response(request_url)
-    unless res.kind_of? Net::HTTPSuccess
-      raise Restful::RequestError, "HTTP Response: #{res.code} #{res.message}"
+  def make_request(uri)
+    Net::HTTP.start(uri.host, uri.port) do |http|
+      request = Net::HTTP::Get.new(uri)
+      request.add_field("fiware-service", "organicity") if uri.to_s.include? "orion"
+      response = http.request request # Net::HTTPResponse object
+      unless response.kind_of? Net::HTTPSuccess
+        raise Restful::RequestError, "HTTP Response: #{response.code} #{response.message}"
+      end
+      return Response.new(response.body)
     end
-    Response.new(res.body)
   end
 
   def cache_call(url)

@@ -129,7 +129,12 @@ module MongoOrionClient
   def mongo_metadata_search_assets(params)
     q = {}
     if params[:query]
-      q.merge!('$or' => [{"_id.id" => /.*#{params[:query]}.*/}, {"_id.type" => /.*#{params[:query]}.*/}, { "attrNames": params[:query] }])
+      queries = params[:query].split(',')
+      search_list = []
+      queries.each do |query|
+         search_list.push({"_id.id" => /.*#{query}.*/}, {"_id.type" => /.*#{query}.*/}, { "attrNames": query })
+      end
+      q.merge!('$or' => search_list)
     end
     logger.warn params
     orion = setup_client
