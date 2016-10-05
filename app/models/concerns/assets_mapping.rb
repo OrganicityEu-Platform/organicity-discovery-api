@@ -102,6 +102,7 @@ module AssetsMapping
             type: a[:type],
             context: map_context(a),
             related: map_related(a)
+
           }
         }
       end

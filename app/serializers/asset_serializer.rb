@@ -80,7 +80,7 @@ class AssetSerializer < ActiveModel::Serializer
 
   def group
     {
-        type: nil
+      type: nil
     }
   end
 end
