@@ -41,6 +41,9 @@ module MapParameters
     params[:page] = 1 unless params[:page]
     params[:per] = 30 unless params[:per]
 
+    if params[:per].to_i > 100
+      params[:per] = 100
+    end
     allowed_parameters.each do |param|
       parameters[param] = params[param] if params[param]
     end
