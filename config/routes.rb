@@ -38,6 +38,7 @@ Rails.application.routes.draw do
     resources :assets
     scope '/assets/:id/data' do
       get '/' => 'assets#data'
+      get '/v2' => 'assets#show_ngsiv2'
     end
     scope '/assets/:id/nearby' do
       get '/' => 'assets#nearby'
