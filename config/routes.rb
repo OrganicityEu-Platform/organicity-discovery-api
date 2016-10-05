@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     scope '/assets/sites' do
       get '/' => 'sites#index'
       get ':site' => 'assets#site'
+      get ':site/geo' => 'assets#site_geojson'
     end
     scope '/assets/experiments' do
       get ':experiment' => 'assets#experiment'
@@ -38,7 +39,7 @@ Rails.application.routes.draw do
     resources :assets
     scope '/assets/:id/data' do
       get '/' => 'assets#data'
-      get '/v2' => 'assets#show_ngsiv2'
+      get '/ngsiv2' => 'assets#show_ngsiv2'
     end
     scope '/assets/:id/nearby' do
       get '/' => 'assets#nearby'
