@@ -84,9 +84,15 @@ class V0::AssetsController < ApplicationController
     render json: @assets, each_serializer: AssetGeoSerializer, root: false
   end
 
-  def v2
+  def show_ngsiv2
     query_params = map_query_parameters(params)
     @asset = Asset.get_asset(query_params, request, token_session(params[:token]))
     render json: @asset
+  end
+
+  def ngsiv2
+    query_params = map_query_parameters(params)
+    @assets = Asset.get_v2_assets(query_params, request, token_session(params[:token]))
+    render json: @assets
   end
 end

@@ -8,6 +8,9 @@ Rails.application.routes.draw do
   mount Sidekiq::Web, at: "/sidekiq"
 
   namespace :v0 do
+    scope '/assets/ngsiv2' do
+      get '/' => 'assets#ngsiv2'
+    end
     scope '/assets/sites' do
       get '/' => 'sites#index'
       get ':site' => 'assets#site'
@@ -39,8 +42,8 @@ Rails.application.routes.draw do
     scope '/assets/:id/nearby' do
       get '/' => 'assets#nearby'
     end
-    scope '/assets/:id/v2' do
-      get '/' => 'assets#v2'
+    scope '/assets/:id/ngsiv2' do
+      get '/' => 'assets#show_ngsiv2'
     end
     resources :types
   end
