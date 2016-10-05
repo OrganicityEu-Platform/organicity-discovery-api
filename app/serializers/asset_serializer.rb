@@ -59,14 +59,16 @@ class AssetSerializer < ActiveModel::Serializer
   end
 
   def site
-    if object[:position] and object[:position][:city]
-      {
-        id: object[:position][:city][:attributes][:name].downcase,
-        name: object[:position][:city][:attributes][:name],
-        description: object[:position][:city][:attributes][:description],
-        position: [ object[:position][:city][:attributes][:longitude].to_f, object[:position][:city][:attributes][:latitude].to_f ],
-        links: links_object
-      }
+    if object[:position] and not object[:position] == "null"
+      if object[:position][:city]
+        {
+          id: object[:position][:city][:attributes][:name].downcase,
+          name: object[:position][:city][:attributes][:name],
+          description: object[:position][:city][:attributes][:description],
+          position: [ object[:position][:city][:attributes][:longitude].to_f, object[:position][:city][:attributes][:latitude].to_f ],
+          links: links_object
+        }
+      end
     end
   end
 
