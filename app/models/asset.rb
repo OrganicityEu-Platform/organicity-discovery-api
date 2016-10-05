@@ -42,7 +42,7 @@ class Asset < ApplicationRecord
     call = RestCall.find(params: params, endpoint: endpoint).sort(by: :created_at)
     logger.warn "call: #{call.last.created_at}" unless call.empty?
     logger.warn call
-    if call.empty? or ( Time.now > Time.parse(call.last.created_at) + 10.minutes )
+    if call.empty? or ( Time.now > Time.parse(call.last.created_at) + 30.seconds )
       # We should extend cache if there is an error to preserve good results
       logger.warn "new request"
       return false

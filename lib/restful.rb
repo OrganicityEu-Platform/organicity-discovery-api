@@ -23,7 +23,7 @@ module Restful
   def cache_call(url)
     call = RestCall.find(url: url).sort(by: :created_at)
     logger.warn "call: #{call.last.created_at}" unless call.empty?
-    if call.empty? or ( Time.now > Time.parse(call.last.created_at) + 10.minutes )
+    if call.empty? or ( Time.now > Time.parse(call.last.created_at) + 30.seconds )
       # We should extend cache if there is an error to preserve good results
       response = make_request(url)
       @cached_call = RestCall.create(url: url, created_at: Time.now, response: response.to_json)
