@@ -28,7 +28,7 @@ class AssetSerializer < ActiveModel::Serializer
   end
 
   def position
-    if object[:position] and not object[:position][:city].nil?
+    if object[:position] and object[:position][:city] and not object[:position][:city].nil?
       {
         latitude: object[:position][:latitude].to_f,
         longitude: object[:position][:longitude].to_f,
