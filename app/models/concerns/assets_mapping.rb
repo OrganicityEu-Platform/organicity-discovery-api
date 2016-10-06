@@ -68,6 +68,7 @@ module AssetsMapping
           position: map_position(a),
           geo: map_geo_attrs(a),
           provider: a["_id"]["id"].split(':')[-3],
+          group: a["_id"]["id"].split(':')[-2],
           data: map_data(a)
         }
       }
@@ -81,7 +82,8 @@ module AssetsMapping
           last_updated_at: map_time_instant(a),
           position: map_position(a),
           geo: map_geo_attrs(a),
-          provider: a["_id"]["id"].split(':')[-2],
+          provider: a["_id"]["id"].split(':')[-3],
+          group: a["_id"]["id"].split(':')[-2],
           data: map_data(a)
         }
       }
@@ -154,7 +156,7 @@ module AssetsMapping
       {
         service: a[:type],
         provider: a[:provider],
-        group: a["_id"]["id"].split(':')[-2],
+        group: a[:group],
         name: a[:id],
         last_updated_at: a[:last_updated_at],
         position: expand_position(a),
@@ -165,7 +167,7 @@ module AssetsMapping
       {
         service: a[:type],
         provider: a[:provider],
-        group: a["_id"]["id"].split(':')[-2],
+        group: a[:group],
         site: map_site(a),
       }
     end
