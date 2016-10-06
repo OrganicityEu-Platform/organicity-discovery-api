@@ -165,7 +165,7 @@ module AssetsMapping
       {
         service: a[:type],
         provider: a[:provider],
-        group: a["_id"]["id"].split(':')[-2],,
+        group: a["_id"]["id"].split(':')[-2],
         site: map_site(a),
       }
     end
