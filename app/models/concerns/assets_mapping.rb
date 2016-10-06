@@ -219,8 +219,8 @@ module AssetsMapping
         }
       elsif a["attrs"]["location"] and a["attrs"]["location"]["value"] and a["attrs"]["location"]["value"]["type"] and a["attrs"]["location"]["value"]["type"] == "Polygon"
         {
-          longitude: a["attrs"]["location"]["value"]["coordinates"][0][0][0].split(',')[0],
-          latitude: a["attrs"]["location"]["value"]["coordinates"][0][0][0].split(',')[1],
+          longitude: a["attrs"]["location"]["value"]["coordinates"][0][0][0],
+          latitude: a["attrs"]["location"]["value"]["coordinates"][0][0][1],
           city: city
         }
 
