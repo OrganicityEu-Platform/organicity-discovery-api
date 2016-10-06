@@ -18,6 +18,9 @@ module MapParameters
     allowed_parameters = [
       :id,
       :type,
+      :attrs,
+      :metadata,
+      :option,
       :sort,
       :filter,
       :order,
@@ -44,7 +47,7 @@ module MapParameters
     if params[:per].to_i > 100
       params[:per] = 100
     end
-    
+
     allowed_parameters.each do |param|
       parameters[param] = params[param] if params[param]
     end
