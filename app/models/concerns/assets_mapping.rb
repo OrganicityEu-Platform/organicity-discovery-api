@@ -154,7 +154,7 @@ module AssetsMapping
       {
         service: a[:type],
         provider: a[:provider],
-        group: a["_id"]["id"].split(':')[-2],,
+        group: a["_id"]["id"].split(':')[-2],
         name: a[:id],
         last_updated_at: a[:last_updated_at],
         position: expand_position(a),
