@@ -19,7 +19,7 @@ class V0::AssetsController < ApplicationController
 
   def site_geojson
     query_params = map_query_parameters(params)
-    @assets = JSON.parse(Asset.get_mongo_assets(query_params, "mongo_geo_site_assets", request, token_session(params[:token])))
+    @assets = JSON.parse(Asset.get_mongo_assets(query_params, "mongo_geo_assets", request, token_session(params[:token])))
     render json: @assets, each_serializer: AssetGeoSerializer, root: false
   end
 

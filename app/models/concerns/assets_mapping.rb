@@ -144,9 +144,12 @@ module AssetsMapping
             type: "Polygon",
             coordinates: a["attrs"]["location"]["value"].split(',')
           }
+        else
+          map_position(a)
         end
       end
     end
+
     def map_context(a)
       {
         service: a[:type],
