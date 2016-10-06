@@ -225,6 +225,12 @@ module AssetsMapping
           latitude: a["attrs"]["location"]["value"]["coordinates"][0][0][1],
           city: city
         }
+      elsif a["attrs"]["location"] and a["attrs"]["location"]["value"] and a["attrs"]["location"]["type"] == "geo:point"
+        {
+          longitude: a["attrs"]["location"]["value"].split(',')[1],
+          latitude: a["attrs"]["location"]["value"].split(',')[0],
+          city: city
+        }
 
       elsif a["attrs"]["location"] and a["attrs"]["location"]["value"]
         {
