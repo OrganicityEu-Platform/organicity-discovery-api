@@ -304,11 +304,11 @@ module AssetsMapping
       if a["attrs"]["TimeInstant"]
         return a["attrs"]["TimeInstant"]["value"]
       elsif a["attrs"]["modDate"]
-        return Time.at(a["attrs"]["modDate"].to_i).iso8601,
+        return Time.at(a["attrs"]["modDate"].to_i).iso8601
       elsif a["modDate"]
-        return Time.at(a["modDate"].to_i).iso8601,
+        return Time.at(a["modDate"].to_i).iso8601
       elsif a["creDate"]
-        return Time.at(a["creDate"].to_i).iso8601,
+        return Time.at(a["creDate"].to_i).iso8601
       else
         return "null"
       end
