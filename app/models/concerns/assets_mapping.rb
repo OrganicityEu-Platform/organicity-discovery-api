@@ -45,7 +45,7 @@ module AssetsMapping
           id: "sites/#{city_name}",
           name: "Cluster #{city_name}",
           city: city_name,
-          last_updated_at: Time.now
+          last_updated_at: Time.now.iso8601
         }
       }
     end
@@ -304,11 +304,11 @@ module AssetsMapping
       if a["attrs"]["TimeInstant"]
         return a["attrs"]["TimeInstant"]["value"]
       elsif a["attrs"]["modDate"]
-        return a["attrs"]["modDate"]
+        return Time.at(a["attrs"]["modDate"].to_i).iso8601,
       elsif a["modDate"]
-        return a["modDate"]
+        return Time.at(a["modDate"].to_i).iso8601,
       elsif a["creDate"]
-        return a["creDate"]
+        return Time.at(a["creDate"].to_i).iso8601,
       else
         return "null"
       end
