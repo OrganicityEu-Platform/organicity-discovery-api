@@ -37,7 +37,10 @@ Rails.application.configure do
   # Raise an error on page load if there are pending migrations.
   config.active_record.migration_error = :page_load
 
-
+  config.opbeat.organization_id = ENV['OPBEAT_ORG_ID']
+  config.opbeat.app_id = ENV['OPBEAT_APP_ID']
+  config.opbeat.secret_token = ENV['OPBEAT_TOKEN']
+  
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 

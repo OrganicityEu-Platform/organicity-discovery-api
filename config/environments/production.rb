@@ -82,6 +82,10 @@ Rails.application.configure do
     config.logger = ActiveSupport::TaggedLogging.new(logger)
   end
 
+  config.opbeat.organization_id = ENV['OPBEAT_ORG_ID']
+  config.opbeat.app_id = ENV['OPBEAT_APP_ID']
+  config.opbeat.secret_token = ENV['OPBEAT_TOKEN']
+
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 end

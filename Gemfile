@@ -61,6 +61,9 @@ gem 'rack-cors', :require => 'rack/cors'
 
 gem 'active_model_serializers', github: 'rails-api/active_model_serializers'
 
+# Use opbeat for error logs
+gem 'opbeat', git: 'https://github.com/opbeat/opbeat-ruby'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
