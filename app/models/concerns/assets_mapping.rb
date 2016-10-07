@@ -227,8 +227,8 @@ module AssetsMapping
         }
       elsif a["attrs"]["location"] and a["attrs"]["location"]["value"] and a["attrs"]["location"]["type"] == "geo:point"
         {
-          longitude: a["attrs"]["location"]["value"].split(',')[1],
-          latitude: a["attrs"]["location"]["value"].split(',')[0],
+          longitude: a["attrs"]["location"]["value"].split(',')[0],
+          latitude: a["attrs"]["location"]["value"].split(',')[1],
           city: city
         }
 
