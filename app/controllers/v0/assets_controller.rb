@@ -156,12 +156,12 @@ class V0::AssetsController < ApplicationController
   def show_ngsiv2
     query_params = map_query_parameters(params)
     @asset = Asset.get_asset(query_params, request, token_session(params[:token]))
-    render json: @asset[:doc]
+    render json: @asset["doc"]
   end
 
   def ngsiv2
     query_params = map_query_parameters(params)
     @assets = Asset.get_v2_assets(query_params, request, token_session(params[:token]))
-    render json: @assets[:doc]
+    render json: @assets["doc"]
   end
 end
