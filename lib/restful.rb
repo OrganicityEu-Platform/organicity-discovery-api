@@ -14,7 +14,7 @@ module Restful
       request.add_field("fiware-service", "organicity") if uri.to_s.include? "orion"
       response = http.request request # Net::HTTPResponse object
       unless response.kind_of? Net::HTTPSuccess
-        raise Restful::RequestError, "HTTP Response: #{response.code} #{response.message}"
+        return Error.new(response)
       end
       return Response.new(response.body)
     end
@@ -37,7 +37,21 @@ module Restful
     return JSON.parse(@cached_call.response)
   end
 
-  class RequestError < StandardError; end
+  class Error
+    def initialize(response)
+      @error = JSON.parse({
+        status: response.code,
+        error: response.message,
+        message: "HTTP Response: #{response.code} #{response.message}"
+      })
+    end
+
+    # Return JSON object.
+    def error
+      @error
+    end
+    
+  end
 
   # Response object returned after a REST call to service.
   class Response
