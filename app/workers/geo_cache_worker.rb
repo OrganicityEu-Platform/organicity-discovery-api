@@ -6,6 +6,6 @@ class GeoCacheWorker
 
   def perform(query_params = {})
     logger.warn "[Sidekiq] Performing geo cache"
-    Asset.get_mongo_assets(query_params, "mongo_geo_assets")
+    Asset.query_dictionary("assettypes")
   end
 end
