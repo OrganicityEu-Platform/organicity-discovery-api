@@ -130,7 +130,11 @@ class V0::AssetsController < ApplicationController
   def show
     query_params = map_query_parameters(params)
     @asset = Asset.get_mongo_assets(query_params, "mongo_asset", request, token_session(params[:token]))
-    render json: @asset
+    if @asset.empty?
+      render json: {error: {status: 404, message: 'Not found'}}
+    else
+      render json: @asset
+    end
   end
 
   #
@@ -141,7 +145,11 @@ class V0::AssetsController < ApplicationController
   def data
     query_params = map_query_parameters(params)
     @asset = JSON.parse(Asset.get_mongo_assets(query_params, "mongo_data_asset", request, token_session(params[:token])))
-    render json: @asset, each_serializer: AssetDataSerializer, root: false
+    if @asset.empty?
+      render json: {error: {status: 404, message: 'Not found'}}
+    else
+      render json: @asset, each_serializer: AssetDataSerializer, root: false
+    end
   end
 
   #
@@ -156,7 +164,11 @@ class V0::AssetsController < ApplicationController
   def show_ngsiv2
     query_params = map_query_parameters(params)
     @asset = Asset.get_asset(query_params, request, token_session(params[:token]))
-    render json: @asset["doc"]
+    if @assets.empty?
+      render json: {error: {status: 404, message: 'Not found'}}
+    else
+      render json: @asset["doc"]
+    end
   end
 
   def ngsiv2
