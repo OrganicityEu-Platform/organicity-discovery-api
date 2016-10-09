@@ -138,6 +138,7 @@ class V0::AssetsController < ApplicationController
   # /assets/:urn
   #
   def show
+    logger.warn "show :id"
     query_params = map_query_parameters(params)
     @asset = Asset.get_mongo_assets(query_params, "mongo_asset", request, token_session(params[:token]))
     if @asset.empty?
@@ -177,7 +178,7 @@ class V0::AssetsController < ApplicationController
     logger.warn ":id/ngsiv2"
     query_params = map_query_parameters(params)
     @asset = Asset.get_asset(query_params, request, token_session(params[:token]))
-    if @assets.nil?
+    if @asset.empty?
       render json: {error: {status: 404, message: 'Not found'}}
     else
       render json: @asset["doc"]
