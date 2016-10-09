@@ -8,6 +8,7 @@ class V0::AssetsController < ApplicationController
   # /assets/
   #
   def index
+    logger.warn "index"
     query_params = map_query_parameters(params)
     @assets = Asset.get_assets(query_params, request, token_session(params[:token]))
     render json: @assets, each_serializer: AssetSerializer, root: false
@@ -19,6 +20,7 @@ class V0::AssetsController < ApplicationController
   # /assets/sites/:site
   #
   def site
+    logger.warn "site"
     query_params = map_query_parameters(params)
     @assets = Asset.get_mongo_assets(query_params, "mongo_site_assets", request, token_session(params[:token]))
     render json: @assets, each_serializer: AssetSerializer, root: false
@@ -28,6 +30,7 @@ class V0::AssetsController < ApplicationController
   # Return assets by site in geojson format
   #
   def site_geojson
+    logger.warn ":site/geo"
     query_params = map_query_parameters(params)
     @assets = JSON.parse(Asset.get_mongo_assets(query_params, "mongo_geo_assets", request, token_session(params[:token])))
     render json: @assets, each_serializer: AssetGeoSerializer, root: false
@@ -39,6 +42,7 @@ class V0::AssetsController < ApplicationController
   # /assets/experiments/:experiment
   #
   def experiment
+    logger.warn "experiment"
     query_params = map_query_parameters(params)
     @assets = Asset.get_mongo_assets(query_params, "mongo_experiment_assets", request, token_session(params[:token]))
     render json: @assets, each_serializer: AssetSerializer, root: false
@@ -50,6 +54,7 @@ class V0::AssetsController < ApplicationController
   # /assets/experimenters/:experimenter
   #
   def experimenter
+    logger.warn "experimenter"
     query_params = map_query_parameters(params)
     @assets = Asset.get_mongo_assets(query_params, "mongo_experimenter_assets", request, token_session(params[:token]))
     render json: @assets, each_serializer: AssetSerializer, root: false
@@ -61,6 +66,7 @@ class V0::AssetsController < ApplicationController
   # /assets/geo/search
   #
   def geo_search
+    logger.warn "geo search"
     query_params = map_query_parameters(params)
     @assets = JSON.parse(Asset.get_mongo_assets(query_params, "mongo_geo_search_assets", request, token_session(params[:token])))
     render json: @assets, each_serializer: AssetGeoSerializer, root: false
@@ -70,6 +76,7 @@ class V0::AssetsController < ApplicationController
   # Search assets collection incrementally
   #
   def metadata_search
+    logger.warn "metadata/search"
     query_params = map_query_parameters(params)
     @assets = Asset.get_mongo_assets(query_params, "mongo_metadata_search_assets", request, token_session(params[:token]))
     logger.warn @assets
@@ -82,6 +89,7 @@ class V0::AssetsController < ApplicationController
   # /assets/services/:service
   #
   def service
+    logger.warn "service"
     query_params = map_query_parameters(params)
     @assets = Asset.get_mongo_assets(query_params, "mongo_service_assets", request, token_session(params[:token]))
     render json: @assets, each_serializer: AssetSerializer, root: false
@@ -93,6 +101,7 @@ class V0::AssetsController < ApplicationController
   # /assets/providers/:provider
   #
   def provider
+    logger.warn "provider"
     query_params = map_query_parameters(params)
     @assets = Asset.get_mongo_assets(query_params, "mongo_provider_assets", request, token_session(params[:token]))
     render json: @assets, each_serializer: AssetSerializer, root: false
@@ -105,6 +114,7 @@ class V0::AssetsController < ApplicationController
   # /assets/sites/:site/geo
   #
   def geo
+    logger.warn "geo"
     query_params = map_query_parameters(params)
     @assets = JSON.parse(Asset.get_mongo_assets(query_params, "mongo_geo_assets", request, token_session(params[:token])))
     render json: @assets, each_serializer: AssetGeoSerializer, root: false
@@ -116,6 +126,7 @@ class V0::AssetsController < ApplicationController
   # /assets/geo/zoom/:zoom
   #
   def geo_count
+    logger.warn "geo count"
     query_params = map_query_parameters(params)
     @assets = JSON.parse(Asset.get_mongo_assets(query_params, "mongo_geo_count_assets", request, token_session(params[:token])))
     render json: @assets
@@ -142,6 +153,7 @@ class V0::AssetsController < ApplicationController
   # /assets/:urn/data
   #
   def data
+    logger.warn ":id/data"
     query_params = map_query_parameters(params)
     @asset = JSON.parse(Asset.get_mongo_assets(query_params, "mongo_data_asset", request, token_session(params[:token])))
     if @asset.empty?
@@ -155,12 +167,14 @@ class V0::AssetsController < ApplicationController
   # Return assets nearby by given asset
   #
   def nearby
+    logger.warn ":id/nearby"
     query_params = map_query_parameters(params)
     @assets = JSON.parse(Asset.get_mongo_assets(query_params, "mongo_asset_nearby", request, token_session(params[:token])))
     render json: @assets, each_serializer: AssetGeoSerializer, root: false
   end
 
   def show_ngsiv2
+    logger.warn ":id/ngsiv2"
     query_params = map_query_parameters(params)
     @asset = Asset.get_asset(query_params, request, token_session(params[:token]))
     if @assets.empty?
@@ -171,6 +185,7 @@ class V0::AssetsController < ApplicationController
   end
 
   def ngsiv2
+    logger.warn "assets/ngsiv2"
     query_params = map_query_parameters(params)
     @assets = Asset.get_v2_assets(query_params, request, token_session(params[:token]))
     render json: @assets["doc"]
