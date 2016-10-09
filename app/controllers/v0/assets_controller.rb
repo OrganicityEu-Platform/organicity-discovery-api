@@ -177,7 +177,7 @@ class V0::AssetsController < ApplicationController
     logger.warn ":id/ngsiv2"
     query_params = map_query_parameters(params)
     @asset = Asset.get_asset(query_params, request, token_session(params[:token]))
-    if @assets.empty?
+    if @assets.nil?
       render json: {error: {status: 404, message: 'Not found'}}
     else
       render json: @asset["doc"]
