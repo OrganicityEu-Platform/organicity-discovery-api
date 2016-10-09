@@ -43,7 +43,7 @@ module Restful
         status: response.code,
         error: response.message,
         message: "HTTP Response: #{response.code} #{response.message}"
-      }}.to_s)
+      }}.to_json)
     end
 
     # Return JSON object.
