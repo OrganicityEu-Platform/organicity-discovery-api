@@ -39,11 +39,11 @@ module Restful
 
   class Error
     def initialize(response)
-      @error = {
+      @error = JSON.parse({
         status: response.code,
         error: response.message,
         message: "HTTP Response: #{response.code} #{response.message}"
-      }
+      }.to_s)
     end
 
     # Return JSON object.
