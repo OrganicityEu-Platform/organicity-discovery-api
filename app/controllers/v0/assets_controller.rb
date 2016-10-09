@@ -142,7 +142,7 @@ class V0::AssetsController < ApplicationController
     query_params = map_query_parameters(params)
     @asset = Asset.get_mongo_assets(query_params, "mongo_asset", request, token_session(params[:token]))
     logger.warn @asset
-    if @asset.empty?
+    if @asset.to_s == "[]"
       render json: {error: {status: 404, message: 'Not found'}}
     else
       render json: @asset
@@ -158,7 +158,7 @@ class V0::AssetsController < ApplicationController
     logger.warn ":id/data"
     query_params = map_query_parameters(params)
     @asset = JSON.parse(Asset.get_mongo_assets(query_params, "mongo_data_asset", request, token_session(params[:token])))
-    if @asset.empty?
+    if @asset.to_s == "[]"
       render json: {error: {status: 404, message: 'Not found'}}
     else
       render json: @asset, each_serializer: AssetDataSerializer, root: false
