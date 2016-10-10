@@ -12,7 +12,14 @@ module Dictionary
   end
 
   def query_dictionary(endpoint)
-    return setup_dictionary_client.get("#{DICTIONARY_URL}/#{endpoint}").body.as_json
+    call = RestCall.find(params: {}, endpoint: endpoint).sort(by: :created_at)
+    if call.empty? or ( Time.now > Time.parse(call.last.created_at) + 30.seconds )
+      @response = setup_dictionary_client.get("#{DICTIONARY_URL}/#{endpoint}").body.as_json
+      @cached_call = RestCall.create(params: {}, endpoint: endpoint, created_at: Time.now, response: @response)
+    else
+      @respone = call.response
+    end
+    return @response
   end
 
 end
