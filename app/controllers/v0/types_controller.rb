@@ -6,7 +6,7 @@ class V0::TypesController < ApplicationController
   end
 
   def show
-    @types = Asset.query_dictionary("assettypes/#{params[:id]}")
+    @types = JSON.parse(Asset.query_dictionary("assettypes/#{params[:id]}"))
     render json: @types
   end
 
