@@ -42,7 +42,7 @@ module AssetsMapping
         },
         properties: {
           count: raw_assets,
-          id: "sites/#{city_name}",
+          id: "sites/#{city_name.downcase}",
           name: "Cluster #{city_name}",
           city: city_name,
           last_updated_at: Time.now.iso8601
