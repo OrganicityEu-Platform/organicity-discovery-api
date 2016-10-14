@@ -1,7 +1,7 @@
 class V0::TypesController < ApplicationController
 
   def index
-    @types = eval(Asset.query_dictionary("assettypes"))
+    @types = Asset.query_dictionary("assettypes")
     render json: @types
   end
 
