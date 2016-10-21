@@ -17,9 +17,9 @@ module Dictionary
       @response = setup_dictionary_client.get("#{DICTIONARY_URL}/#{endpoint}").body.as_json
       @cached_call = RestCall.create(params: {}, endpoint: endpoint, created_at: Time.now, response: @response)
     else
-      @respone = call.response
+      @respone = call
     end
-    return @response
+    return @response[0]
   end
 
 end
