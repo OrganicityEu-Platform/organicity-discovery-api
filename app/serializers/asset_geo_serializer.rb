@@ -1,3 +1,5 @@
+require 'time'
+
 class AssetGeoSerializer < ActiveModel::Serializer
   attributes :type, :properties
   attribute :data, key: :features
@@ -56,7 +58,8 @@ class AssetGeoSerializer < ActiveModel::Serializer
     {
       id: o["id"],
       type: o["type"],
-      last_update_at: o["last_updated_at"],
+      last_update_at: Time.at(o["last_updated_at"].to_i).utc.iso8601,
+      #last_update_at: o["last_updated_at"],
       site: o["position"]["city"] ? o["position"]["city"]["attributes"]["name"].downcase : "null",
       origin: "null",
       provider: "null",

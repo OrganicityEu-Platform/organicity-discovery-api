@@ -30,6 +30,7 @@ module MapParameters
       :lat,
       :long,
       :radius,
+      :km,
       :site,
       :service,
       :zoom,

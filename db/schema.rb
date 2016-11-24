@@ -14,6 +14,7 @@ ActiveRecord::Schema.define(version: 20160520083800) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "postgis"
 
   create_table "assets", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -21,17 +22,18 @@ ActiveRecord::Schema.define(version: 20160520083800) do
   end
 
   create_table "cities", force: :cascade do |t|
-    t.string   "name"
-    t.string   "country"
-    t.string   "country_code"
-    t.string   "region"
-    t.string   "avatar_src"
-    t.string   "header_image_src"
-    t.text     "description"
-    t.float    "latitude"
-    t.float    "longitude"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.string    "name"
+    t.string    "country"
+    t.string    "country_code"
+    t.string    "region"
+    t.string    "avatar_src"
+    t.string    "header_image_src"
+    t.text      "description"
+    t.float     "latitude"
+    t.float     "longitude"
+    t.geography "lonlat",           limit: {:srid=>4326, :type=>"point", :geographic=>true}
+    t.datetime  "created_at",                                                                null: false
+    t.datetime  "updated_at",                                                                null: false
   end
 
   create_table "experimenters", force: :cascade do |t|
