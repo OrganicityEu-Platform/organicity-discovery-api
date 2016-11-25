@@ -1,1 +1,1 @@
-Rails.application.config.adapter = :json
+Rails.application.config.adapter = :json 

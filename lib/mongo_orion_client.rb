@@ -42,9 +42,14 @@ module MongoOrionClient
     return mbuilder
   end
 
+# Experimenters: {"_id.id": /urn:oc:entity:experimenters:62afc265-af9a-47e7-afb5-caab21ed09b4/}
+# Experiments: {"_id.id": /urn:oc:entity:experimenters:[^:]+:57f3debd6ec783244b3901e2/}
+
   def search_q(params)
-    if params[:experiment] or params[:experimenter]
-      return /.*#{params[:experiment] ? params[:experiment] : ''}.#{params[:experimenter] ? params[:experimenter] : '*'}.#{params[:provider] ? params[:provider] : '*'}.#{params[:group] ? params[:group] : '*'}.*/
+    if params[:experimenter] 
+      return /urn:oc:entity:experimenters:#{params[:experimenter]}/
+    elsif params[:experiment]
+      return /urn:oc:entity:experimenters:[^:]+:#{params[:experiment]}/
     else
       return /.*#{params[:site] ? params[:site] : ''}.#{params[:service] ? params[:service] : '*'}.#{params[:provider] ? params[:provider] : '*'}.#{params[:group] ? params[:group] : '*'}.*/
     end
@@ -54,14 +59,14 @@ module MongoOrionClient
     qbuilder = { '_id.id' => search_q(params) }
 
     if params[:long] and params[:lat]
-      if !params[:radius]
+      if !params[:radius] 
         params[:radius] = 1
         params[:km]     = true;
-      end
+      end  
 
       params[:radius] = params[:radius].to_f
 
-      if params[:km]
+      if params[:km] 
         params[:radius] = params[:radius] / 6378.1
       end
 

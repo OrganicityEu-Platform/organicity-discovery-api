@@ -58,13 +58,38 @@ class AssetGeoSerializer < ActiveModel::Serializer
     {
       id: o["id"],
       type: o["type"],
-      last_update_at: Time.at(o["last_updated_at"].to_i).utc.iso8601,
-      #last_update_at: o["last_updated_at"],
+      name: map_name(o),
+      last_update_at: o["last_updated_at"],
       site: o["position"]["city"] ? o["position"]["city"]["attributes"]["name"].downcase : "null",
-      origin: "null",
-      provider: "null",
-      group: "null",
-      service: "null"
+      provider: map_provider(o),
+      group: map_group(o),
+      service: map_service(o)
     }
   end
+
+  def map_name(a)
+    return a["id"].split(':').last
+  end
+
+  def map_provider(a)
+    return a["id"].split(':')[5]
+  end
+
+  def map_service(a)
+    return a["id"].split(':')[4]
+  end
+
+  def map_group(a)
+    parts = a["id"].split(':')
+
+    #urn:oc:entity:{site}:{service}:{provider}:{group}:{entityName}
+    #{group}: Is optional
+
+    if parts.length < 8 # group is optional. there is no group.
+      return "null"
+    else
+      return parts[-2]
+    end
+  end
+
 end

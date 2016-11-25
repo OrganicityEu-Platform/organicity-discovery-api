@@ -133,6 +133,7 @@ GEM
       timers (>= 4.1.1)
     celluloid-supervision (0.20.6)
       timers (>= 4.1.1)
+    chronic (0.10.2)
     concurrent-ruby (1.0.2)
     connection_pool (2.2.0)
     domain_name (0.5.20161021)
@@ -279,6 +280,7 @@ DEPENDENCIES
   activerecord-postgis-adapter
   bson_ext
   byebug
+  chronic
   http
   jwt
   listen (~> 3.0.5)
