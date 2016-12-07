@@ -1,3 +1,5 @@
+require 'chronic'
+
 module AssetsMapping
   extend ActiveSupport::Concern
 
@@ -8,7 +10,7 @@ module AssetsMapping
         |a| {
           id: a["_id"]["id"],
           type: map_type(a),
-          last_updated_at: map_time_instant(a),
+          last_updated_at: map_time_instant_to_iso(map_time_instant(a)),
           position: map_position(a),
           reputation: a["attrs"]["reputation"],
           geo: map_geo_attrs(a),
@@ -22,7 +24,7 @@ module AssetsMapping
         |a| {
           id: a["_id"]["id"],
           type: map_type(a),
-          last_updated_at: map_time_instant(a),
+          last_updated_at: map_time_instant_to_iso(map_time_instant(a)),
           reputation: a["attrs"]["reputation"],
           data: map_data(a)
         }
@@ -42,10 +44,10 @@ module AssetsMapping
         },
         properties: {
           count: raw_assets,
-          id: "sites/#{city_name.downcase}",
+          id: "sites/#{city_name}",
           name: "Cluster #{city_name}",
           city: city_name,
-          last_updated_at: Time.now.iso8601
+          last_updated_at: Time.now
         }
       }
     end
@@ -64,11 +66,10 @@ module AssetsMapping
         |a| {
           id: a["_id"]["id"],
           type: map_type(a),
-          last_updated_at: map_time_instant(a),
+          last_updated_at: map_time_instant_to_iso(map_time_instant(a)),
           position: map_position(a),
           geo: map_geo_attrs(a),
-          provider: a["_id"]["id"].split(':')[-3],
-          group: a["_id"]["id"].split(':')[-2],
+          provider: map_provider(a),
           data: map_data(a)
         }
       }
@@ -79,11 +80,10 @@ module AssetsMapping
         |a| {
           id: a["_id"]["id"],
           type: map_type(a),
-          last_updated_at: map_time_instant(a),
+          last_updated_at:  map_time_instant_to_iso(map_time_instant(a)),
           position: map_position(a),
           geo: map_geo_attrs(a),
-          provider: a["_id"]["id"].split(':')[-3],
-          group: a["_id"]["id"].split(':')[-2],
+          provider: map_provider(a),
           data: map_data(a)
         }
       }
@@ -119,9 +119,9 @@ module AssetsMapping
         {
           context:
             {
-              time_instant: a["attrs"]["TimeInstant"],
-              created_at: Time.at(a["creDate"].to_i).iso8601,
-              updated_at: Time.at(a["modDate"].to_i).iso8601
+              time_instant: a["TimeInstant"],
+              created_at: a["creDate"],
+              updated_at: a["modDate"]
             },
           attributes:
             {
@@ -146,30 +146,76 @@ module AssetsMapping
             type: "Polygon",
             coordinates: a["attrs"]["location"]["value"].split(',')
           }
-        else
-          map_position(a)
         end
       end
     end
 
+    #urn:oc:entity:experimenters:{experimenterID}:{experimentID}:{assetName}
+    #urn:oc:entity:{site}:{service}:{provider}:{group}:{entityName}
+
     def map_context(a)
-      {
-        service: a[:type],
-        provider: a[:provider],
-        group: a[:group],
-        name: a[:id],
-        last_updated_at: a[:last_updated_at],
-        position: expand_position(a),
-      }
+      if !is_experiment(a)
+          {
+          service: map_service(a),
+          provider: a[:provider],
+          group: map_group(a),
+          name: map_name(a),
+          last_updated_at: map_time_instant_to_iso(a[:last_updated_at]),
+          position: expand_position(a),
+        }
+      else
+        {
+          experimenter: map_service(a),
+          experiment: a[:provider],
+          name: map_name(a),
+          last_updated_at: map_time_instant_to_iso(a[:last_updated_at]),
+          position: expand_position(a),
+        }
+      end
     end
 
     def map_related(a)
-      {
-        service: a[:type],
-        provider: a[:provider],
-        group: a[:group],
-        site: map_site(a),
-      }
+      if !is_experiment(a)
+        {
+          service: map_service(a),
+          provider: a[:provider],
+          group: map_group(a),
+          site: map_site(a),
+        }
+      else
+        {
+          experiments: "null",
+        }
+      end 
+    end
+
+    def map_group(a)
+      parts = a[:id].split(':')
+
+      #urn:oc:entity:{site}:{service}:{provider}:{group}:{entityName}
+      #{group}: Is optional
+
+      if parts.length < 8 # group is optional. there is no group.
+        return "null"
+      else
+        return parts[-2]
+      end
+    end
+
+    def map_name(a)
+      return a[:id].split(':').last
+    end
+
+    def map_service(a)
+      return a[:id].split(':')[4]
+    end
+
+    def is_experiment(a)
+      return a[:id].split(':')[3] == "experimenters" ? true : false
+    end
+
+    def map_provider(a)
+      return a["_id"]["id"].split(':')[5]
     end
 
     def map_site(a)
@@ -178,8 +224,11 @@ module AssetsMapping
           id: a[:position][:city][:attributes][:name].downcase,
           name: a[:position][:city][:attributes][:name],
           description: a[:position][:city][:attributes][:description],
-          position: [ a[:position][:city][:attributes][:longitude].to_f, a[:position][:city][:attributes][:latitude].to_f ],
-          links: links_object(a).to_json
+          position: {
+            latitude: map_string_to_float(a[:position][:city][:attributes][:latitude]),
+            longitude: map_string_to_float(a[:position][:city][:attributes][:longitude])
+          },
+          links: links_object(a)
         }
       end
     end
@@ -189,11 +238,11 @@ module AssetsMapping
     end
 
     def expand_position(a)
-      if a[:position] and a[:position] != "null"
+      if a[:position] and a[:position] != "null" and map_string_to_float(a[:position][:latitude])
         if a[:position][:city]
           {
-            latitude: a[:position][:latitude],
-            longitude: a[:position][:longitude],
+            latitude: map_string_to_float(a[:position][:latitude]),
+            longitude: map_string_to_float(a[:position][:longitude]),
             city: a[:position][:city][:attributes][:name],
             region: a[:position][:city][:attributes][:region],
             country_code: a[:position][:city][:attributes][:country_code],
@@ -201,8 +250,8 @@ module AssetsMapping
           }
         else
           {
-            latitude: a[:position][:latitude],
-            longitude: a[:position][:longitude]
+            latitude: map_string_to_float(a[:position][:latitude]),
+            longitude: map_string_to_float(a[:position][:longitude])
           }
         end
       else
@@ -219,20 +268,7 @@ module AssetsMapping
           latitude: a["attrs"]["position"]["value"].split(',')[0],
           city: city
         }
-      elsif a["attrs"]["location"] and a["attrs"]["location"]["value"] and a["attrs"]["location"]["value"]["type"] and a["attrs"]["location"]["value"]["type"] == "Polygon"
-        {
-          longitude: a["attrs"]["location"]["value"]["coordinates"][0][0][0],
-          latitude: a["attrs"]["location"]["value"]["coordinates"][0][0][1],
-          city: city
-        }
-      elsif a["attrs"]["location"] and a["attrs"]["location"]["value"] and a["attrs"]["location"]["type"] == "geo:point"
-        {
-          longitude: a["attrs"]["location"]["value"].split(',')[0],
-          latitude: a["attrs"]["location"]["value"].split(',')[1],
-          city: city
-        }
-
-      elsif a["attrs"]["location"] and a["attrs"]["location"]["value"]
+      elsif a["attrs"]["location"]
         {
           longitude: a["attrs"]["location"]["value"].split(',')[0],
           latitude: a["attrs"]["location"]["value"].split(',')[1],
@@ -300,15 +336,35 @@ module AssetsMapping
       end
     end
 
+    def map_time_instant_to_iso(a)
+      if is_number?(a)  
+        return Time.at(Integer(a)).utc.iso8601 rescue "null"
+      else
+        return Chronic.parse(a).utc.iso8601 rescue "null"
+      end
+    end
+
+    def map_string_to_float(a)
+      if is_number?(a)                             
+        return Float(a) rescue "null"
+      else
+        return nil
+      end
+    end
+
+    def is_number? string
+      true if Float(string) rescue false
+    end
+
     def map_time_instant(a)
       if a["attrs"]["TimeInstant"]
         return a["attrs"]["TimeInstant"]["value"]
       elsif a["attrs"]["modDate"]
-        return Time.at(a["attrs"]["modDate"].to_i).iso8601
+        return a["attrs"]["modDate"]
       elsif a["modDate"]
-        return Time.at(a["modDate"].to_i).iso8601
+        return a["modDate"]
       elsif a["creDate"]
-        return Time.at(a["creDate"].to_i).iso8601
+        return a["creDate"]
       else
         return "null"
       end

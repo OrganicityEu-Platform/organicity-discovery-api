@@ -23,22 +23,8 @@ module Orion
     query_params.concat(to_limit(params))
     query_params.concat(to_offset(params))
     query_params.concat(to_type(params))
-    query_params.concat(to_attrs(params))
-    query_params.concat(to_metadata(params))
-    query_params.concat(to_options(params))
+
     return query_params
-  end
-
-  def to_attrs(params)
-    return params[:attrs] ? "&attrs=#{params[:attrs]}" : ""
-  end
-
-  def to_metadata(params)
-    return params[:metadata] ? "&metadata=#{params[:metadata]}" : ""
-  end
-
-  def to_options(params)
-    return params[:options] ? "&options=#{params[:options]}" : ""
   end
 
   def to_type(params)

@@ -10,22 +10,16 @@ class AssetSerializer < ActiveModel::Serializer
   end
 
   def provider
-    object[:id].split(':')[-3]
-  end
-
-  def group
-    object[:id].split(':')[-2]
-  end
-
-  def service
-    type
+    {
+      type: object[:id].split(':')[-2]
+    }
   end
 
   def context
     {
       service: type,
       provider: object[:id].split(':')[-2],
-      group: group,
+      group: nil,
       name: id,
       last_updated_at: object[:last_updated_at],
       reputation: object[:reputation],
@@ -82,4 +76,15 @@ class AssetSerializer < ActiveModel::Serializer
     Hash[*object[:position][:city][:links].map { |link|  [link[:relationship], { href: link[:url] } ] }.flatten]
   end
 
+  def service
+    {
+      type: type
+    }
+  end
+
+  def group
+    {
+      type: nil
+    }
+  end
 end

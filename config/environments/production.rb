@@ -76,15 +76,17 @@ Rails.application.configure do
   # require 'syslog/logger'
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
 
-  if ENV["RAILS_LOG_TO_STDOUT"].present?
+  if ENV['RAILS_LOG_TO_STDOUT'].present?
     logger           = ActiveSupport::Logger.new(STDOUT)
     logger.formatter = config.log_formatter
     config.logger = ActiveSupport::TaggedLogging.new(logger)
   end
 
-  config.opbeat.organization_id = ENV['OPBEAT_ORG_ID']
-  config.opbeat.app_id = ENV['OPBEAT_APP_ID']
-  config.opbeat.secret_token = ENV['OPBEAT_TOKEN']
+  if ENV['OPBEAT_ORG_ID'].present?
+    config.opbeat.organization_id = ENV['OPBEAT_ORG_ID']
+    config.opbeat.app_id = ENV['OPBEAT_APP_ID']
+    config.opbeat.secret_token = ENV['OPBEAT_TOKEN']
+  end
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
