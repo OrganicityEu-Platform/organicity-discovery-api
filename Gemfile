@@ -6,7 +6,7 @@ gem 'rails', '>= 5.0.0.rc1', '< 5.1'
 
 # Use Postgres and ActiveRecord Postgis-adapter
 gem 'pg'
-gem 'activerecord-postgis-adapter'
+gem 'activerecord-postgis-adapter', '=4.0.2', github: 'rgeo/activerecord-postgis-adapter'
 gem 'rgeo'
 
 # Use Puma as the app server
