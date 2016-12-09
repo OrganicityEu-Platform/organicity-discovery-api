@@ -13,6 +13,7 @@ module AssetsMapping
           last_updated_at: map_time_instant_to_iso(map_time_instant(a)),
           position: map_position(a),
           reputation: map_reputation(a),
+          scope: map_access_scope(a),
           geo: map_geo_attrs(a),
         }
       }
@@ -26,6 +27,7 @@ module AssetsMapping
           type: map_type(a),
           last_updated_at: map_time_instant_to_iso(map_time_instant(a)),
           reputation: map_reputation(a),
+          scope: map_access_scope(a),
           data: map_data(a)
         }
       }
@@ -82,6 +84,7 @@ module AssetsMapping
           type: map_type(a),
           last_updated_at:  map_time_instant_to_iso(map_time_instant(a)),
           reputation: map_reputation(a),
+          scope: map_access_scope(a),
           position: map_position(a),
           geo: map_geo_attrs(a),
           provider: map_provider(a),
@@ -123,6 +126,11 @@ module AssetsMapping
               data: map_attributes(a["attrs"])
             }
         }
+    end
+
+
+    def map_access_scope(a)
+       return (a["attrs"]["access:scope"] && a["attrs"]["access:scope"]["value"]) ?  a["attrs"]["access:scope"]["value"] : "public"
     end
 
     def map_reputation(a)
@@ -177,6 +185,7 @@ module AssetsMapping
           group: map_group(a),
           name: map_name(a),
           reputation: a[:reputation],
+          scope: a[:scope],
           last_updated_at: a[:last_updated_at],
           position: expand_position(a),
         }
@@ -186,6 +195,7 @@ module AssetsMapping
           experiment: a[:provider],
           name: map_name(a),
           reputation: a[:reputation],
+          scope: a[:scope],
           last_updated_at: a[:last_updated_at],
           position: expand_position(a)
         }
