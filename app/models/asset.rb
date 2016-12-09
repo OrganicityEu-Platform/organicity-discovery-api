@@ -17,7 +17,7 @@ class Asset < ApplicationRecord
     return assets["doc"].map {
       |a| {
         id: a["id"],
-        last_updated_at: map_orion_time_instant(a),
+        last_updated_at: map_time_instant_to_iso(map_orion_time_instant(a)),
         reputation: a["reputation"],
         position: map_orion_position(a)
       }

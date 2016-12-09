@@ -12,7 +12,7 @@ module AssetsMapping
           type: map_type(a),
           last_updated_at: map_time_instant_to_iso(map_time_instant(a)),
           position: map_position(a),
-          reputation: a["attrs"]["reputation"],
+          reputation: map_reputation(a),
           geo: map_geo_attrs(a),
         }
       }
@@ -25,7 +25,7 @@ module AssetsMapping
           id: a["_id"]["id"],
           type: map_type(a),
           last_updated_at: map_time_instant_to_iso(map_time_instant(a)),
-          reputation: a["attrs"]["reputation"],
+          reputation: map_reputation(a),
           data: map_data(a)
         }
       }
@@ -81,6 +81,7 @@ module AssetsMapping
           id: a["_id"]["id"],
           type: map_type(a),
           last_updated_at:  map_time_instant_to_iso(map_time_instant(a)),
+          reputation: map_reputation(a),
           position: map_position(a),
           geo: map_geo_attrs(a),
           provider: map_provider(a),
@@ -104,7 +105,6 @@ module AssetsMapping
             type: a[:type],
             context: map_context(a),
             related: map_related(a)
-
           }
         }
       end
@@ -117,21 +117,37 @@ module AssetsMapping
 
     def map_data(a)
         {
-          context:
-            {
-              time_instant: a["TimeInstant"],
-              created_at: a["creDate"],
-              updated_at: a["modDate"]
-            },
           attributes:
             {
               types: a["attrNames"],
-              data: a["attrs"]
+              data: map_attributes(a["attrs"])
             }
         }
     end
 
+    def map_reputation(a)
+       return (a["attrs"]["reputation"] && is_number?(a["attrs"]["reputation"]["value"])) ? a["attrs"]["reputation"]["value"].to_f : "null"
+    end
+
     def map_attributes(attrs)
+      data = {}
+      attrs.each do |key, value|
+        data[key] = {
+          name: data_id_to_name(key),
+          type: value["type"],
+          value: value["value"],
+          created_at: map_time_instant_to_iso(value["creDate"]),
+          updated_at: map_time_instant_to_iso(value["modDate"])
+        }
+      end
+      return data
+    end
+
+    def data_id_to_name(id)
+      return id.gsub( ':', ' ').gsub(/[a-zA-Z](?=[A-Z])/, '\0 ').downcase
+    end
+
+    def map_attributes_dictionary(attrs)
       types = []
       attrs.each do |attr|
         resp = Asset.query_dictionary("attributetypes/#{attr}")
@@ -160,7 +176,8 @@ module AssetsMapping
           provider: a[:provider],
           group: map_group(a),
           name: map_name(a),
-          last_updated_at: map_time_instant_to_iso(a[:last_updated_at]),
+          reputation: a[:reputation],
+          last_updated_at: a[:last_updated_at],
           position: expand_position(a),
         }
       else
@@ -168,8 +185,9 @@ module AssetsMapping
           experimenter: map_service(a),
           experiment: a[:provider],
           name: map_name(a),
-          last_updated_at: map_time_instant_to_iso(a[:last_updated_at]),
-          position: expand_position(a),
+          reputation: a[:reputation],
+          last_updated_at: a[:last_updated_at],
+          position: expand_position(a)
         }
       end
     end
@@ -180,11 +198,11 @@ module AssetsMapping
           service: map_service(a),
           provider: a[:provider],
           group: map_group(a),
-          site: map_site(a),
+          site: map_site(a)
         }
       else
         {
-          experiments: "null",
+          experiments: "null"
         }
       end 
     end
