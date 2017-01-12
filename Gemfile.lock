@@ -56,6 +56,14 @@ GIT
       redis-store (~> 1.2.0)
 
 GIT
+  remote: git://github.com/rgeo/activerecord-postgis-adapter.git
+  revision: 57b9d88acd55fcdb9aae43539c21d5537a3a2302
+  specs:
+    activerecord-postgis-adapter (4.0.2)
+      activerecord (~> 5.0.0)
+      rgeo-activerecord (~> 5.0.0)
+
+GIT
   remote: git://github.com/sinatra/sinatra.git
   revision: a5da6fa82c46436f59ae482d07c1752ab908c852
   specs:
@@ -64,6 +72,13 @@ GIT
       rack (~> 2.0)
       rack-protection (~> 1.5)
       tilt (~> 2.0)
+
+GIT
+  remote: https://github.com/opbeat/opbeat-ruby
+  revision: 3985a495d90f911db022f2baccaf264dde9af4fb
+  specs:
+    opbeat (3.0.9)
+      activesupport (>= 3.0.0)
 
 GEM
   remote: https://rubygems.org/
@@ -100,9 +115,6 @@ GEM
       activemodel (= 5.0.0)
       activesupport (= 5.0.0)
       arel (~> 7.0)
-    activerecord-postgis-adapter (4.0.1)
-      activerecord (~> 5.0.0)
-      rgeo-activerecord (~> 5.0.0)
     activesupport (5.0.0)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (~> 0.7)
@@ -246,7 +258,7 @@ GEM
       celluloid (>= 0.17.3)
       ice_cube (~> 0.13.2)
       sidekiq (>= 4.0.0)
-    skylight (0.10.5)
+    skylight (1.0.1)
       activesupport (>= 3.0.0)
     sprockets (3.6.3)
       concurrent-ruby (~> 1.0)
@@ -277,7 +289,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers!
-  activerecord-postgis-adapter
+  activerecord-postgis-adapter (= 4.0.2)!
   bson_ext
   byebug
   chronic
@@ -288,6 +300,7 @@ DEPENDENCIES
   mustermann
   mustermann-rails
   ohm
+  opbeat!
   pg
   puma
   rack-cache
@@ -304,7 +317,7 @@ DEPENDENCIES
   sidekiq
   sidetiq
   sinatra!
-  skylight
+  skylight (~> 1.0, >= 1.0.1)
   tzinfo-data
 
 BUNDLED WITH
