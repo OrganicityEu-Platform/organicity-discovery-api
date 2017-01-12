@@ -308,6 +308,12 @@ module AssetsMapping
           latitude: a["location"]["coords"]["coordinates"][0],
           city: city
         }
+      elsif a["attrs"]["latitude"] and a["attrs"]["longitude"]
+        {
+          longitude: a["attrs"]["longitude"]["value"],
+          latitude: a["attrs"]["latitude"]["value"],
+          city: city
+        }
       else
         {
           longitude: city_position(city)[0],
