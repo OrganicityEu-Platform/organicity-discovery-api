@@ -52,10 +52,13 @@ class Asset < ApplicationRecord
     end
   end
 
-  def self.get_mongo_assets(params, endpoint, request, session)
-    # Logs to mongo
-    self.mongo_orion_logger(request, session)
+  def self.get_mongo_assets(params, endpoint, request = false, session = false)
 
+    if request && session
+      # Logs to mongo
+      logger.warn "test orion logger"
+      self.mongo_orion_logger(request, session)
+    end
     assets = []
     logger.warn "Params: #{params}"
     call = self.cache_mongo(params, endpoint)
