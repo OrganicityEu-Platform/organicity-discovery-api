@@ -56,11 +56,14 @@ class Asset < ApplicationRecord
 
     if request && session
       # Logs to mongo
-      logger.warn "test orion logger"
       self.mongo_orion_logger(request, session)
     end
+      
     assets = []
+
+    logger.warn "Endpoint: #{endpoint}"
     logger.warn "Params: #{params}"
+
     call = self.cache_mongo(params, endpoint)
     if call
       assets = call.response

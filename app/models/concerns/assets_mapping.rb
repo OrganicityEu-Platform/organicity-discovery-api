@@ -289,13 +289,35 @@ module AssetsMapping
 
     def map_position(a)
       city = City.where(name: "#{a["_id"]["id"].split(':')[3].capitalize}").includes(:links).map { |c| {attributes: c, links: c.links} }.first
-
+      
       if a["attrs"]["position"] and a["attrs"]["position"]["type"] == "coords"
         {
           longitude: a["attrs"]["position"]["value"].split(',')[1],
           latitude: a["attrs"]["position"]["value"].split(',')[0],
           city: city
         }
+      elsif a["attrs"]["latitude"] and a["attrs"]["longitude"]
+        {
+          longitude: a["attrs"]["longitude"]["value"],
+          latitude: a["attrs"]["latitude"]["value"],
+          city: city
+        }
+      # This is temp. Geojson requires a complete implementation
+      elsif a["attrs"]["location"] and a["attrs"]["location"]["type"] == "geo:json"
+        if a["attrs"]["location"]["value"]["type"] == "Point" 
+          {
+            longitude: a["attrs"]["location"]["value"]["coordinates"].split(',')[0],
+            latitude: a["attrs"]["location"]["value"]["coordinates"].split(',')[1],
+            city: city
+          }
+        #This is temp
+        else 
+          {
+            longitude: city_position(city)[0],
+            latitude: city_position(city)[1],
+            city: city
+          }        
+        end
       elsif a["attrs"]["location"]
         {
           longitude: a["attrs"]["location"]["value"].split(',')[0],
@@ -306,12 +328,6 @@ module AssetsMapping
         {
           longitude: a["location"]["coords"]["coordinates"][1],
           latitude: a["location"]["coords"]["coordinates"][0],
-          city: city
-        }
-      elsif a["attrs"]["latitude"] and a["attrs"]["longitude"]
-        {
-          longitude: a["attrs"]["longitude"]["value"],
-          latitude: a["attrs"]["latitude"]["value"],
           city: city
         }
       else

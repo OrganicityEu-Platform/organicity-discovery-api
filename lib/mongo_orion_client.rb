@@ -46,6 +46,12 @@ module MongoOrionClient
 # Experiments: {"_id.id": /urn:oc:entity:experimenters:[^:]+:57f3debd6ec783244b3901e2/}
 
   def search_q(params)
+
+    # This is temp to solve cache worker issue. Must change
+    if (!params.is_a? Object) 
+      params = {}
+    end 
+     
     if params[:experimenter] 
       return /urn:oc:entity:experimenters:#{params[:experimenter]}/
     elsif params[:experiment]
