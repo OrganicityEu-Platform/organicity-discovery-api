@@ -17,7 +17,7 @@ class Asset < ApplicationRecord
     return assets["doc"].map {
       |a| {
         id: a["id"],
-        last_updated_at: map_orion_time_instant(a),
+        last_updated_at: map_time_instant_to_iso(map_orion_time_instant(a)),
         reputation: a["reputation"],
         position: map_orion_position(a)
       }
@@ -52,12 +52,18 @@ class Asset < ApplicationRecord
     end
   end
 
-  def self.get_mongo_assets(params, endpoint, request, session)
-    # Logs to mongo
-    self.mongo_orion_logger(request, session)
+  def self.get_mongo_assets(params, endpoint, request = false, session = false)
 
+    if request && session
+      # Logs to mongo
+      self.mongo_orion_logger(request, session)
+    end
+      
     assets = []
+
+    logger.warn "Endpoint: #{endpoint}"
     logger.warn "Params: #{params}"
+
     call = self.cache_mongo(params, endpoint)
     if call
       assets = call.response

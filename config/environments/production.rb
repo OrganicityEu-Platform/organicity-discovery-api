@@ -45,7 +45,7 @@ Rails.application.configure do
   # :fatal, and :unknown, corresponding to the log level numbers from 0 up to 5
   # respectively. Use the lowest log level to ensure availability of diagnostic
   # information when problems arise.
-  config.log_level = :warn
+  config.log_level = :error
 
   # Prepend all log lines with the following tags.
   config.log_tags = [ :request_id ]
@@ -86,6 +86,10 @@ Rails.application.configure do
     config.opbeat.organization_id = ENV['OPBEAT_ORG_ID']
     config.opbeat.app_id = ENV['OPBEAT_APP_ID']
     config.opbeat.secret_token = ENV['OPBEAT_TOKEN']
+    config.opbeat.excluded_exceptions += %w{
+      ActiveRecord::RecordNotFound
+      ActionController::RoutingError
+    }
   end
 
   # Do not dump schema after migrations.

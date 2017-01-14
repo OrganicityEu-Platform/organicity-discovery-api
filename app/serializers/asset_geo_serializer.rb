@@ -63,7 +63,9 @@ class AssetGeoSerializer < ActiveModel::Serializer
       site: o["position"]["city"] ? o["position"]["city"]["attributes"]["name"].downcase : "null",
       provider: map_provider(o),
       group: map_group(o),
-      service: map_service(o)
+      service: map_service(o),
+      scope: o["scope"],
+      reputation: o["reputation"]
     }
   end
 

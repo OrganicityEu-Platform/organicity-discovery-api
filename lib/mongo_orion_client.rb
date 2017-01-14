@@ -46,6 +46,12 @@ module MongoOrionClient
 # Experiments: {"_id.id": /urn:oc:entity:experimenters:[^:]+:57f3debd6ec783244b3901e2/}
 
   def search_q(params)
+
+    # This is temp to solve cache worker issue. Must change
+    if (!params.is_a? Object) 
+      params = {}
+    end 
+     
     if params[:experimenter] 
       return /urn:oc:entity:experimenters:#{params[:experimenter]}/
     elsif params[:experiment]
@@ -215,14 +221,25 @@ module MongoOrionClient
     asset = mongo_asset(params).first
     params[:radius] = 10
     params[:km] = true
-    if asset and asset["location"]
-      params[:long] = asset["location"]["coords"]["coordinates"][0]
-      params[:lat] = asset["location"]["coords"]["coordinates"][1]
+
+    if asset and asset["attrs"]["position"] and asset["attrs"]["position"]["type"] == "coords"
+      params[:long] = asset["attrs"]["position"]["value"].split(',')[1]
+      params[:lat]  = asset["attrs"]["position"]["value"].split(',')[0]
       logger.warn params
       return mongo_geo_assets(params)
-    elsif asset and asset["attrs"]["position"]
-      params[:long] = asset["attrs"]["position"]["value"][0]
-      params[:lat] = asset["attrs"]["position"]["value"][1]
+    elsif asset and asset["attrs"]["location"]
+      params[:long] = asset["attrs"]["location"]["value"].split(',')[0]
+      params[:lat]  = asset["attrs"]["location"]["value"].split(',')[1]
+      logger.warn params
+      return mongo_geo_assets(params)
+    elsif asset and asset["location"] and asset["location"]["coords"]
+      params[:long] = asset["location"]["coords"]["coordinates"][1]
+      params[:lat]  = asset["location"]["coords"]["coordinates"][0]
+      logger.warn params
+      return mongo_geo_assets(params)
+    elsif asset and asset["attrs"]["latitude"] and asset["attrs"]["longitude"]
+      params[:long] = asset["attrs"]["longitude"]["value"]
+      params[:lat]  = asset["attrs"]["latitude"]["value"]
       logger.warn params
       return mongo_geo_assets(params)
     else
