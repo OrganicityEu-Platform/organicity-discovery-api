@@ -86,6 +86,10 @@ Rails.application.configure do
     config.opbeat.organization_id = ENV['OPBEAT_ORG_ID']
     config.opbeat.app_id = ENV['OPBEAT_APP_ID']
     config.opbeat.secret_token = ENV['OPBEAT_TOKEN']
+    config.opbeat.excluded_exceptions += %w{
+      ActiveRecord::RecordNotFound
+      ActionController::RoutingError
+    }
   end
 
   # Do not dump schema after migrations.
