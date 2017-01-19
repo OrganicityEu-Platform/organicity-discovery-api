@@ -58,7 +58,6 @@ class AssetGeoSerializer < ActiveModel::Serializer
       type: o["type"],
       name: map_name(o),
       last_update_at: o["last_updated_at"],
-      site: o["position"]["city"] ? o["position"]["city"]["attributes"]["name"].downcase : "null",
       provider: map_provider(o),
       group: map_group(o),
       service: map_service(o),

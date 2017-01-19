@@ -76,9 +76,6 @@ module MongoOrionClient
         params[:radius] = params[:radius] / 6378.1
       end
 
-      logger.warn "This is a test: #{params}"
-
-
       qbuilder.merge!("location.coords.coordinates" => {
         #'$geoWithin': { '$centerSphere': [ [  params[:long].to_f, params[:lat].to_f ], params[:radius] ] }
         '$geoWithin': { '$centerSphere': [ [  params[:lat].to_f, params[:long].to_f ], params[:radius] ] }
