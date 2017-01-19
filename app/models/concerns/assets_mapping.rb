@@ -287,13 +287,30 @@ module AssetsMapping
       end
     end
 
+    # Spatial functions requiere refactoring on next phase
+
     def map_position(a)
       city = City.where(name: "#{a["_id"]["id"].split(':')[3].capitalize}").includes(:links).map { |c| {attributes: c, links: c.links} }.first
-      
-      if a["attrs"]["position"] and a["attrs"]["position"]["type"] == "coords"
+      parse_position(a, city)
+    end
+
+    def map_orion_position(a)
+      @city = City.where(name: "#{a["id"].split(':')[3].capitalize}").includes(:links)
+      parse_position(a, city)
+    end
+
+
+    def parse_position(a, city)      
+      if a["location"] and a["location"]["coords"]
         {
-          longitude: a["attrs"]["position"]["value"].split(',')[1],
-          latitude: a["attrs"]["position"]["value"].split(',')[0],
+          longitude: sanitize_array(a["location"]["coords"]["coordinates"])[1],
+          latitude: sanitize_array(a["location"]["coords"]["coordinates"])[0],
+          city: city
+        }      
+      elsif a["attrs"]["position"] and a["attrs"]["position"]["type"] == "coords"
+        {
+          longitude: sanitize_array(a["attrs"]["position"]["value"])[1],
+          latitude: sanitize_array(a["attrs"]["position"]["value"])[0],
           city: city
         }
       elsif a["attrs"]["latitude"] and a["attrs"]["longitude"]
@@ -302,14 +319,14 @@ module AssetsMapping
           latitude: a["attrs"]["latitude"]["value"],
           city: city
         }
-      # This is temp. Geojson requires a complete implementation
+      # This is temp hack. Geojson requires a complete implementation
       elsif a["attrs"]["location"] and a["attrs"]["location"]["type"] == "geo:json"
         if a["attrs"]["location"]["value"]["type"] == "Point" 
           {
-            longitude: a["attrs"]["location"]["value"]["coordinates"].split(',')[0],
-            latitude: a["attrs"]["location"]["value"]["coordinates"].split(',')[1],
+            longitude: sanitize_array(a["attrs"]["location"]["value"]["coordinates"])[0],
+            latitude: sanitize_array(a["attrs"]["location"]["value"]["coordinates"])[1],
             city: city
-          }
+          }  
         #This is temp
         else 
           {
@@ -320,14 +337,8 @@ module AssetsMapping
         end
       elsif a["attrs"]["location"]
         {
-          longitude: a["attrs"]["location"]["value"].split(',')[0],
-          latitude: a["attrs"]["location"]["value"].split(',')[1],
-          city: city
-        }
-      elsif a["location"] and a["location"]["coords"]
-        {
-          longitude: a["location"]["coords"]["coordinates"][1],
-          latitude: a["location"]["coords"]["coordinates"][0],
+          longitude: sanitize_array(a["attrs"]["location"]["value"])[0],
+          latitude: sanitize_array(a["attrs"]["location"]["value"])[1],
           city: city
         }
       else
@@ -344,33 +355,6 @@ module AssetsMapping
         [ city[:attributes][:longitude].to_f, city[:attributes][:latitude].to_f ]
       else
         "null"
-      end
-    end
-
-    def map_orion_position(a)
-      @city = City.where(name: "#{a["id"].split(':')[3].capitalize}").includes(:links)
-      if a["position"] and a["position"]["value"] and a["position"]["type"] == "coords"
-        {
-          longitude: a["position"]["value"].split(',')[1],
-          latitude: a["position"]["value"].split(',')[0],
-          city: @city.map { |c| {attributes: c, links: c.links} }.first
-        }
-      elsif a["position"] and a["position"]["value"] and a["position"]["type"] == "geo:json"
-        {
-          longitude: a["position"]["value"].split(',')[0],
-          latitude: a["position"]["value"].split(',')[1],
-          city: @city.map { |c| {attributes: c, links: c.links} }.first
-        }
-      else
-        if @city[0]
-          {
-            longitude: @city[0].longitude,
-            latitude: @city[0].latitude,
-            city: @city.map { |c| {attributes: c, links: c.links} }.first
-          }
-        else
-          "null"
-        end
       end
     end
 
@@ -399,6 +383,14 @@ module AssetsMapping
         return Float(a) rescue "null"
       else
         return nil
+      end
+    end
+
+    def sanitize_array(a)
+      if a.is_a? String
+        return a.split(',')
+      else
+        return a
       end
     end
 

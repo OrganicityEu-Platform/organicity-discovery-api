@@ -37,14 +37,12 @@ class AssetGeoSerializer < ActiveModel::Serializer
   def geometry(o)
     {
       type: map_type(o),
-      coordinates: o["position"] ? map_position(o) : nil
+      coordinates: map_position(o)
     }
   end
 
   def map_position(o)
-    if o["geo"] and o["geo"]["type"] == "Polygon"
-      [ o["geo"]["coordinates"].map {|c| [c[0].to_f, c[1].to_f] } ]
-    elsif o["position"]["latitude"] and o["position"]["longitude"]
+    if o["position"]["latitude"] and o["position"]["longitude"]
       [
         o["position"]["longitude"].to_f,
         o["position"]["latitude"].to_f
