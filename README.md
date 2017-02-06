@@ -1,4 +1,5 @@
-# Assets Discovery Service
+Assets Discovery Service
+------------------------------
 
 The Asset Discovery API facilitates exploration and inspection of available assets.
 
@@ -18,44 +19,9 @@ It comprises the following functionalities:
 
 ## Documentation
 
-- [API Documentation](https://organicityeu.github.io/api/AssetDiscovery.html)
-- [API Swagger Blueprint](https://github.com/OrganicityEu/api/blob/master/raw/AssetDiscovery.yaml)
-
-## Examples
-
-### GeoJson and Leaflet
-
-By using the [Asset Discovery Geographical](https://organicityeu.github.io/api/AssetDiscovery.html#operation--assets-geo-search-get) method we can quickly get assets data on [GeoJSON](http://geojson.org/geojson-spec.html) format. This allows to quickly develop map vizualizations by using libraries as [Leaflet](http://leafletjs.com/)
-
-```javascript
-var myMap = L.map('map');
-var assetsLayer = new L.geoJson();
-assetsLayer.addTo(myMap);
-
-L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-  id: 'mapbox.streets-basic',
-  accessToken: 'pk.eyJ1IjoidG9tYXNkaWV6IiwiYSI6ImRTd01HSGsifQ.loQdtLNQ8GJkJl2LUzzxVg'
-}).addTo(myMap);
-
-$.getJSON("http://discovery.organicity.eu/v0/assets/geo/search?city=london", function(layers) {
-
-  $(layers).each(function(key, data) {
-    $(layers[key].features).each(function(key, data) {
-      console.log(data);
-      assetsLayer.addData(data);
-    });
-  });
-
-   myMap.fitBounds(assetsLayer.getBounds());
-  
-});
-```
-
-Look at the complete example in [Codepen.io](http://codepen.io/pral2a/pen/NRgakY)
+- Check the **documentation** folder *[doc](https://github.com/OrganicityEu/organicity-discovery-api/tree/master/doc)*
 
 ## Status
-
-This is the assets discovery api for the urban data observatory.
 
 [![Code Climate](https://codeclimate.com/github/OrganicityEu/organicity-discovery-api/badges/gpa.svg)](https://codeclimate.com/github/OrganicityEu/organicity-discovery-api)
 

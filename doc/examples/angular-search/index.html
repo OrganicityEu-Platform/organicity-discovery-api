@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Asset Discovery Search Example</title>
+  </head>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-animate.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-route.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-aria.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.6/angular-messages.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.js"></script>
+  <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/t-114/assets-cache.js"></script>
+  <link href="https://ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.css" rel="stylesheet" />
+  <script src="script.js
+  "></script>
+  <body>
+    <div ng-controller="IncrementalSearch as searchAssets" layout="column" ng-cloak="" ng-app="MyApp">
+      <md-content class="md-padding">
+      <p ng-repeat="asset in searchAssets.assetsSelected">{{asset.id}}
+        <md-button class="md-raised md-warn" ng-click="searchAssets.assetsSelectedRemove(asset)">Remove</md-button>
+      </p>
+      <form ng-submit="$event.preventDefault()">
+        <md-autocomplete md-min-length="3" md-selected-item="searchAssets.selectedItem" md-search-text="searchAssets.searchText" md-selected-item-change="searchAssets.selectedItemChange(item)" md-items="item in searchAssets.querySearch(searchAssets.searchText)" md-item-text="item.id" md-min-length="0"
+        md-no-cache="true" placeholder="Search assets...">
+        <md-item-template>
+        <strong md-highlight-text="searchAssets.searchText" md-highlight-flags="^i">{{item.id}}
+        </strong>
+        </md-item-template>
+        <md-not-found>
+        No asset matching "{{searchAssets.searchText}}" was found.
+        </md-not-found>
+        </md-autocomplete>
+      </form>
+      </md-content>
+    </div>
+  </body>
+</html>
