@@ -14,17 +14,19 @@ module MongoOrionClient
   end
 
   def mongo_orion_logger(request, session)
-    @mongo_client = MongoClient.new(MONGO_URL, MONGO_PORT)
-    apilog = @mongo_client.db('apilog')
-    doc = {
-      timestamp: Time.now.to_time.iso8601,
-      ip: request.remote_ip,
-      session: session,
-      service: "AssetsDiscovery",
-      method: "assets",
-      url: request.env["REQUEST_URI"]
-    }
-    apilog[:apiLogEntry].insert(doc)
+    if (Rails.configuration.api_log) 
+      @mongo_client = MongoClient.new(MONGO_URL, MONGO_PORT)
+      apilog = @mongo_client.db('apilog')
+      doc = {
+        timestamp: Time.now.to_time.iso8601,
+        ip: request.remote_ip,
+        session: session,
+        service: "AssetsDiscovery",
+        method: "assets",
+        url: request.env["REQUEST_URI"]
+      }
+      apilog[:apiLogEntry].insert(doc)
+    end
   end
 
   def create_options(params)
@@ -75,9 +77,6 @@ module MongoOrionClient
       if params[:km] 
         params[:radius] = params[:radius] / 6378.1
       end
-
-      logger.warn "This is a test: #{params}"
-
 
       qbuilder.merge!("location.coords.coordinates" => {
         #'$geoWithin': { '$centerSphere': [ [  params[:long].to_f, params[:lat].to_f ], params[:radius] ] }

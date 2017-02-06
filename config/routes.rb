@@ -36,16 +36,15 @@ Rails.application.routes.draw do
     scope '/assets/providers' do
       get ':service' => 'assets#provider'
     end
-    resources :assets
-    scope '/assets/:id/data' do
-      get '/' => 'assets#data'
-      get '/ngsiv2' => 'assets#show_ngsiv2'
+    scope '/assets/:id' do
+      get '/' => 'assets#show', constraints: { id: /[a-zA-Z1-9\.\:]+/ }
+      get '/ngsiv2' => 'assets#show_ngsiv2', constraints: { id: /[a-zA-Z1-9\.\:]+/ }
+      get '/nearby' => 'assets#nearby', constraints: { id: /[a-zA-Z1-9\.\:]+/ }
+      get '/data' => 'assets#data', constraints: { id: /[a-zA-Z1-9\.\:]+/ }
+      get '/data/ngsiv2' => 'assets#show_ngsiv2', constraints: { id: /[a-zA-Z1-9\.\:]+/ }
     end
-    scope '/assets/:id/nearby' do
-      get '/' => 'assets#nearby'
-    end
-    scope '/assets/:id/ngsiv2' do
-      get '/' => 'assets#show_ngsiv2'
+    scope '/assets' do
+      get '/' => 'assets#index'
     end
     resources :types
   end
