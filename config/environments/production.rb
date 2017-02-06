@@ -94,4 +94,10 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  # Enable logging on the API Log Service
+  config.api_log = false
+
+  # Enable API Auth
+  config.auth_enabled = false
 end

@@ -2,6 +2,9 @@ require 'jwt'
 
 module JwtOperations
   extend ActiveSupport::Concern
+
+  # In the future check https://github.com/nsarno/knock
+
   def decode_token(token)
     return JWT.decode token, nil, false
   end
@@ -11,6 +14,7 @@ module JwtOperations
   end
 
   def token_session(token)
-    token ? decoded_token(token).client_session : SecureRandom.hex(16).encode!(Encoding::UTF_8)
+    token ? decoded_token(token).client_session : 'no_session'
   end
 end
+
