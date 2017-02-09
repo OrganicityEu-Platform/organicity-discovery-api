@@ -51,4 +51,7 @@ Rails.application.configure do
   
   # Enable API Auth
   config.auth_enabled = false
+
+  # Orion Custom Index
+  config.orion_meta_index = true
 end
