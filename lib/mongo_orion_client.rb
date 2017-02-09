@@ -152,6 +152,28 @@ module MongoOrionClient
   end
 
   def mongo_metadata_search_assets(params)
+    if Rails.configuration.orion_meta_index 
+      mongo_metadata_search_assets_index(params)
+    else
+      mongo_metadata_search_assets_no_index(params)
+    end
+  end  
+
+  def mongo_metadata_search_assets_index(params)
+    orion = setup_client
+    m = create_options(params)
+    q = {
+      '$text' => {
+        '$search' => params[:query],
+        '$language' => 'english'
+      }
+    }
+    logger.warn q
+    logger.warn m
+    orion[:entities].find(q,m).to_a
+  end
+
+  def mongo_metadata_search_assets_no_index(params)
     q = {}
     if params[:query]
       queries = params[:query].split(' ')
