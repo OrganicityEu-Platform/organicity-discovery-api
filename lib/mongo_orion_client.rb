@@ -79,8 +79,8 @@ module MongoOrionClient
       end
 
       qbuilder.merge!("location.coords.coordinates" => {
-        #'$geoWithin': { '$centerSphere': [ [  params[:long].to_f, params[:lat].to_f ], params[:radius] ] }
-        '$geoWithin': { '$centerSphere': [ [  params[:lat].to_f, params[:long].to_f ], params[:radius] ] }
+        '$geoWithin': { '$centerSphere': [ [  params[:long].to_f, params[:lat].to_f ], params[:radius] ] } # New Model
+        #'$geoWithin': { '$centerSphere': [ [  params[:lat].to_f, params[:long].to_f ], params[:radius] ] }  # Old Model
       })
     end
 
@@ -160,6 +160,9 @@ module MongoOrionClient
   end  
 
   def mongo_metadata_search_assets_index(params)
+    # This requires this index in Orion 
+    # db.entities.createIndex({"$**":"text"})
+    
     orion = setup_client
     m = create_options(params)
     query = params[:query].split(/[\s+ ]/).map {|keyword| '"' + keyword + '"'}.join(' ')
