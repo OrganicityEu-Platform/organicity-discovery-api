@@ -300,36 +300,7 @@ module AssetsMapping
     end
 
     def parse_position_geo(a)
-      if a["attrs"]["position"] and a["attrs"]["position"]["type"] == "coords"
-        {
-          longitude: sanitize_array(a["attrs"]["position"]["value"])[0],
-          latitude: sanitize_array(a["attrs"]["position"]["value"])[1]
-        }
-      elsif a["attrs"]["latitude"] and a["attrs"]["longitude"]
-        {
-          longitude: a["attrs"]["longitude"]["value"],
-          latitude: a["attrs"]["latitude"]["value"],
-        }
-      # This is temp hack. Geojson requires a complete implementation
-      elsif a["attrs"]["location"] and a["attrs"]["location"]["type"] == "geo:json"
-        if a["attrs"]["location"]["value"]["type"] == "Point"
-          {
-            longitude: sanitize_array(a["attrs"]["location"]["value"]["coordinates"])[0],
-            latitude: sanitize_array(a["attrs"]["location"]["value"]["coordinates"])[1]
-          }
-        #This is temp
-        else
-          {
-            longitude: 0.0,
-            latitude: 0.0,
-          }
-        end
-      elsif a["attrs"]["location"]
-        {
-          longitude: sanitize_array(a["attrs"]["location"]["value"])[0],
-          latitude: sanitize_array(a["attrs"]["location"]["value"])[1]
-        }
-      elsif a["location"] and a["location"]["coords"]
+      if a["location"] and a["location"]["coords"]
         # Issue: on the internal "location","coords","coordinates" if locationn
         # is simple then lon, lat but when geo:json lat, lon...
 
@@ -340,50 +311,13 @@ module AssetsMapping
       else
         {
           longitude: 0.0,
-          latitude: 0.0,
+          latitude: 0.0
         }
       end
     end
 
     def parse_position(a, city)
-      if a["attrs"]["position"] and a["attrs"]["position"]["type"] == "coords"
-        {
-          longitude: sanitize_array(a["attrs"]["position"]["value"])[1],
-          latitude: sanitize_array(a["attrs"]["position"]["value"])[0],
-          city: city
-        }
-      elsif a["attrs"]["latitude"] and a["attrs"]["longitude"]
-        {
-          longitude: a["attrs"]["longitude"]["value"],
-          latitude: a["attrs"]["latitude"]["value"],
-          city: city
-        }
-      # This is temp hack. Geojson requires a complete implementation
-      elsif a["attrs"]["location"] and a["attrs"]["location"]["type"] == "geo:json"
-        if a["attrs"]["location"]["value"]["type"] == "Point" 
-          {
-            longitude: sanitize_array(a["attrs"]["location"]["value"]["coordinates"])[0],
-            latitude: sanitize_array(a["attrs"]["location"]["value"]["coordinates"])[1],
-            city: city
-          }  
-        #This is temp
-        else 
-          {
-            longitude: city_position(city)[0],
-            latitude: city_position(city)[1],
-            city: city
-          }        
-        end
-      elsif a["attrs"]["location"]
-        {
-          longitude: sanitize_array(a["attrs"]["location"]["value"])[0],
-          latitude: sanitize_array(a["attrs"]["location"]["value"])[1],
-          city: city
-        }
-      elsif a["location"] and a["location"]["coords"]
-        # Issue: on the internal "location","coords","coordinates" if locationn
-        # is simple then lon, lat but when geo:json lat, lon...
-
+      if a["location"] and a["location"]["coords"]
         {
           longitude: sanitize_array(a["location"]["coords"]["coordinates"])[0],
           latitude: sanitize_array(a["location"]["coords"]["coordinates"])[1],

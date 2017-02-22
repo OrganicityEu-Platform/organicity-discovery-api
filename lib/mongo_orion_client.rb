@@ -79,8 +79,8 @@ module MongoOrionClient
       end
 
       qbuilder.merge!("location.coords.coordinates" => {
-        #'$geoWithin': { '$centerSphere': [ [  params[:long].to_f, params[:lat].to_f ], params[:radius] ] }
-        '$geoWithin': { '$centerSphere': [ [  params[:lat].to_f, params[:long].to_f ], params[:radius] ] }
+        '$geoWithin': { '$centerSphere': [ [  params[:long].to_f, params[:lat].to_f ], params[:radius] ] } # New Model
+        #'$geoWithin': { '$centerSphere': [ [  params[:lat].to_f, params[:long].to_f ], params[:radius] ] }  # Old Model
       })
     end
 
@@ -152,6 +152,32 @@ module MongoOrionClient
   end
 
   def mongo_metadata_search_assets(params)
+    if Rails.configuration.orion_meta_index 
+      mongo_metadata_search_assets_index(params)
+    else
+      mongo_metadata_search_assets_no_index(params)
+    end
+  end  
+
+  def mongo_metadata_search_assets_index(params)
+    # This requires this index in Orion 
+    # db.entities.createIndex({"$**":"text"})
+    
+    orion = setup_client
+    m = create_options(params)
+    query = params[:query].split(/[\s+ ]/).map {|keyword| '"' + keyword + '"'}.join(' ')
+    q = {
+      '$text' => {
+        '$search' => query,
+        '$language' => 'en'
+      }
+    }
+    logger.warn q
+    logger.warn m
+    orion[:entities].find(q,m).to_a
+  end
+
+  def mongo_metadata_search_assets_no_index(params)
     q = {}
     if params[:query]
       queries = params[:query].split(' ')
