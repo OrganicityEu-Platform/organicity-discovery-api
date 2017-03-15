@@ -3,7 +3,7 @@ require 'json'
 require 'base64'
 
 module Dictionary
-  DICTIONARY_URL = 'http://dev.server.organicity.eu:8080/v1/dictionary'
+  DICTIONARY_URL = 'https://sitemanager.organicity.eu/v1/dictionary'
 
   def setup_dictionary_client
     token_request = get_token["body"]
