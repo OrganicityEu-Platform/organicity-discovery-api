@@ -14,9 +14,7 @@ module MongoOrionClient
   end
 
   def mongo_orion_logger(request, session)
-    if (Rails.configuration.api_log) 
-      @mongo_client = MongoClient.new(MONGO_URL, MONGO_PORT)
-      apilog = @mongo_client.db('apilog')
+    if (Rails.configuration.api_log)
       doc = {
         timestamp: Time.now.to_time.iso8601,
         ip: request.remote_ip,
@@ -25,7 +23,7 @@ module MongoOrionClient
         method: "assets",
         url: request.env["REQUEST_URI"]
       }
-      apilog[:apiLogEntry].insert(doc)
+      MongoWorker.perform_async(doc)
     end
   end
 
