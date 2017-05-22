@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   end
   mount Sidekiq::Web, at: "/sidekiq"
 
+  post '/:provider',      to: 'auth#authenticate'
+
   constraints(id: /[^\/]+/) do # Allows the asset id / urn to contain dots and other special characters
     namespace :v0 do
       scope '/assets/ngsiv2' do

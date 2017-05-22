@@ -4,6 +4,8 @@ source 'https://rubygems.org'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '>= 5.0.0.rc1', '< 5.1'
 
+gem 'httpclient'
+
 # Use Postgres and ActiveRecord Postgis-adapter
 gem 'pg'
 gem 'activerecord-postgis-adapter', '=4.0.2', github: 'rgeo/activerecord-postgis-adapter'
