@@ -7,6 +7,13 @@ module Oauth
     def initialize params
       @provider = self.class.name.split('::').last.downcase
       prepare_params params
+
+      # If we have the refresh_token, this is a refresh request
+      if params.has_key?(:refresh_token)
+        @params[:grant_type] = 'refresh_token'
+        @params[:refresh_token] = params['refresh_token']
+      end
+
       puts "PARAMS - #{@params}"
       @client = HTTPClient.new
       @access_token = params[:access_token].presence || get_access_token
