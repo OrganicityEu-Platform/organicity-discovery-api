@@ -8,31 +8,37 @@ module Oauth
       @provider = self.class.name.split('::').last.downcase
       prepare_params params
 
+      @client = HTTPClient.new
+
       # If we have the refresh_token, this is a refresh request
       if params.has_key?(:refresh_token)
         @params[:grant_type] = 'refresh_token'
         @params[:refresh_token] = params['refresh_token']
+        # TODO: Is this needed? When do we have params[:access_token] ?
+        @the_token = params[:access_token].presence || get_tokens('refresh')
+      else
+        @the_token = params[:access_token].presence || get_tokens('access')
       end
 
-      puts "PARAMS - #{@params}"
-      @client = HTTPClient.new
-      @access_token = params[:access_token].presence || get_access_token
-      puts "ACCESS TOKEN IS - #{@access_token}"
+      puts "@PARAMS - #{@params}"
+      puts "THE TOKEN IS - #{@the_token}"
 
-      if @access_token.present?
-        token = JWT.decode @access_token, nil, false
-        #puts token
-        #puts token.first['email']
+      if @the_token.present?
+        token = JWT.decode @the_token, nil, false
       else
         puts "== no access_token"
       end
-      #get_data if @access_token.present?
     end
 
-    def get_access_token
+    def get_tokens(tokentype)
+      puts "==== get_tokentype: #{tokentype}"
       response = @client.post(self.class::ACCESS_TOKEN_URL, @params)
-      puts "ACCESS TOKEN RESPONSE - #{response.body}"
-      JSON.parse(response.body)["access_token"]
+      puts "TOKEN response.body - #{response.body}"
+      if tokentype == 'refresh'
+        JSON.parse(response.body)["refresh_token"]
+      else
+        JSON.parse(response.body)["access_token"]
+      end
     end
 
     def prepare_params params
@@ -46,7 +52,7 @@ module Oauth
     end
 
     def authorized?
-      @access_token.present?
+      @the_token.present?
     end
 
   end

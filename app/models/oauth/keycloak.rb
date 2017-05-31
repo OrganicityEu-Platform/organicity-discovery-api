@@ -7,7 +7,7 @@ module Oauth
 
       puts "=== This function is not needed, we get user info with the JWT"
 
-      response = @client.get(USER_URL, oauth_token: @access_token, v: 20140806)
+      response = @client.get(USER_URL, oauth_token: @the_token, v: 20140806)
 
       @data = JSON.parse(response.body)
       @uid = @data["id"]
@@ -17,7 +17,7 @@ module Oauth
     def formatted_user_data
       {
         provider:       'keycloak',
-        token:          @access_token,
+        token:          @the_token,
        # uid:            @data['id'],
        # first_name:     @data['firstName'],
        # last_name:      @data['lastName'],
