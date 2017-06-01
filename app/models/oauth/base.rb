@@ -26,7 +26,7 @@ module Oauth
       if @the_token.present?
         token = JWT.decode @the_token, nil, false
       else
-        puts "== no access_token"
+        puts "@the_token not found"
       end
     end
 
@@ -35,8 +35,10 @@ module Oauth
       response = @client.post(self.class::ACCESS_TOKEN_URL, @params)
       puts "TOKEN response.body - #{response.body}"
       if tokentype == 'refresh'
+        @extra = "no need, the main token: is the refresh_token"
         JSON.parse(response.body)["refresh_token"]
       else
+        @extra = JSON.parse(response.body)["refresh_token"]
         JSON.parse(response.body)["access_token"]
       end
     end

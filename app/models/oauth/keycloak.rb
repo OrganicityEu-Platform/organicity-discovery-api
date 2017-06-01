@@ -18,6 +18,7 @@ module Oauth
       {
         provider:       'keycloak',
         token:          @the_token,
+        extratoken:     @extra,
        # uid:            @data['id'],
        # first_name:     @data['firstName'],
        # last_name:      @data['lastName'],
