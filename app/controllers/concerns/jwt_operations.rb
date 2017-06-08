@@ -10,11 +10,11 @@ module JwtOperations
   end
 
   def token(token)
-    token ? decoded_token(token) : " "
+    token ? decode_token(token) : " "
   end
 
   def token_session(token)
-    token ? decoded_token(token).client_session : 'no_session'
+    token ? decode_token(token).first["client_session"] : 'no_session'
   end
 end
 
