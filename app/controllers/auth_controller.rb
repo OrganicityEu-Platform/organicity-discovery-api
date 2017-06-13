@@ -40,7 +40,7 @@ class AuthController < ApplicationController
      # else
      #   render_error "This #{params[:provider]} account is used already"
      # end
-      render_success(token: @oauth.formatted_user_data[:token], extratoken: @oauth.formatted_user_data[:extratoken])
+      render_success(token: @oauth.formatted_user_data[:token], rtoken: @oauth.formatted_user_data[:rtoken])
     else
       render_error("There was an error with #{params['provider']}. please try again.")
     end

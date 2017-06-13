@@ -8,8 +8,6 @@ module Oauth
       @provider = self.class.name.split('::').last.downcase
       prepare_params params
 
-      @client = HTTPClient.new
-
       # If we have the refresh_token, this is a refresh request
       if params.has_key?(:refresh_token)
         @params[:grant_type] = 'refresh_token'
@@ -31,15 +29,15 @@ module Oauth
     end
 
     def get_tokens(tokentype)
-      puts "==== get_tokentype: #{tokentype}"
-      response = @client.post(self.class::ACCESS_TOKEN_URL, @params)
-      puts "TOKEN response.body - #{response.body}"
+      #puts "==== get_tokentype: #{tokentype}"
+      response = HTTP.post(self.class::ACCESS_TOKEN_URL, :form => @params)
+      #puts "RESPONSE - #{response}"
       if tokentype == 'refresh'
-        @extra = "no need, the main token: is the refresh_token"
-        JSON.parse(response.body)["refresh_token"]
+        @refresh_token = "no need, the main token: is the refresh_token"
+        JSON.parse(response)["refresh_token"]
       else
-        @extra = JSON.parse(response.body)["refresh_token"]
-        JSON.parse(response.body)["access_token"]
+        @refresh_token = JSON.parse(response)["refresh_token"]
+        JSON.parse(response)["access_token"]
       end
     end
 
