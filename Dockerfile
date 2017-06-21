@@ -39,7 +39,9 @@ RUN gem install bundler
 ADD $APPROOT/Gemfile $APPROOT/Gemfile
 ADD $APPROOT/Gemfile.lock $APPROOT/Gemfile.lock
 
-# RUN bundle update
+# Speed up nokogiri install
+ENV NOKOGIRI_USE_SYSTEM_LIBRARIES 1
+
 RUN bundle install
 
 # Copy the Rails application into place
