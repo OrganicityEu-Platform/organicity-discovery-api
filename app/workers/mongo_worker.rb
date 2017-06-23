@@ -8,7 +8,7 @@ class MongoWorker
 
   def perform(doc)
     @mongo_client = MongoClient.new(MONGO_URL, MONGO_PORT)
-    apilog = @mongo_client.db('apilog')
-    apilog[:apiLogEntry].insert(doc)
+    apilog = @mongo_client.db('logs')
+    apilog[:'logs-discovery'].insert(doc)
   end
 end

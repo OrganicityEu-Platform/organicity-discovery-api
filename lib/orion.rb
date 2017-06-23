@@ -2,7 +2,8 @@ require 'net/http'
 require 'json'
 
 module Orion
-  ORION_URL = "http://dev.orion.organicity.eu:1026/v2/entities"
+
+  ORION_URL = ENV['ORION_URL'] || 'missing_orion_url_in_env'
 
   def request_entities(raw_params)
     url = "#{ORION_URL}"
