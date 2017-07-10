@@ -1,5 +1,4 @@
 class ApplicationController < ActionController::API
-  include Prefixes
   before_action :cors_preflight_check, :http_auth_header
 
   def cors_preflight_check
@@ -27,9 +26,6 @@ class ApplicationController < ActionController::API
         # to fetch "client_session" if it exists
         params[:token] = request.headers['Authorization'].split(' ').last
 
-        myprefix = getPrefixes(request.headers['Authorization'])
-
-        puts ("Nr of prefixes: #{myprefix.length}") if myprefix.present?
       else
         #Some other header?
       end

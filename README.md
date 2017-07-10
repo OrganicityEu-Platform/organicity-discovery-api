@@ -26,5 +26,7 @@ It comprises the following functionalities:
 [![Code Climate](https://codeclimate.com/github/OrganicityEu/organicity-discovery-api/badges/gpa.svg)](https://codeclimate.com/github/OrganicityEu/organicity-discovery-api)
 
 
+## Testing
 
-
+Currently we have only a handful of tests but you can run them through docker with:
+`docker-compose exec app rake test --verbose`

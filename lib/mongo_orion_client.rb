@@ -13,16 +13,26 @@ module MongoOrionClient
     @mongo_client.db('orion-organicity')
   end
 
-  def mongo_orion_logger(request, session)
+  def mongo_orion_logger(request, session, urn = nil, sub = nil)
+
     if (Rails.configuration.api_log)
       doc = {
         timestamp: Time.now.to_time.iso8601,
-        ip: request.remote_ip,
-        session: session,
         service: "AssetsDiscovery",
-        method: "assets",
-        url: request.env["REQUEST_URI"]
+        sub: sub,
+        action: 'read'
       }
+      if urn
+        doc[:context] = {
+          method: "getAssets",
+          urn: urn
+        }
+      else
+        doc[:context] = {
+          url: request.env["REQUEST_URI"],
+          status: 200
+        }
+      end
       MongoWorker.perform_async(doc)
     end
   end
@@ -42,17 +52,18 @@ module MongoOrionClient
     return mbuilder
   end
 
-# Experimenters: {"_id.id": /urn:oc:entity:experimenters:62afc265-af9a-47e7-afb5-caab21ed09b4/}
-# Experiments: {"_id.id": /urn:oc:entity:experimenters:[^:]+:57f3debd6ec783244b3901e2/}
+  # Experimenters: {"_id.id": /urn:oc:entity:experimenters:62afc265-af9a-47e7-afb5-caab21ed09b4/}
+  # Experiments:   {"_id.id": /urn:oc:entity:experimenters:[^:]+:57f3debd6ec783244b3901e2/}
 
   def search_q(params)
-
     # This is temp to solve cache worker issue. Must change
-    if (!params.is_a? Object) 
+    if (!params.is_a? Object)
       params = {}
-    end 
-     
-    if params[:experimenter] 
+    end
+
+    if params[:id]
+      return params[:id]
+    elsif params[:experimenter]
       return /urn:oc:entity:experimenters:#{params[:experimenter]}/
     elsif params[:experiment]
       return /urn:oc:entity:experimenters:[^:]+:#{params[:experiment]}/
@@ -90,7 +101,7 @@ module MongoOrionClient
       qbuilder.merge!({ "attrNames": params[:q] })
     end
 
-    return qbuilder
+    return filter_by_scope(params, qbuilder)
   end
 
   # These methods should be merged
@@ -143,6 +154,9 @@ module MongoOrionClient
         '$geoWithin': { '$center': [ [  params[:long].to_f, params[:lat].to_f ], 100 ] }
       })
     end
+
+    q = filter_by_scope(params, q)
+
     m = create_options(params)
     logger.warn q
     logger.warn m
@@ -170,6 +184,10 @@ module MongoOrionClient
         '$language' => 'en'
       }
     }
+
+    q = filter_by_scope(params, q)
+
+    logger.warn 'mongo_metadata_search_assets_index'
     logger.warn q
     logger.warn m
     orion[:entities].find(q,m).to_a
@@ -194,6 +212,10 @@ module MongoOrionClient
     logger.warn params
     orion = setup_client
     m = create_options(params)
+
+    q = filter_by_scope(params, q)
+
+    logger.warn 'mongo_metadata_search_assets_no_index'
     logger.warn q
     logger.warn m
     orion[:entities].find(
@@ -215,30 +237,32 @@ module MongoOrionClient
     ).to_a
   end
 
-  def mongo_data_asset(params)
-    orion = setup_client
-    orion[:entities].find(
-      {
-        '_id.id' => /#{params[:id]}/,
-      },
-      {
-        :limit => 1
-      }
-    ).to_a
+  # TODO: This should be removed
+  # def mongo_data_asset(params)
+  #   orion = setup_client
+  #   orion[:entities].find(
+  #     {
+  #       '_id.id' => /#{params[:id]}/,
+  #     },
+  #     {
+  #       :limit => 1
+  #     }
+  #   ).to_a
 
-  end
+  # end
 
-  def mongo_asset(params)
-    orion = setup_client
-    orion[:entities].find(
-      {
-        '_id.id' => /#{params[:id]}/,
-      },
-      {
-        :limit => 1
-      }
-    ).to_a
-  end
+  # TODO: This should be removed
+  # def mongo_asset(params)
+  #   orion = setup_client
+  #   orion[:entities].find(
+  #     {
+  #       '_id.id' => /#{params[:id]}/,
+  #     },
+  #     {
+  #       :limit => 1
+  #     }
+  #   ).to_a
+  # end
 
   def mongo_asset_nearby(params)
     asset = mongo_asset(params).first
@@ -268,6 +292,12 @@ module MongoOrionClient
     else
       return []
     end
+  end
+
+  def filter_by_scope(params, qbuilder)
+    prefixes = params[:prefixes].collect{ |p| eval "/#{p}/" }
+    allowed = { '_id.id' =>  {'$in' => prefixes } }
+    return { '$and': [allowed, qbuilder] }
   end
 
   def order_query(params)
