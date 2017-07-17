@@ -266,6 +266,24 @@ module AssetsMapping
     end
 
     def expand_position(a)
+
+      # TODO: remove these comments
+      puts '-- expand_position'
+      # http://localhost:3000/v0/assets/urn:oc:entity:aarhus:friluftsliv:dogwalkingarea:fc691cebbba4306048fde889ce7e5a26
+      # Before, position: was 'null'
+      # puts JSON.pretty_generate(a[:data][:attributes][:data]["location"][:value]["coordinates"])
+
+      # TODO: WHEN should we return this MultiPolygon? - Change the condition, and move it into the next if statement below
+      if a[:position] and a[:position] != "null"
+        return {
+          geometry: {
+            type: 'MultiPolygon',
+            coordinates: a[:data][:attributes][:data]["location"][:value]["coordinates"].split(',')
+          }
+        }
+      end
+      ####
+
       if a[:position] and a[:position] != "null" and map_string_to_float(a[:position][:latitude])
         if a[:position][:city]
           {

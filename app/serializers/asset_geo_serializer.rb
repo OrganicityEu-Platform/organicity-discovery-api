@@ -19,6 +19,8 @@ class AssetGeoSerializer < ActiveModel::Serializer
   end
 
   def feature(o)
+    # TODO: Implement a complex geometry
+    # http://localhost:3000/v0/assets/geo/search?lat=43.4&long=-3.84&radius=50&km=true
     {
       type: "Feature",
       geometry: geometry(o),
@@ -27,8 +29,12 @@ class AssetGeoSerializer < ActiveModel::Serializer
   end
 
   def map_type(o)
+    #puts JSON.pretty_generate(o)
     if o["geo"] and o["geo"]["type"]
       o["geo"]["type"]
+    elsif true # TODO: how do we know it is a MultiPolygon?
+      # Is it when we have more than 1 pairs of coordinates? ex coordinates.length > 2 ?
+      "MultiPolygon"
     else
       "Point"
     end
@@ -42,6 +48,10 @@ class AssetGeoSerializer < ActiveModel::Serializer
   end
 
   def map_position(o)
+    # If the o == MultiPolygon, strip them
+    if map_type(o) == 'MultiPolygon'
+      p 'We have a MultiPolygon' # downside is we call map_type(o) 2x
+    end
     if o["position"]["latitude"] and o["position"]["longitude"]
       [
         o["position"]["longitude"].to_f,
