@@ -19,8 +19,6 @@ class AssetGeoSerializer < ActiveModel::Serializer
   end
 
   def feature(o)
-    # TODO: Implement a complex geometry
-    # http://localhost:3000/v0/assets/geo/search?lat=43.4&long=-3.84&radius=50&km=true
     {
       type: "Feature",
       geometry: o["position"]["geometry"],
