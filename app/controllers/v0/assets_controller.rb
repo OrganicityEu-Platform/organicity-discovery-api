@@ -7,7 +7,6 @@ class V0::AssetsController < ApplicationController
   def index
     query_params = map_query_parameters(params)
     @assets = Asset.get_mongo_assets(query_params, "mongo_assets", request, token_session(params[:token]))
-    logger.warn @assets
     render json: @assets, each_serializer: AssetSerializer, root: false
   end
 
@@ -44,7 +43,6 @@ class V0::AssetsController < ApplicationController
   def metadata_search
     query_params = map_query_parameters(params)
     @assets = Asset.get_mongo_assets(query_params, "mongo_metadata_search_assets", request, token_session(params[:token]))
-    logger.warn @assets
     render json: @assets, each_serializer: AssetSerializer, root: false
   end
 

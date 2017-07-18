@@ -106,7 +106,7 @@ module MongoOrionClient
 
   # These methods should be merged
   def mongo_geo_search_assets(params)
-    logger.warn params
+    logger.warn "params: #{params}"
     orion = setup_client
     q = create_query(params)
     m = create_options(params)
@@ -114,7 +114,7 @@ module MongoOrionClient
   end
 
   def mongo_geo_assets(params)
-    logger.warn params
+    logger.warn "params: #{params}"
     orion = setup_client
     q = create_query(params)
     m = create_options(params)
@@ -209,7 +209,6 @@ module MongoOrionClient
       end
       q.merge!('$or' => search_list)
     end
-    logger.warn params
     orion = setup_client
     m = create_options(params)
 
@@ -225,7 +224,7 @@ module MongoOrionClient
   end
 
   def mongo_assets(params)
-    logger.warn params
+    logger.warn "params: #{params}"
     orion = setup_client
     q = create_query(params)
     m = create_options(params)
@@ -272,22 +271,22 @@ module MongoOrionClient
     if asset and asset["attrs"]["position"] and asset["attrs"]["position"]["type"] == "coords"
       params[:long] = asset["attrs"]["position"]["value"].split(',')[1]
       params[:lat]  = asset["attrs"]["position"]["value"].split(',')[0]
-      logger.warn params
+      logger.warn "params: #{params}"
       return mongo_geo_assets(params)
     elsif asset and asset["attrs"]["location"]
       params[:long] = asset["attrs"]["location"]["value"].split(',')[0]
       params[:lat]  = asset["attrs"]["location"]["value"].split(',')[1]
-      logger.warn params
+      logger.warn "params: #{params}"
       return mongo_geo_assets(params)
     elsif asset and asset["location"] and asset["location"]["coords"]
       params[:long] = asset["location"]["coords"]["coordinates"][1]
       params[:lat]  = asset["location"]["coords"]["coordinates"][0]
-      logger.warn params
+      logger.warn "params: #{params}"
       return mongo_geo_assets(params)
     elsif asset and asset["attrs"]["latitude"] and asset["attrs"]["longitude"]
       params[:long] = asset["attrs"]["longitude"]["value"]
       params[:lat]  = asset["attrs"]["latitude"]["value"]
-      logger.warn params
+      logger.warn "params: #{params}"
       return mongo_geo_assets(params)
     else
       return []
