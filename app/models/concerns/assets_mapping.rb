@@ -274,35 +274,45 @@ module AssetsMapping
       # puts JSON.pretty_generate(a[:data][:attributes][:data]["location"][:value]["coordinates"])
 
       # TODO: WHEN should we return this MultiPolygon? - Change the condition, and move it into the next if statement below
-      if a[:position] and a[:position] != "null"
-        return {
-          geometry: {
-            type: 'MultiPolygon',
-            coordinates: a[:data][:attributes][:data]["location"][:value]["coordinates"].split(',')
-          }
-        }
-      end
+#      if a[:position] and a[:position] != "null"
+#        return {
+#          geometry: {
+#            type: 'MultiPolygon',
+#            coordinates: a[:data][:attributes][:data]["location"][:value]["coordinates"].split(',')
+#          }
+#        }
+#      end
       ####
 
-      if a[:position] and a[:position] != "null" and map_string_to_float(a[:position][:latitude])
+#      if a[:position] and a[:position] != "null" and map_string_to_float(a[:position][:latitude])
         if a[:position][:city]
-          {
-            latitude: map_string_to_float(a[:position][:latitude]),
-            longitude: map_string_to_float(a[:position][:longitude]),
-            city: a[:position][:city][:attributes][:name],
-            region: a[:position][:city][:attributes][:region],
-            country_code: a[:position][:city][:attributes][:country_code],
-            country: a[:position][:city][:attributes][:country],
-          }
+          if a[:position][:geometry]
+            {
+              geometry: a[:position][:geometry],
+              city: a[:position][:city][:attributes][:name],
+              region: a[:position][:city][:attributes][:region],
+              country_code: a[:position][:city][:attributes][:country_code],
+              country: a[:position][:city][:attributes][:country],
+            }
+          else
+            {
+              latitude: map_string_to_float(a[:position][:latitude]),
+              longitude: map_string_to_float(a[:position][:longitude]),
+              city: a[:position][:city][:attributes][:name],
+              region: a[:position][:city][:attributes][:region],
+              country_code: a[:position][:city][:attributes][:country_code],
+              country: a[:position][:city][:attributes][:country],
+            }
+          end
         else
           {
             latitude: map_string_to_float(a[:position][:latitude]),
             longitude: map_string_to_float(a[:position][:longitude])
           }
         end
-      else
-        nil
-      end
+#      else
+#        nil
+#      end
     end
 
     # Spatial functions requiere refactoring on next phase
@@ -323,24 +333,33 @@ module AssetsMapping
         # is simple then lon, lat but when geo:json lat, lon...
 
         {
-          longitude: sanitize_array(a["location"]["coords"]["coordinates"])[0],
-          latitude: sanitize_array(a["location"]["coords"]["coordinates"])[1]
+          geometry: a["location"]["coords"]
         }
       else
         {
-          longitude: 0.0,
-          latitude: 0.0
+          geometry: 'null'
         }
+        # TODO: add support for assets with no location
       end
     end
 
     def parse_position(a, city)
+      p 'parse_position'
+      p a;
+      p '====='
       if a["location"] and a["location"]["coords"]
-        {
-          longitude: sanitize_array(a["location"]["coords"]["coordinates"])[0],
-          latitude: sanitize_array(a["location"]["coords"]["coordinates"])[1],
-          city: city
-        }
+        if a["location"]["coords"]["type"] == 'Point'
+          {
+            longitude: sanitize_array(a["location"]["coords"]["coordinates"])[0],
+            latitude: sanitize_array(a["location"]["coords"]["coordinates"])[1],
+            city: city
+          }
+        else
+          {
+            geometry: a["location"]["coords"],
+            city: city
+          }
+        end
       else
         {
           longitude: city_position(city)[0],
