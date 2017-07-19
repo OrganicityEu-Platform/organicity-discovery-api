@@ -4,7 +4,7 @@ default: &default
   pool         : 5
   timeout      : 5000
   min_messages : WARNING
-  host         : db
+  host         : <%= ENV['POSTGRES_HOST'] || 'db' %>
   port         : 5432
   username     : postgres
   password     : <%= ENV['POSTGRES_PASSWORD'] %>
