@@ -24,7 +24,7 @@ before_script:
 
 script:
   - "bundle install"
-  - "bundle exec sidekiq -C config/sidekiq.yml -e development"
+  - "bundle exec sidekiq -d -C config/sidekiq.yml -e development"
   - "bundle exec rake db:create"
   - "bundle exec rake db:schema:load"
   - "bundle exec rake db:test:prepare"
