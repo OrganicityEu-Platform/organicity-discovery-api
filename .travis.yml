@@ -10,10 +10,12 @@ before_install:
 
 install:
   - sudo apt-get install -y $(apt-cache search postgis | awk '/^postgresql-9\.[2-6]-postgis-2.3/{printf " "$1}' )
+  - sudo apt-get install -y redis-server
 
 before_script:
 #  - dpkg -l |grep post
   - sudo service postgresql restart
+  - sudo service redis-server restart
   - psql -U postgres -c "create extension postgis"
 #  - psql -U postgres -c "create extension postgis version '2.2'"
 
