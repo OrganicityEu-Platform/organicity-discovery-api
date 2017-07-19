@@ -10,10 +10,11 @@ before_install:
 
 install:
   - sudo apt-get install postgresql-9.5-postgis-2.3
-  - psql -U postgres -c "create extension postgis"
 
 before_script:
+  - dpkg -l |grep post
   - sudo service postgresql restart
+  - psql -U postgres -c "create extension postgis"
 
 script:
   - "bundle exec rake db:create"
