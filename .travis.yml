@@ -7,6 +7,7 @@ env:
 
 before_install:
 #  - apt-cache search postgis
+  - cat /etc/os-release
 
 install:
   - sudo apt-get install -y $(apt-cache search postgis | awk '/^postgresql-9\.[2-6]-postgis-2.3/{printf " "$1}' )
@@ -16,6 +17,7 @@ before_script:
 #  - dpkg -l |grep post
   - sudo service postgresql restart
   - sudo service redis-server restart
+  - redis-cli info
   - psql -U postgres -c "create extension postgis"
 #  - psql -U postgres -c "create extension postgis version '2.2'"
 
