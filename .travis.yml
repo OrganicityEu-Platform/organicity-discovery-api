@@ -9,7 +9,7 @@ before_install:
   - apt-cache search postgis
 
 install:
-  - sudo apt-get install postgresql-9.5-postgis-2.3
+  - sudo apt-get install -y $(apt-cache search postgis | awk '/^postgresql-9\.[2-6]-postgis-2.3/{printf " "$1}' )
 
 before_script:
   - dpkg -l |grep post
