@@ -17,6 +17,7 @@ before_script:
   - psql -U postgres -c "create extension postgis"
 
 script:
+  - "bundle install"
   - "bundle exec rake db:create"
   - "bundle exec rake db:schema:load"
   - "bundle exec rake db:test:prepare"
