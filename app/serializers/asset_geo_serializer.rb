@@ -21,35 +21,9 @@ class AssetGeoSerializer < ActiveModel::Serializer
   def feature(o)
     {
       type: "Feature",
-      geometry: geometry(o),
+      geometry: o["position"]["geometry"],
       properties: feature_properties(o)
     }
-  end
-
-  def map_type(o)
-    if o["geo"] and o["geo"]["type"]
-      o["geo"]["type"]
-    else
-      "Point"
-    end
-  end
-
-  def geometry(o)
-    {
-      type: map_type(o),
-      coordinates: map_position(o)
-    }
-  end
-
-  def map_position(o)
-    if o["position"]["latitude"] and o["position"]["longitude"]
-      [
-        o["position"]["longitude"].to_f,
-        o["position"]["latitude"].to_f
-      ]
-    else
-      [ 0.0, 0.0 ]
-    end
   end
 
   def feature_properties(o)
