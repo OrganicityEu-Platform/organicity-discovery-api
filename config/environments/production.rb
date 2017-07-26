@@ -4,8 +4,6 @@ Rails.application.configure do
   # Code is not reloaded between requests.
   config.cache_classes = true
 
-  config.api_log = true
-
   # Eager load code on boot. This eager loads most of Rails and
   # your application in memory, allowing both threaded web servers
   # and those relying on copy on write to perform better.
@@ -98,7 +96,7 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   # Enable logging on the API Log Service
-  config.api_log = false
+  config.api_log = true
 
   # Enable API Auth
   config.auth_enabled = false
