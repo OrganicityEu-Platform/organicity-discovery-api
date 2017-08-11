@@ -9,6 +9,8 @@ Rails.application.routes.draw do
 
   post '/:provider',      to: 'auth#authenticate'
 
+  get '/', to: 'info#index'
+
   constraints(id: /[^\/]+/) do # Allows the asset id / urn to contain dots and other special characters
     namespace :v0 do
       scope '/assets/ngsiv2' do
