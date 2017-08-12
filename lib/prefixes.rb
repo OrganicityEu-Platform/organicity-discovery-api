@@ -29,7 +29,7 @@ module Prefixes
     call = RestCall.find(url: url, token: authheader).sort(by: :created_at)
     # TODO: time= 300 sec
     if call.empty? or ( Time.now > Time.parse(call.last.created_at) + 300.seconds )
-      resp = HTTP.auth(authheader).get(url)
+      resp = HTTP.timeout(:read => 5).auth(authheader).get(url)
       prefixes = JSON.parse(resp.to_s)["allowed_prefixes"]
       @cached_call = RestCall.create(url: url, token: authheader, created_at: Time.now, response: prefixes)
     else
