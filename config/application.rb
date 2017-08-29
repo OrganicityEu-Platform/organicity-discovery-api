@@ -32,6 +32,7 @@ module OrganicityApi
 
     Raven.configure do |config|
       config.dsn = ENV['RAVEN_DSN_URL']
+      config.environments = [ 'staging', 'production' ]
     end
 
   end
