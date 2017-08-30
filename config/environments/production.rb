@@ -92,6 +92,12 @@ Rails.application.configure do
     }
   end
 
+  if ENV['RAVEN_DSN_URL'].present?
+    Raven.configure do |config|
+      config.dsn = ENV['RAVEN_DSN_URL']
+    end
+  end
+
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 

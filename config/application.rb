@@ -30,10 +30,5 @@ module OrganicityApi
 
     config.cache_store = :redis_store, "#{Rails.application.secrets.redis_url || ENV['REDIS_URL']}/cache", { expires_in: 30.minutes }
 
-    Raven.configure do |config|
-      config.dsn = ENV['RAVEN_DSN_URL']
-      config.environments = [ 'staging', 'production' ]
-    end
-
   end
 end
