@@ -13,7 +13,7 @@ gem 'rgeo'
 gem 'puma'
 
 # Use Redis
-gem 'redis'
+gem 'redis', '>= 3.3.3'
 gem 'redis-rack', github: 'redis-store/redis-rack', branch: 'master'
 gem 'redis-rack-cache', github: 'redis-store/redis-rack-cache', branch: 'master'
 gem 'redis-activesupport', github: 'redis-store/redis-activesupport', branch: 'master'
