@@ -52,6 +52,11 @@ class BlogFlowTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'get 200 on /v0/types' do
+    get '/v0/types'
+    assert_response :success
+  end
+
   # assets/:id
   test 'get 200 on /v0/assets/:id/data' do
     get '/v0/assets/urn:oc:entity:london:transportService:TransportAPI:NEH/data'

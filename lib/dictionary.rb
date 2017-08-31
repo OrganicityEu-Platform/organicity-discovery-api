@@ -6,8 +6,8 @@ module Dictionary
   DICTIONARY_URL = 'https://sitemanager.organicity.eu/v1/dictionary'
 
   def setup_dictionary_client
-    token_request = get_token["body"]
-    token = JSON.parse(token_request[0])["access_token"]
+    token_request = get_token
+    token = JSON.parse(token_request)["access_token"]
     client =  HTTP[:authorization => "#{token}", :accept => "application/json"]
   end
 

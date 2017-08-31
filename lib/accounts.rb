@@ -8,7 +8,7 @@ module Accounts
   # This method should probably be private or something
   def get_token
     client =  HTTP[:authorization => "Basic #{encode_secrets}", :content_type => "application/x-www-form-urlencoded"]
-    return client.post(ACCOUNTS_URL, :form => {grant_type: "client_credentials"}).as_json
+    return client.post(ACCOUNTS_URL, :form => {grant_type: "client_credentials"})
   end
 
   private
