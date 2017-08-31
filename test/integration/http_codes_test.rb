@@ -22,6 +22,11 @@ class BlogFlowTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'get 200 on /v0/assets/sites/id' do
+    get '/v0/assets/sites/1'
+    assert_response :success
+  end
+
   test 'get 200 on /v0/assets/experiments' do
     get '/v0/assets/experiments'
     assert_response :success
@@ -37,8 +42,18 @@ class BlogFlowTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'get 200 on /v0/assets/geo/search' do
+    get '/v0/assets/geo/search'
+    assert_response :success
+  end
+
   test 'get 200 on /v0/assets/metadata' do
     get '/v0/assets/metadata'
+    assert_response :success
+  end
+
+  test 'get 200 on /v0/assets/metadata/search' do
+    get '/v0/assets/metadata/search'
     assert_response :success
   end
 
@@ -58,6 +73,11 @@ class BlogFlowTest < ActionDispatch::IntegrationTest
   end
 
   # assets/:id
+  test 'get 200 on /v0/assets/:id' do
+    get '/v0/assets/urn:oc:entity:london:transportService:TransportAPI:NEH'
+    assert_response :success
+  end
+
   test 'get 200 on /v0/assets/:id/data' do
     get '/v0/assets/urn:oc:entity:london:transportService:TransportAPI:NEH/data'
     assert_response :success
