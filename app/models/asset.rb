@@ -72,19 +72,26 @@ class Asset < ApplicationRecord
       end
     end
 
-    # Sites whitelist should be: ['urn:oc:entity:santander','urn:oc:entity:london','urn:oc:entity:patras','urn:oc:entity:aarhus']
-    # TODO
-    whitelist = City.pluck(:name).map do |c|
-      'urn:oc:entity:' + c.to_s.downcase
+    # cities_whitelist should be: ['urn:oc:entity:santander','urn:oc:entity:london','urn:oc:entity:patras','urn:oc:entity:aarhus']
+    cities_whitelist = Array.new
+    City.pluck(:name).map do |c|
+      if c.is_a? String
+        cities_whitelist.push 'urn:oc:entity:' + c.to_s.downcase
+      end
     end
 
     # Get all prefixes
     # myprefixes is an array of:
     # urn:oc:entity:experimenters:86d7edce-5092-44c0-bed8-da4beaa3fbc6:58a1e36cc2f43c7c37d178dc
-    myprefixes = getPrefixes(myheader) # (myheader may be nil.)
+    # It will return empty if experimenters.organicity does not respond within 5 sec
+    myprefixes = get_prefixes(myheader) # (myheader may be nil.)
     logger.warn ("Nr of prefixes: #{myprefixes.length}") if myprefixes.present?
 
-    params[:prefixes] = myprefixes + whitelist
+    if myprefixes.present?
+      params[:prefixes] = myprefixes + cities_whitelist
+    else
+      params[:prefixes] = cities_whitelist
+    end
 
     #TODO: Should we also check if we have 'sub' ?
     if request && session

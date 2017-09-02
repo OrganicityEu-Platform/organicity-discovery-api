@@ -21,16 +21,25 @@ module Prefixes
     return true
   end
 
-  def getPrefixes(authheader = nil)
+  def get_prefixes(authheader = nil)
     #TODO: Use ENV variable for this URL
+    # ENV['EXPERIMENTERS_PREFIX_URL']
     url = 'https://experimenters.organicity.eu:8443/emscheck/experiments-prefixes'
 
     # Cache it
     call = RestCall.find(url: url, token: authheader).sort(by: :created_at)
-    # TODO: time= 300 sec
     if call.empty? or ( Time.now > Time.parse(call.last.created_at) + 300.seconds )
       resp = HTTP.timeout(:read => 5).auth(authheader).get(url)
-      prefixes = JSON.parse(resp.to_s)["allowed_prefixes"]
+
+      logger.warn "Response code from experimenters API: #{resp.code}"
+
+      if resp.code == 200
+        prefixes = JSON.parse(resp.to_s)["allowed_prefixes"]
+      else
+        # TODO: If there is a problem with experimenters API, should we RETURN with no prefixes or do something else?
+        return
+      end
+
       @cached_call = RestCall.create(url: url, token: authheader, created_at: Time.now, response: prefixes)
     else
       call = call.last
