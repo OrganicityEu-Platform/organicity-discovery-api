@@ -16,11 +16,6 @@ module Prefixes
   #   Searching multiple values:
   #   db.entities.find({"_id.id":{ $in: [/bf148025-0ba7-4635-8c09-23d7a4495412:582c/, /b23/] }})
 
-  def isTokenPrefixCached
-    puts "------ Check if token prefixes are cached --------"
-    return true
-  end
-
   def get_prefixes(authheader = nil)
     #TODO: Use ENV variable for this URL
     # ENV['EXPERIMENTERS_PREFIX_URL']

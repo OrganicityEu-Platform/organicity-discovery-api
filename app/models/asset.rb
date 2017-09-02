@@ -73,6 +73,7 @@ class Asset < ApplicationRecord
     end
 
     # cities_whitelist should be: ['urn:oc:entity:santander','urn:oc:entity:london','urn:oc:entity:patras','urn:oc:entity:aarhus']
+    # NOTE: cities are empty if DB has not been seeded.
     cities_whitelist = Array.new
     City.pluck(:name).map do |c|
       if c.is_a? String
@@ -80,7 +81,7 @@ class Asset < ApplicationRecord
       end
     end
 
-    # Get all prefixes
+    # Get all prefixes, depending on this users header-authtoken
     # myprefixes is an array of:
     # urn:oc:entity:experimenters:86d7edce-5092-44c0-bed8-da4beaa3fbc6:58a1e36cc2f43c7c37d178dc
     # It will return empty if experimenters.organicity does not respond within 5 sec
