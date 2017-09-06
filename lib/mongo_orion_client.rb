@@ -38,6 +38,7 @@ module MongoOrionClient
   end
 
   def create_options(params)
+    p 'create_options'
     mbuilder = {}
     o = offset(params)
     l = limit(params)
@@ -76,6 +77,7 @@ module MongoOrionClient
     qbuilder = { '_id.id' => search_q(params) }
 
     if params[:long] and params[:lat]
+      p 'have long lat'
       if !params[:radius] 
         params[:radius] = 1
         params[:km]     = true;
@@ -84,6 +86,7 @@ module MongoOrionClient
       params[:radius] = params[:radius].to_f
 
       if params[:km] 
+        p 'have km'
         params[:radius] = params[:radius] / 6378.1
       end
 
@@ -114,6 +117,8 @@ module MongoOrionClient
   end
 
   def mongo_geo_assets(params)
+    p 'mongo_geo_asset'
+    p params
     logger.warn "params: #{params}"
     orion = setup_client
     q = create_query(params)
@@ -251,46 +256,42 @@ module MongoOrionClient
   # end
 
   # TODO: This should be removed
-  # def mongo_asset(params)
-  #   orion = setup_client
-  #   orion[:entities].find(
-  #     {
-  #       '_id.id' => /#{params[:id]}/,
-  #     },
-  #     {
-  #       :limit => 1
-  #     }
-  #   ).to_a
-  # end
+  def mongo_asset(params)
+    orion = setup_client
+    orion[:entities].find(
+      {
+        '_id.id' => /#{params[:id]}/,
+      },
+      {
+        :limit => 1
+      }
+    ).to_a
+  end
 
   def mongo_asset_nearby(params)
-    asset = mongo_asset(params).first
-    params[:radius] = 10
-    params[:km] = true
+    puts '--------'
+    #puts params
+    a = mongo_assets(params).first
+    #puts a
 
-    if asset and asset["attrs"]["position"] and asset["attrs"]["position"]["type"] == "coords"
-      params[:long] = asset["attrs"]["position"]["value"].split(',')[1]
-      params[:lat]  = asset["attrs"]["position"]["value"].split(',')[0]
-      logger.warn "params: #{params}"
-      return mongo_geo_assets(params)
-    elsif asset and asset["attrs"]["location"]
-      params[:long] = asset["attrs"]["location"]["value"].split(',')[0]
-      params[:lat]  = asset["attrs"]["location"]["value"].split(',')[1]
-      logger.warn "params: #{params}"
-      return mongo_geo_assets(params)
-    elsif asset and asset["location"] and asset["location"]["coords"]
-      params[:long] = asset["location"]["coords"]["coordinates"][1]
-      params[:lat]  = asset["location"]["coords"]["coordinates"][0]
-      logger.warn "params: #{params}"
-      return mongo_geo_assets(params)
-    elsif asset and asset["attrs"]["latitude"] and asset["attrs"]["longitude"]
-      params[:long] = asset["attrs"]["longitude"]["value"]
-      params[:lat]  = asset["attrs"]["latitude"]["value"]
-      logger.warn "params: #{params}"
-      return mongo_geo_assets(params)
+    if a["location"] and a["location"]["coords"]
+      if a["location"]["coords"]["type"] == 'Point'
+        puts a["location"]["coords"]
+        params[:long] = a["location"]["coords"]["coordinates"][0]
+        params[:lat] =  a["location"]["coords"]["coordinates"][1]
+        params[:radius] = 100
+        params[:km] = true
+        puts params
+        b = mongo_geo_assets(params)
+        puts b.length
+        return b
+      else
+        return []
+      end
     else
       return []
     end
+
   end
 
   def filter_by_scope(params, qbuilder)
