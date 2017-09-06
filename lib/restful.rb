@@ -27,7 +27,7 @@ module Restful
       # We should extend cache if there is an error to preserve good results
       response = make_request(url)
       @cached_call = RestCall.create(url: url, created_at: Time.now, response: response.to_json)
-      logger.warn "new request"
+      logger.warn "new request cache_call"
     else
       logger.warn "cached response"
       call = call.last

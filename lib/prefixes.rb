@@ -21,11 +21,19 @@ module Prefixes
     # ENV['EXPERIMENTERS_PREFIX_URL']
     url = 'https://experimenters.organicity.eu:8443/emscheck/experiments-prefixes'
 
-    # Cache it
-    call = RestCall.find(url: url, token: authheader).sort(by: :created_at)
-    if call.empty? or ( Time.now > Time.parse(call.last.created_at) + 300.seconds )
-      resp = HTTP.timeout(:read => 5).auth(authheader).get(url)
+    # Logged in users (with authheader) use a different cache
+    if authheader == nil
+      call = RestCall.find(url: url).sort(by: :created_at)
+      logger.warn "Time since last cache (non user): #{Time.now - call.last.created_at.to_time}"
+    else
+      call = RestCall.find(url: url, token: authheader).sort(by: :created_at)
+      logger.warn "Time since last cache (logged in user):  #{Time.now - call.last.created_at.to_time}"
+    end
 
+    # Cache it
+    if call.empty? or ( Time.now > Time.parse(call.last.created_at) + 300.seconds )
+      logger.warn "New cache"
+      resp = HTTP.timeout(:read => 5).auth(authheader).get(url)
       logger.warn "Response code from experimenters API: #{resp.code}"
 
       if resp.code == 200
@@ -37,6 +45,7 @@ module Prefixes
 
       @cached_call = RestCall.create(url: url, token: authheader, created_at: Time.now, response: prefixes)
     else
+      logger.warn "Using cache."
       call = call.last
       @cached_call = call
     end

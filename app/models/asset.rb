@@ -47,7 +47,7 @@ class Asset < ApplicationRecord
     logger.warn call
     if call.empty? or ( Time.now > Time.parse(call.last.created_at) + 30.seconds )
       # We should extend cache if there is an error to preserve good results
-      logger.warn "new request"
+      logger.warn "new request (cache_mongo)"
       return false
     else
       logger.warn "cached response"
@@ -61,7 +61,7 @@ class Asset < ApplicationRecord
     # This code was moved from application_controller#http_auth
     if request.headers['Authorization'].present?
       if request.headers['Authorization'].split(' ').first == 'Bearer'
-        myheader = request.headers['Authorization']
+        authheader = request.headers['Authorization']
 
         # In the token lives a 'sub' which is a client id?
         client_token = request.headers['Authorization'].split(' ').last
@@ -85,7 +85,7 @@ class Asset < ApplicationRecord
     # myprefixes is an array of:
     # urn:oc:entity:experimenters:86d7edce-5092-44c0-bed8-da4beaa3fbc6:58a1e36cc2f43c7c37d178dc
     # It will return empty if experimenters.organicity does not respond within 5 sec
-    myprefixes = get_prefixes(myheader) # (myheader may be nil.)
+    myprefixes = get_prefixes(authheader) # (authheader will be nil if user is not logged in)
     logger.warn ("Nr of prefixes: #{myprefixes.length}") if myprefixes.present?
 
     if myprefixes.present?
