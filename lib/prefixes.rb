@@ -24,10 +24,11 @@ module Prefixes
     # Logged in users (with authheader) use a different cache
     if authheader == nil
       call = RestCall.find(url: url).sort(by: :created_at)
-      logger.warn "Time since last cache (non user): #{Time.now - call.last.created_at.to_time}"
+      #NOTE: call.last was nil according to Sentry - remove those logger.warn?
+      #logger.warn "Time since last cache (non user): #{Time.now - call.last.created_at.to_time}"
     else
       call = RestCall.find(url: url, token: authheader).sort(by: :created_at)
-      logger.warn "Time since last cache (logged in user):  #{Time.now - call.last.created_at.to_time}"
+      #logger.warn "Time since last cache (logged in user):  #{Time.now - call.last.created_at.to_time}"
     end
 
     # Cache it
