@@ -1,5 +1,5 @@
 # Base image with ruby 2.2.2
-FROM ruby:2.2.2
+FROM ruby:2.2.8
 
 # Install essential Linux packages
 RUN apt-get update -qq && apt-get install -y \
