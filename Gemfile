@@ -44,7 +44,7 @@ gem 'http'
 # Sidekiq for async jobs
 gem 'sinatra', github: 'sinatra', :require => false
 gem 'mustermann'
-gem 'mustermann-rails'
+gem 'mustermann-contrib'
 gem 'sidekiq'
 gem 'sidetiq'
 
