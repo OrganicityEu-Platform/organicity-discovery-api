@@ -16,12 +16,12 @@ ActiveRecord::Schema.define(version: 20160520083800) do
   enable_extension "plpgsql"
   enable_extension "postgis"
 
-  create_table "assets", force: :cascade do |t|
+  create_table "assets", id: :bigserial, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "cities", force: :cascade do |t|
+  create_table "cities", id: :bigserial, force: :cascade do |t|
     t.string    "name"
     t.string    "country"
     t.string    "country_code"
@@ -36,17 +36,17 @@ ActiveRecord::Schema.define(version: 20160520083800) do
     t.datetime  "updated_at",                                                                null: false
   end
 
-  create_table "experimenters", force: :cascade do |t|
+  create_table "experimenters", id: :bigserial, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "experiments", force: :cascade do |t|
+  create_table "experiments", id: :bigserial, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "links", force: :cascade do |t|
+  create_table "links", id: :bigserial, force: :cascade do |t|
     t.string   "url"
     t.string   "relationship"
     t.integer  "linkable_id"
@@ -55,17 +55,17 @@ ActiveRecord::Schema.define(version: 20160520083800) do
     t.datetime "updated_at",    null: false
   end
 
-  create_table "providers", force: :cascade do |t|
+  create_table "providers", id: :bigserial, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "services", force: :cascade do |t|
+  create_table "services", id: :bigserial, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "sites", force: :cascade do |t|
+  create_table "sites", id: :bigserial, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
