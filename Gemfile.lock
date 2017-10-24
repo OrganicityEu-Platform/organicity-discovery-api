@@ -1,73 +1,70 @@
 GIT
-  remote: https://github.com/opbeat/opbeat-ruby
-  revision: 3985a495d90f911db022f2baccaf264dde9af4fb
+  remote: git://github.com/rails-api/active_model_serializers.git
+  revision: 993cc504d675370f5ea4ae3e1179a38c712ee7f9
   specs:
-    opbeat (3.0.9)
-      activesupport (>= 3.0.0)
+    active_model_serializers (0.10.2)
+      actionpack (>= 4.1, < 6)
+      activemodel (>= 4.1, < 6)
+      jsonapi (~> 0.1.1.beta2)
+      railties (>= 4.1, < 6)
 
 GIT
-  remote: https://github.com/rails-api/active_model_serializers.git
-  revision: e8f3ec8ab78ead1ad557384f348fecec2b293a4f
-  specs:
-    active_model_serializers (1.0.0.pre.dev)
-
-GIT
-  remote: https://github.com/redis-store/redis-actionpack.git
-  revision: 5376a3db4d487686363b14d04b10a056261b0c30
+  remote: git://github.com/redis-store/redis-actionpack.git
+  revision: 0036256c2351d837c95e58036fe70c2c0c869207
   branch: master
   specs:
-    redis-actionpack (5.0.2)
-      actionpack (>= 4.0, < 6)
-      redis-rack (>= 1, < 3)
-      redis-store (>= 1.1.0, < 2)
+    redis-actionpack (5.0.0)
+      actionpack (>= 4.0.0, < 6)
+      redis-rack (~> 2.0.0.pre)
+      redis-store (~> 1.2.0.pre)
 
 GIT
-  remote: https://github.com/redis-store/redis-activesupport.git
-  revision: 05053d95564fc73fb761d87bb9770e203445141c
+  remote: git://github.com/redis-store/redis-activesupport.git
+  revision: 14a9ec21a118d425fa916e8f45ff40ddb2c9f34f
   branch: master
   specs:
-    redis-activesupport (5.0.4)
+    redis-activesupport (5.0.1)
       activesupport (>= 3, < 6)
-      redis-store (>= 1.3, < 2)
+      redis-store (~> 1.2.0)
 
 GIT
-  remote: https://github.com/redis-store/redis-rack-cache.git
-  revision: d1fdd3868bdc02efa5ae724a2758b3abfda271ab
+  remote: git://github.com/redis-store/redis-rack-cache.git
+  revision: fabaef6dbcbc2ffd9cc9c61e214df8cbb2acce23
   branch: master
   specs:
-    redis-rack-cache (2.0.2)
-      rack-cache (>= 1.6, < 2)
-      redis-store (>= 1.2, < 2)
+    redis-rack-cache (2.0.0.pre)
+      rack-cache (~> 1.6.0)
+      redis-store (~> 1.2.0.pre)
 
 GIT
-  remote: https://github.com/redis-store/redis-rack.git
-  revision: 5fcb79519beb66faf0feb286e8a28f1a87996a23
+  remote: git://github.com/redis-store/redis-rack.git
+  revision: ba3a6b7cd5259e9678195b3df121c2a3e012b134
   branch: master
   specs:
-    redis-rack (2.0.3)
-      rack (>= 1.5, < 3)
-      redis-store (>= 1.2, < 2)
+    redis-rack (2.0.0.pre)
+      rack (> 1.5, < 3)
+      redis-store (~> 1.2.0.pre)
 
 GIT
-  remote: https://github.com/redis-store/redis-rails.git
-  revision: e5003d8b70a772257b7a4c790af23bf7b717f32e
+  remote: git://github.com/redis-store/redis-rails.git
+  revision: 8cb5ac2f669c3aba34e64b5922dcfb7e72d808e6
   branch: master
   specs:
-    redis-rails (5.0.2)
-      redis-actionpack (>= 3.0, < 6)
-      redis-activesupport (>= 3.0, < 6)
+    redis-rails (5.0.1)
+      redis-actionpack (~> 5.0.0)
+      redis-activesupport (~> 5.0.0)
+      redis-store (~> 1.2.0)
 
 GIT
-  remote: https://github.com/rgeo/activerecord-postgis-adapter.git
-  revision: 618682a809d0037faea10a0a166d7055d334f103
-  tag: v4.0.2
+  remote: git://github.com/rgeo/activerecord-postgis-adapter.git
+  revision: 57b9d88acd55fcdb9aae43539c21d5537a3a2302
   specs:
     activerecord-postgis-adapter (4.0.2)
       activerecord (~> 5.0.0)
       rgeo-activerecord (~> 5.0.0)
 
 GIT
-  remote: https://github.com/sinatra/sinatra.git
+  remote: git://github.com/sinatra/sinatra.git
   revision: 89cbd96866355729bb347a76ce601b98c3ff579b
   specs:
     rack-protection (2.0.0)
@@ -77,6 +74,13 @@ GIT
       rack (~> 2.0)
       rack-protection (= 2.0.0)
       tilt (~> 2.0)
+
+GIT
+  remote: https://github.com/opbeat/opbeat-ruby
+  revision: 3985a495d90f911db022f2baccaf264dde9af4fb
+  specs:
+    opbeat (3.0.9)
+      activesupport (>= 3.0.0)
 
 GEM
   remote: https://rubygems.org/
@@ -168,6 +172,9 @@ GEM
     http_parser.rb (0.6.0)
     i18n (0.8.6)
     ice_cube (0.13.3)
+    json (1.8.6)
+    jsonapi (0.1.1.beta2)
+      json (~> 1.8)
     jwt (1.5.6)
     listen (3.0.8)
       rb-fsevent (~> 0.9, >= 0.9.4)
@@ -236,10 +243,10 @@ GEM
     redic (1.5.0)
       hiredis
     redis (3.3.3)
-    redis-store (1.4.1)
-      redis (>= 2.2, < 5)
+    redis-store (1.2.0)
+      redis (>= 2.2)
     rgeo (0.5.3)
-    rgeo-activerecord (5.0.1)
+    rgeo-activerecord (5.0.0)
       activerecord (~> 5.0.0)
       rgeo (~> 0.3)
     rgeo-geojson (0.4.3)
@@ -285,7 +292,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers!
-  activerecord-postgis-adapter!
+  activerecord-postgis-adapter (= 4.0.2)!
   bson_ext
   byebug
   chronic

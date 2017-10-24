@@ -1,16 +1,16 @@
 source 'https://rubygems.org'
 
-git_source(:github) do |repo_name|
-  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
-  "https://github.com/#{repo_name}.git"
-end
+#git_source(:github) do |repo_name|
+#  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
+#  "https://github.com/#{repo_name}.git"
+#end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '5.0.5'
 
 # Use Postgres and ActiveRecord Postgis-adapter
 gem 'pg'
-gem 'activerecord-postgis-adapter', tag: 'v4.0.2', github: 'rgeo/activerecord-postgis-adapter'
+gem 'activerecord-postgis-adapter', '=4.0.2', github: 'rgeo/activerecord-postgis-adapter'
 gem 'rgeo'
 
 # Use Puma as the app server
