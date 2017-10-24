@@ -6,7 +6,7 @@ source 'https://rubygems.org'
 #end
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '>= 5.0.0.rc1', '< 5.1'
+gem 'rails', '5.0.5'
 
 # Use Postgres and ActiveRecord Postgis-adapter
 gem 'pg'
