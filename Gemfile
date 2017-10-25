@@ -29,7 +29,7 @@ gem 'ohm'
 gem 'rack-cache'
 
 # Connecting to MongoDB
-gem 'mongo'
+gem 'mongo', '< 2' # Syntax changes in 2.0
 gem 'bson_ext'
 
 # GeoJSON
