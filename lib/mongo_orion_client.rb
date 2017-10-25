@@ -174,10 +174,14 @@ module MongoOrionClient
   def mongo_metadata_search_assets_index(params)
     # This requires this index in Orion 
     # db.entities.createIndex({"$**":"text"})
-    
+
     orion = setup_client
     m = create_options(params)
-    query = params[:query].split(/[\s+ ]/).map {|keyword| '"' + keyword + '"'}.join(' ')
+
+    if params.has_key?(:query)
+      query = params[:query].split(/[\s+ ]/).map {|keyword| '"' + keyword + '"'}.join(' ')
+    end
+
     q = {
       '$text' => {
         '$search' => query,
