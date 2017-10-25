@@ -75,6 +75,25 @@ module MongoOrionClient
   def create_query(params)
     qbuilder = { '_id.id' => search_q(params) }
 
+    if params[:zoom]
+      params[:km] = true;
+      if params[:zoom].to_i == 0
+        params[:radius] = 1
+      elsif params[:zoom].to_i == 1
+        params[:radius] = 10
+      elsif params[:zoom].to_i == 2
+        params[:radius] = 20
+      elsif params[:zoom].to_i == 3
+        params[:radius] = 30
+      elsif params[:zoom].to_i == 4
+        params[:radius] = 40
+      elsif params[:zoom].to_i == 5
+        params[:radius] = 50
+      else
+        params[:radius] = 100
+      end
+    end
+
     if params[:long] and params[:lat]
       if !params[:radius] 
         params[:radius] = 1
@@ -122,44 +141,10 @@ module MongoOrionClient
   end
 
   def mongo_geo_count_assets(params)
-    log params
+    logger.warn "params: #{params}"
     orion = setup_client
-    q = {}
-    if params[:zoom].to_i == 0
-      q.merge!("location.coords.coordinates" => {
-        '$geoWithin': { '$center': [ [  params[:long].to_f, params[:lat].to_f ], 1] }
-      })
-    elsif params[:zoom].to_i == 1
-      q.merge!("location.coords.coordinates" => {
-        '$geoWithin': { '$center': [ [  params[:long].to_f, params[:lat].to_f ], 10 ] }
-      })
-    elsif params[:zoom].to_i == 2
-      q.merge!("location.coords.coordinates" => {
-        '$geoWithin': { '$center': [ [  params[:long].to_f, params[:lat].to_f ], 20 ] }
-      })
-    elsif params[:zoom].to_i == 3
-      q.merge!("location.coords.coordinates" => {
-        '$geoWithin': { '$center': [ [  params[:long].to_f, params[:lat].to_f ], 30 ] }
-      })
-    elsif params[:zoom].to_i == 4
-      q.merge!("location.coords.coordinates" => {
-        '$geoWithin': { '$center': [ [  params[:long].to_f, params[:lat].to_f ], 40 ] }
-      })
-    elsif params[:zoom].to_i == 5
-      q.merge!("location.coords.coordinates" => {
-        '$geoWithin': { '$center': [ [  params[:long].to_f, params[:lat].to_f ], 50 ] }
-      })
-    else
-      q.merge!("location.coords.coordinates" => {
-        '$geoWithin': { '$center': [ [  params[:long].to_f, params[:lat].to_f ], 100 ] }
-      })
-    end
-
-    q = filter_by_scope(params, q)
-
+    q = create_query(params)
     m = create_options(params)
-    logger.warn q
-    logger.warn m
     orion[:entities].find(q,m).count
   end
 
