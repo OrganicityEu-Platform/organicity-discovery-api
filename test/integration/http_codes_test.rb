@@ -57,6 +57,11 @@ class BlogFlowTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'get 200 on /v0/assets/metadata/search?query=London' do
+    get '/v0/assets/metadata/search?query=London'
+    assert_response :success
+  end
+
   test 'get 200 on /v0/assets/providers' do
     get '/v0/assets/providers'
     assert_response :success

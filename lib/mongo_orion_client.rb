@@ -180,6 +180,8 @@ module MongoOrionClient
 
     if params.has_key?(:query)
       query = params[:query].split(/[\s+ ]/).map {|keyword| '"' + keyword + '"'}.join(' ')
+    else
+      query = ''
     end
 
     q = {
