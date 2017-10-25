@@ -251,17 +251,17 @@ module MongoOrionClient
   # end
 
   # TODO: This should be removed
-  # def mongo_asset(params)
-  #   orion = setup_client
-  #   orion[:entities].find(
-  #     {
-  #       '_id.id' => /#{params[:id]}/,
-  #     },
-  #     {
-  #       :limit => 1
-  #     }
-  #   ).to_a
-  # end
+  def mongo_asset(params)
+    orion = setup_client
+    orion[:entities].find(
+      {
+        '_id.id' => /#{params[:id]}/,
+      },
+      {
+        :limit => 1
+      }
+    ).to_a
+  end
 
   def mongo_asset_nearby(params)
     asset = mongo_asset(params).first
