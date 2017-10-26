@@ -19,14 +19,18 @@ It comprises the following functionalities:
 
 ## Documentation
 
-- Check the **documentation** folder *[doc](https://github.com/OrganicityEu/organicity-discovery-api/tree/master/doc)*
+- Check the **documentation** folder *[doc](https://github.com/OrganicityEu-Platform/organicity-discovery-api/tree/master/doc)*
 
 ## Status
 
 [![Code Climate](https://codeclimate.com/github/OrganicityEu/organicity-discovery-api/badges/gpa.svg)](https://codeclimate.com/github/OrganicityEu/organicity-discovery-api)
 
+Travis:
+
+![Travis](https://travis-ci.org/OrganicityEu/organicity-discovery-api.svg?branch=master)
 
 ## Testing
 
 Currently we have only a handful of tests but you can run them through docker with:
+
 `docker-compose exec app rake test --verbose`
