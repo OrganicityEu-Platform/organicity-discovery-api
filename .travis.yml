@@ -30,6 +30,7 @@ script:
   - "bundle exec rake db:schema:load"
   - "bundle exec rake db:test:prepare"
   #- "bundle exec rake test --verbose"
+  - 'echo 12345'
 
 services:
   - postgresql
