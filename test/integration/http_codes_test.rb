@@ -93,8 +93,8 @@ class BlogFlowTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'get 200 on /v0/assets/:id/ngsiv2' do
-    get '/v0/assets/urn:oc:entity:london:transportService:TransportAPI:NEH/ngsiv2'
+  test 'get 200 on /v0/assets/Room1/ngsiv2' do
+    get '/v0/assets/Room1/ngsiv2'
     assert_response :success
   end
 
