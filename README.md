@@ -19,7 +19,7 @@ It comprises the following functionalities:
 
 ## Documentation
 
-- Check the **documentation** folder *[doc](https://github.com/OrganicityEu/organicity-discovery-api/tree/master/doc)*
+- Check the **documentation** folder *[doc](https://github.com/OrganicityEu-Platform/organicity-discovery-api/tree/master/doc)*
 
 ## Status
 
