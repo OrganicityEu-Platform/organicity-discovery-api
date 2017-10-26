@@ -8,7 +8,7 @@ class InfoControllerTest < ActionDispatch::IntegrationTest
 
   test "info contains" do
     get '/'
-    assert_includes response.body,"Nothing her"
+    assert_includes response.body, 'Welcome to'
   end
 
 end

@@ -1,5 +1,5 @@
 class InfoController < ApplicationController
   def index
-    render plain: 'Nothing here'
+    render plain: 'Welcome to: https://discovery.organicity.eu'
   end
 end
