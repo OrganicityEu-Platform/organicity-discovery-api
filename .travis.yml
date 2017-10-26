@@ -26,7 +26,7 @@ before_script:
 #  - psql -U postgres -c "create extension postgis version '2.2'"
 
 script:
-  - "bundle install"
+  - bundle install --without production
   - "bundle exec sidekiq -d -C config/sidekiq.yml -e development"
   - "bundle exec rake db:create"
   - "bundle exec rake db:schema:load"
