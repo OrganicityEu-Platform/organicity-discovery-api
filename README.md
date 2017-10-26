@@ -25,7 +25,9 @@ It comprises the following functionalities:
 
 [![Code Climate](https://codeclimate.com/github/OrganicityEu/organicity-discovery-api/badges/gpa.svg)](https://codeclimate.com/github/OrganicityEu/organicity-discovery-api)
 
-https://travis-ci.org/OrganicityEu/organicity-discovery-api.svg?branch=master
+Travis:
+
+![Travis](https://travis-ci.org/OrganicityEu/organicity-discovery-api.svg?branch=master)
 
 ## Testing
 
