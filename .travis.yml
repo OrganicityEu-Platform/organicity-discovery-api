@@ -6,6 +6,8 @@ env:
   - POSTGRES_HOST=localhost
   - REDIS_URL=redis://localhost:6379/2
 
+bundler_args: --without production
+
 before_install:
 #  - apt-cache search postgis
   - printenv
