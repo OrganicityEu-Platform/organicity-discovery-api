@@ -34,11 +34,19 @@ module Prefixes
     # Cache it
     if call.empty? or ( Time.now > Time.parse(call.last.created_at) + 300.seconds )
       logger.warn "New cache"
-      resp = HTTP.timeout(:read => 5).auth(authheader).get(url)
-      logger.warn "Response code from experimenters API: #{resp.code}"
 
-      if resp.code == 200
-        prefixes = JSON.parse(resp.to_s)["allowed_prefixes"]
+      begin
+        resp = HTTP.timeout(:read => 5).auth(authheader).get(url)
+        raise "HTTP error"
+      rescue
+        logger.warn "Rescue"
+      end
+
+      if resp
+        logger.warn "Response code from experimenters API: #{resp.code}"
+        if resp.code == 200
+          prefixes = JSON.parse(resp.to_s)["allowed_prefixes"]
+        end
       else
         # TODO: If there is a problem with experimenters API, should we RETURN with no prefixes or do something else?
         return
