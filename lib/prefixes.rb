@@ -37,9 +37,9 @@ module Prefixes
 
       begin
         resp = HTTP.timeout(:read => 5).auth(authheader).get(url)
-        raise "HTTP error"
       rescue
         logger.warn "Rescue"
+        return
       end
 
       if resp
