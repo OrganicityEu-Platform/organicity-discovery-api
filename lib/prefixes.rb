@@ -17,33 +17,48 @@ module Prefixes
   #   db.entities.find({"_id.id":{ $in: [/bf148025-0ba7-4635-8c09-23d7a4495412:582c/, /b23/] }})
 
   def get_prefixes(authheader = nil)
+
+    pref_log = Logger.new('log/prefixes.log')
+    pref_log.level = Logger::INFO
+
     #TODO: Use ENV variable for this URL
     # ENV['EXPERIMENTERS_PREFIX_URL']
     url = 'https://experimenters.organicity.eu:8443/emscheck/experiments-prefixes'
 
+    pref_log.info '-------'
+
     # Logged in users (with authheader) use a different cache
     if authheader == nil
-      call = RestCall.find(url: url).sort(by: :created_at)
+      pref_log.info "authheader nil"
+      call = RestCall.find(url: url, token: '').sort(by: :created_at)
       #NOTE: call.last was nil according to Sentry - remove those logger.warn?
       #logger.warn "Time since last cache (non user): #{Time.now - call.last.created_at.to_time}"
     else
+      pref_log.info "authheader received"
       call = RestCall.find(url: url, token: authheader).sort(by: :created_at)
       #logger.warn "Time since last cache (logged in user):  #{Time.now - call.last.created_at.to_time}"
     end
 
+    pref_log.info "Call count: #{call.count}"
+    pref_log.info "Time now: #{Time.now}"
+    if call.last
+      pref_log.info "LastCall: #{call.last.created_at.to_time + 300.seconds}"
+      pref_log.info "Time to new cache: #{call.last.created_at.to_time + 300.seconds - Time.now}"
+    end
+
     # Cache it
     if call.empty? or ( Time.now > Time.parse(call.last.created_at) + 300.seconds )
-      logger.warn "New cache"
+      pref_log.info 'New Cache'
 
       begin
         resp = HTTP.timeout(:read => 5).auth(authheader).get(url)
       rescue
-        logger.warn "Rescue"
+        pref_log.info "---- Rescue! HTTP Timeout?"
         return
       end
 
       if resp
-        logger.warn "Response code from experimenters API: #{resp.code}"
+        pref_log.info "Response code from experimenters API: #{resp.code}"
         if resp.code == 200
           prefixes = JSON.parse(resp.to_s)["allowed_prefixes"]
         end
@@ -52,9 +67,14 @@ module Prefixes
         return
       end
 
-      @cached_call = RestCall.create(url: url, token: authheader, created_at: Time.now, response: prefixes)
+      if authheader == nil
+        @cached_call = RestCall.create(url: url, token: '', created_at: Time.now, response: prefixes)
+      else
+        @cached_call = RestCall.create(url: url, token: authheader, created_at: Time.now, response: prefixes)
+      end
+
     else
-      logger.warn "Using cache."
+      pref_log.info "Using cache."
       call = call.last
       @cached_call = call
     end
