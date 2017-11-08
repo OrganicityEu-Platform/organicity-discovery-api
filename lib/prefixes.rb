@@ -30,25 +30,27 @@ module Prefixes
     # Logged in users (with authheader) use a different cache
     if authheader == nil
       pref_log.info "authheader nil"
-      call = RestCall.find(url: url, token: '').sort(by: :created_at)
-      #NOTE: call.last was nil according to Sentry - remove those logger.warn?
-      #logger.warn "Time since last cache (non user): #{Time.now - call.last.created_at.to_time}"
+      call = RestCall.find(url: url, token: '').sort(by: :created_at).last
     else
       pref_log.info "authheader received"
-      call = RestCall.find(url: url, token: authheader).sort(by: :created_at)
-      #logger.warn "Time since last cache (logged in user):  #{Time.now - call.last.created_at.to_time}"
+      call = RestCall.find(url: url, token: authheader).sort(by: :created_at).last
     end
 
-    pref_log.info "Call count: #{call.count}"
-    pref_log.info "Time now: #{Time.now}"
-    if call.last
-      pref_log.info "LastCall: #{call.last.created_at.to_time + 300.seconds}"
-      pref_log.info "Time to new cache: #{call.last.created_at.to_time + 300.seconds - Time.now}"
+    p '---'
+    p RestCall.find(url: url, token: '').sort(by: :created_at).first.created_at
+    p RestCall.find(url: url, token: '').sort(by: :created_at).last.created_at
+
+    if call
+      pref_log.info "Time now: #{Time.now}"
+      pref_log.info "LastCall: #{call.created_at.to_time + 300.seconds}"
+      pref_log.info "New cache after: #{call.created_at.to_time + 300.seconds - Time.now}"
+      pref_log.info "Cache age      : #{Time.now - call.created_at.to_time}"
+      pref_log.info RestCall.find(url: url, token: '').sort(by: :created_at).count
     end
 
     # Cache it
-    if call.empty? or ( Time.now > Time.parse(call.last.created_at) + 300.seconds )
-      pref_log.info 'New Cache'
+    if call.nil? or ( Time.now > Time.parse(call.created_at) + 300.seconds )
+      pref_log.info 'NEW CACHE'
 
       begin
         resp = HTTP.timeout(:read => 5).auth(authheader).get(url)
@@ -68,24 +70,35 @@ module Prefixes
       end
 
       if authheader == nil
-        @cached_call = RestCall.create(url: url, token: '', created_at: Time.now, response: prefixes)
+        # NOTE: This call saves the correct time, but we are unable to find it below!
+        created_call = RestCall.create(url: url, token: '', created_at: Time.now, response: prefixes)
+        p created_call.created_at
       else
-        @cached_call = RestCall.create(url: url, token: authheader, created_at: Time.now, response: prefixes)
+        created_call = RestCall.create(url: url, token: authheader, created_at: Time.now, response: prefixes)
       end
+
+      # DEBUG: Print all in redis, + id + date + response.length
+      # RestCall.find(url: url, token: '').sort(by: :created_at).each do |f|; puts "#{f.id}\t #{f.created_at} #{f.response.length}"; end
+
+      # INCORRECT time
+      # p RestCall.find(url: url, token: '').sort(by: :created_at).last.created_at
+
+      # CORRECT time
+      # p created_call.created_at
 
     else
       pref_log.info "Using cache."
-      call = call.last
-      @cached_call = call
+      # the call we found earlier
+      created_call = call
     end
 
     #FIXME: Redis returns prefixes as a String, (but this method should always return an Array)
     # So anytime the cache is used, it needs to JSON.parse
-    if @cached_call.response.is_a? String
-      return JSON.parse @cached_call.response
+    if created_call.response.is_a? String
+      return JSON.parse created_call.response
     end
 
-    return @cached_call.response
+    return created_call.response
   end
 
 
