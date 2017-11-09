@@ -27,25 +27,25 @@ module Prefixes
 
     pref_log.info '-------'
 
+    # DEBUG: Print all in redis, + id + date + response.length
+    # x = RestCall.find(url: url, token: '')
+    # x.each do |f|; puts "#{f.id}\t #{f.created_at} #{f.response.length}"; end
+
     # Logged in users (with authheader) use a different cache
     if authheader == nil
       pref_log.info "authheader nil"
-      call = RestCall.find(url: url, token: '').sort(by: :created_at).last
+      call = RestCall.find(url: url, token: '').sort.last
     else
       pref_log.info "authheader received"
-      call = RestCall.find(url: url, token: authheader).sort(by: :created_at).last
+      call = RestCall.find(url: url, token: authheader).sort.last
     end
 
-    p '---'
-    p RestCall.find(url: url, token: '').sort(by: :created_at).first.created_at
-    p RestCall.find(url: url, token: '').sort(by: :created_at).last.created_at
-
     if call
-      pref_log.info "Time now: #{Time.now}"
-      pref_log.info "LastCall: #{call.created_at.to_time + 300.seconds}"
+      pref_log.info "Time now       : #{Time.now}"
+      pref_log.info "LastCall       : #{call.created_at.to_time + 300.seconds}"
       pref_log.info "New cache after: #{call.created_at.to_time + 300.seconds - Time.now}"
       pref_log.info "Cache age      : #{Time.now - call.created_at.to_time}"
-      pref_log.info RestCall.find(url: url, token: '').sort(by: :created_at).count
+      pref_log.info "Find count     : #{RestCall.find(url: url, token: '').count}"
     end
 
     # Cache it
@@ -72,19 +72,9 @@ module Prefixes
       if authheader == nil
         # NOTE: This call saves the correct time, but we are unable to find it below!
         created_call = RestCall.create(url: url, token: '', created_at: Time.now, response: prefixes)
-        p created_call.created_at
       else
         created_call = RestCall.create(url: url, token: authheader, created_at: Time.now, response: prefixes)
       end
-
-      # DEBUG: Print all in redis, + id + date + response.length
-      # RestCall.find(url: url, token: '').sort(by: :created_at).each do |f|; puts "#{f.id}\t #{f.created_at} #{f.response.length}"; end
-
-      # INCORRECT time
-      # p RestCall.find(url: url, token: '').sort(by: :created_at).last.created_at
-
-      # CORRECT time
-      # p created_call.created_at
 
     else
       pref_log.info "Using cache."
