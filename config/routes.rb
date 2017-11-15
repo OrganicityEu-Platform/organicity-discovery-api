@@ -59,4 +59,8 @@ Rails.application.routes.draw do
       resources :assets
     end
   end
+
+  # catch wrong urls
+  get '*path' => redirect('/')
+
 end
