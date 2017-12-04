@@ -96,7 +96,7 @@ class Asset < ApplicationRecord
     cache_log = Logger.new('log/cache.log')
     cache_log.level = Logger::INFO
 
-    Rails.cache.fetch("#{endpoint}/#{params}", expires_in: 20.seconds) do
+    Rails.cache.fetch("#{endpoint}/#{params}", expires_in: 200.seconds) do
       cache_log.info "New cache for assets"
       assets = []
 

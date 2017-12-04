@@ -27,7 +27,7 @@ module Prefixes
     # Logged in users (with authheader) use a different cache
     pref_log.info "#{url}/#{authheader}"
 
-    Rails.cache.fetch("#{url}/#{authheader}", expires_in: 20.seconds) do
+    Rails.cache.fetch("#{url}/#{authheader}", expires_in: 200.seconds) do
       pref_log.info 'NEW CACHE'
       #API CALL
       begin
