@@ -25,7 +25,7 @@ module Prefixes
     url = 'https://experimenters.organicity.eu:8443/emscheck/experiments-prefixes'
 
     # Logged in users (with authheader) use a different cache
-    pref_log.info "#{url}/#{authheader}"
+    #pref_log.info "#{url}/#{authheader}"
 
     Rails.cache.fetch("#{url}/#{authheader}", expires_in: 200.seconds) do
       pref_log.info 'NEW CACHE'
