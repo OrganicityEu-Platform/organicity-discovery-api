@@ -40,34 +40,6 @@ class Asset < ApplicationRecord
     return self.request_entities(params)
   end
 
-  def self.cache_mongo(params, endpoint)
-    call = RestCall.find(params: params, endpoint: endpoint).sort.last
-
-    cache_log = Logger.new('log/cache.log')
-    cache_log.level = Logger::INFO
-
-
-    if call && defined? call.created_at
-      cache_log.info "--------------"
-      cache_log.info "Find count     : #{RestCall.find(params: params, endpoint: endpoint).count}"
-      cache_log.info "Time now       : #{Time.now}"
-      cache_log.info "LastCall       : #{call.created_at.to_time + 30.seconds}"
-      cache_log.info "New cache after: #{call.created_at.to_time + 30.seconds - Time.now}"
-      cache_log.info "Cache age      : #{Time.now - call.created_at.to_time}"
-    end
-
-    if call.nil? or ( Time.now > Time.parse(call.created_at) + 30.seconds )
-      # We should extend cache if there is an error to preserve good results
-      logger.warn "new request (cache_mongo)"
-      cache_log.info "NEW CACHE"
-      return false
-    else
-      logger.warn "cached response"
-      cache_log.info "Using cache."
-      return call
-    end
-  end
-
   def self.get_mongo_assets(params, endpoint, request = false, session = false)
 
     # If we are logged in with a Bearer token, use it to get prefixes before we search
@@ -118,17 +90,15 @@ class Asset < ApplicationRecord
       self.mongo_orion_logger(request, session, urn, sub)
     end
 
-    assets = []
-
     logger.warn "Endpoint: #{endpoint}"
     logger.warn "Params: #{params}"
 
-    call = self.cache_mongo(params, endpoint)
+    cache_log = Logger.new('log/cache.log')
+    cache_log.level = Logger::INFO
 
-    if call # if we have a valid cache
-      assets = call.response
-      logger.warn "Cached assets: #{assets}"
-    else # Create a new cache
+    Rails.cache.fetch("#{endpoint}/#{params}", expires_in: 20.seconds) do
+      cache_log.info "New cache for assets"
+      assets = []
 
       if (self.mongo_endpoints.include? endpoint)
         raw_assets = self.send("#{endpoint}", params) # This calls mongo_orion_client dedicated functions based on the endpoint name
@@ -145,16 +115,7 @@ class Asset < ApplicationRecord
       else
         assets = self.mongo_map_assets(raw_assets).to_json
       end
-
-      cache_log = Logger.new('log/cache.log')
-      cache_log.level = Logger::INFO
-
-      cache_log.info 'Creating cached call'
-      @cached_call = RestCall.create(params: params, endpoint: endpoint, created_at: Time.now, response: assets)
-      cache_log.info @cached_call.id
     end
-
-    return assets
   end
 
   private

@@ -17,7 +17,6 @@ module Prefixes
   #   db.entities.find({"_id.id":{ $in: [/bf148025-0ba7-4635-8c09-23d7a4495412:582c/, /b23/] }})
 
   def get_prefixes(authheader = nil)
-
     pref_log = Logger.new('log/prefixes.log')
     pref_log.level = Logger::INFO
 
@@ -25,33 +24,12 @@ module Prefixes
     # ENV['EXPERIMENTERS_PREFIX_URL']
     url = 'https://experimenters.organicity.eu:8443/emscheck/experiments-prefixes'
 
-    pref_log.info '-------'
-
-    # DEBUG: Print all in redis, + id + date + response.length
-    # x = RestCall.find(url: url, token: '')
-    # x.each do |f|; puts "#{f.id}\t #{f.created_at} #{f.response.length}"; end
-
     # Logged in users (with authheader) use a different cache
-    if authheader == nil
-      pref_log.info "authheader nil"
-      call = RestCall.find(url: url, token: '').sort.last
-    else
-      pref_log.info "authheader received"
-      call = RestCall.find(url: url, token: authheader).sort.last
-    end
+    pref_log.info "#{url}/#{authheader}"
 
-    if call
-      pref_log.info "Time now       : #{Time.now}"
-      pref_log.info "LastCall       : #{call.created_at.to_time + 300.seconds}"
-      pref_log.info "New cache after: #{call.created_at.to_time + 300.seconds - Time.now}"
-      pref_log.info "Cache age      : #{Time.now - call.created_at.to_time}"
-      pref_log.info "Find count     : #{RestCall.find(url: url, token: '').count}"
-    end
-
-    # Cache it
-    if call.nil? or ( Time.now > Time.parse(call.created_at) + 300.seconds )
+    Rails.cache.fetch("#{url}/#{authheader}", expires_in: 20.seconds) do
       pref_log.info 'NEW CACHE'
-
+      #API CALL
       begin
         resp = HTTP.timeout(:read => 5).auth(authheader).get(url)
       rescue
@@ -68,28 +46,7 @@ module Prefixes
         # TODO: If there is a problem with experimenters API, should we RETURN with no prefixes or do something else?
         return
       end
-
-      if authheader == nil
-        # NOTE: This call saves the correct time, but we are unable to find it below!
-        created_call = RestCall.create(url: url, token: '', created_at: Time.now, response: prefixes)
-      else
-        created_call = RestCall.create(url: url, token: authheader, created_at: Time.now, response: prefixes)
-      end
-
-    else
-      pref_log.info "Using cache."
-      # the call we found earlier
-      created_call = call
     end
 
-    #FIXME: Redis returns prefixes as a String, (but this method should always return an Array)
-    # So anytime the cache is used, it needs to JSON.parse
-    if created_call.response.is_a? String
-      return JSON.parse created_call.response
-    end
-
-    return created_call.response
   end
-
-
 end
