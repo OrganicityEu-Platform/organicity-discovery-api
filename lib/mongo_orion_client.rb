@@ -97,6 +97,15 @@ module MongoOrionClient
       qbuilder.merge!("_id.type" => /.*#{params[:type]}.*/)
     end
 
+    # Gets the lastUpdate param and if valif adds to the mongo query
+    # a filter for assets with a last update time greater or equal than it.
+    if params[:lastUpdate]
+      lastUpdate = Time.iso8601(params[:lastUpdate]) rescue nil
+      if lastUpdate
+        qbuilder.merge!("_id.TimeInstant" => { '$gte': Time.strptime(lastUpdate, '%Y-%m-%dT%H:%M:%S%z').to_time.utc })
+      end
+    end
+
     if params[:q]
       qbuilder.merge!({ "attrNames": params[:q] })
     end

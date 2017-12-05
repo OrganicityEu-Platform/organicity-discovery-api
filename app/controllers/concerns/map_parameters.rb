@@ -35,7 +35,8 @@ module MapParameters
       :service,
       :zoom,
       :experimenter,
-      :experiment
+      :experiment,
+      :lastUpdate
     ]
     parameters = {}
 
