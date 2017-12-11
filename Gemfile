@@ -83,7 +83,6 @@ end
 
 group :production do
 	# For monitoring
-	gem 'skylight', '~> 1.2', '>= 1.2.2'
 	gem 'opbeat', git: 'https://github.com/opbeat/opbeat-ruby'
 end
 
