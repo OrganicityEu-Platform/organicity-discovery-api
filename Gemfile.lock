@@ -67,13 +67,6 @@ GIT
       rack-protection (= 2.0.0)
       tilt (~> 2.0)
 
-GIT
-  remote: https://github.com/opbeat/opbeat-ruby
-  revision: 41fd624757478983ddb52f89fb06f3c029d93afb
-  specs:
-    opbeat (3.0.11)
-      activesupport (>= 3.0.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -302,7 +295,6 @@ DEPENDENCIES
   mustermann
   mustermann-contrib
   ohm
-  opbeat!
   pg
   puma
   rack-cache
