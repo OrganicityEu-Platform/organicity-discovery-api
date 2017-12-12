@@ -99,10 +99,13 @@ module MongoOrionClient
 
     # Gets the lastUpdate param and if valif adds to the mongo query
     # a filter for assets with a last update time greater or equal than it.
+    # We get: /v0/assets?lastUpdate=2017-07-04T12:00:47Z
+    # And compare it with a 10 digit epoch
+    # Example (10 digit): "modDate" => 1499169704
     if params[:lastUpdate]
       lastUpdate = Time.iso8601(params[:lastUpdate]) rescue nil
       if lastUpdate
-        qbuilder.merge!("_id.TimeInstant" => { '$gte': Time.strptime(lastUpdate, '%Y-%m-%dT%H:%M:%S%z').to_time.utc })
+        qbuilder.merge!("modDate" => { '$gte': lastUpdate.to_i })
       end
     end
 
