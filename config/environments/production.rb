@@ -82,16 +82,6 @@ Rails.application.configure do
     config.logger = ActiveSupport::TaggedLogging.new(logger)
   end
 
-  if ENV['OPBEAT_ORG_ID'].present?
-    config.opbeat.organization_id = ENV['OPBEAT_ORG_ID']
-    config.opbeat.app_id = ENV['OPBEAT_APP_ID']
-    config.opbeat.secret_token = ENV['OPBEAT_TOKEN']
-    config.opbeat.excluded_exceptions += %w{
-      ActiveRecord::RecordNotFound
-      ActionController::RoutingError
-    }
-  end
-
   if ENV['RAVEN_DSN_URL'].present?
     Raven.configure do |config|
       config.dsn = ENV['RAVEN_DSN_URL']

@@ -83,7 +83,6 @@ end
 
 group :production do
 	# For monitoring
-	gem 'opbeat', git: 'https://github.com/opbeat/opbeat-ruby'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
