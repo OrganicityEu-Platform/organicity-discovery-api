@@ -46,18 +46,6 @@ patras = City.find_or_create_by!(
   region: 'Western Greece'
 )
 
-patra = City.find_or_create_by!(
-  id: 5,
-  name: 'Patra',
-  description: 'Patras (or Patra) is Greece\'s third largest city and the regional capital of Western Greece, in northern Peloponnese, 215 km (134 mi) west of Athens. The city is built at the foothills of Mount Panachaikon, overlooking the Gulf of Patras.',
-  latitude: 38.25,
-  longitude: 21.733333,
-  lonlat: 'POINT(21.733333 38.25)',
-  country_code: 'GR',
-  country: 'Greece',
-  region: 'Western Greece'
-)
-
 leuven = City.find_or_create_by!(
   id: 5,
   name: 'Leuven',
@@ -92,11 +80,6 @@ aarhus.links.find_or_create_by!(
 )
 
 patras.links.find_or_create_by!(
-  url: 'https://en.wikipedia.org/wiki/Patras',
-  relationship: 'wiki'
-)
-
-patra.links.find_or_create_by!(
   url: 'https://en.wikipedia.org/wiki/Patras',
   relationship: 'wiki'
 )
