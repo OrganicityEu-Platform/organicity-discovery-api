@@ -58,6 +58,19 @@ patra = City.find_or_create_by!(
   region: 'Western Greece'
 )
 
+leuven = City.find_or_create_by!(
+  id: 5,
+  name: 'Leuven',
+  description: 'Leuven',
+  latitude: 38.25,
+  longitude: 21.733333,
+  lonlat: 'POINT(21.733333 38.25)',
+  country_code: 'GR',
+  country: 'Greece',
+  region: 'Western Greece'
+)
+
+
 santander.links.find_or_create_by!(
   url: 'https://en.wikipedia.org/wiki/Santander,_Spain',
   relationship: 'wiki'
@@ -84,6 +97,11 @@ patras.links.find_or_create_by!(
 )
 
 patra.links.find_or_create_by!(
+  url: 'https://en.wikipedia.org/wiki/Patras',
+  relationship: 'wiki'
+)
+
+leuven.links.find_or_create_by!(
   url: 'https://en.wikipedia.org/wiki/Patras',
   relationship: 'wiki'
 )
