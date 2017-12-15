@@ -95,7 +95,7 @@ novisad = City.find_or_create_by!(
 )
 
 ldieztest = City.find_or_create_by!(
-  id: 8,
+  id: 9,
   name: 'LdiezTest',
   description: 'LdiezTest',
   latitude: 43.45487,
