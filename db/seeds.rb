@@ -106,6 +106,18 @@ ldieztest = City.find_or_create_by!(
   region: 'Cantabria'
 )
 
+velenje = City.find_or_create_by!(
+  id: 10,
+  name: 'Velenje',
+  description: 'Velenje',
+  latitude: 46.362274,
+  longitude: 15.110658,
+  lonlat: 'POINT(15.110658 46.362274)',
+  country_code: 'SI',
+  country: 'Slovenia',
+  region: 'Slovenia'
+)
+
 santander.links.find_or_create_by!(
   url: 'https://en.wikipedia.org/wiki/Santander,_Spain',
   relationship: 'wiki'
@@ -153,5 +165,10 @@ novisad.links.find_or_create_by!(
 
 ldieztest.links.find_or_create_by!(
   url: 'https://www.unican.es',
+  relationship: 'wiki'
+)
+
+velenje.links.find_or_create_by!(
+  url: 'https://en.wikipedia.org/wiki/Velenje',
   relationship: 'wiki'
 )
