@@ -4,8 +4,24 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: {}
-# column: value
-#
-two: {}
-# column: value
+one:
+  id: 1
+  name: 'Santander'
+  description: 'The port city of Santander is the capital of the autonomous community and historical region of Cantabria situated on the north coast of Spain. Located east of Gijón and west of Bilbao, the city has a population of 178,465.'
+  latitude: 43.45487
+  longitude: -3.81289
+  lonlat: 'POINT(-3.81289 43.45487)'
+  country_code: 'ES'
+  country: 'Spain'
+  region: 'Cantabria'
+
+two:
+  id: 2
+  name: 'London'
+  description: 'London is the capital and most populous city of England and the United Kingdom.'
+  latitude: 51.507222
+  longitude: -0.1275
+  lonlat: 'POINT(-0.1275 51.507222)'
+  country_code: 'UK'
+  country: 'United Kingdom'
+  region: 'England'

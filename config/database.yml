@@ -21,6 +21,7 @@ development:
 test:
   <<: *default
   database: organicity-api_test
+  host         : <%= ENV['POSTGRES_HOST'] || 'localhost' %>
 
 production:
   <<: *default
